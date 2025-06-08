@@ -1,0 +1,251 @@
+.register-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.register-form-input-container {
+    width: 100%;
+    height: auto;
+  
+}
+
+
+.register-modal {
+  background-color: white;
+  padding: 40px;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 600px; /* Prevents it from getting too wide */
+  max-height: 100vh; /* Prevents it from escaping vertically */
+  overflow-y: auto; 
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  animation: popUp 0.3s ease;
+  box-sizing: border-box;
+}
+
+
+@keyframes popUp {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+
+.register-form-title {
+    font-family: HindLight;
+    color: white;
+    text-align: left;
+    letter-spacing: 4px;
+    font-size: 24px;
+    color: black;
+}
+
+.register-form-wrapper {
+   width: 100%;
+   
+}
+
+
+.bold {
+    font-family: HindBold;
+}
+
+
+.register-form-input-container {
+    position: relative;
+    padding-top: 25px;
+    width: 100%;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    
+}
+
+
+
+.input-row {
+    padding-top: 20px;
+    display: flex;
+    gap: 20px;
+  
+}
+
+.full-line {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.input-label {
+    font-size: 19px;
+    font-family: HindLight;
+    background-color: transparent;
+    color: black;
+    letter-spacing: 3px;
+    
+}
+
+.register-chef-icon {
+  padding-bottom: 20px;
+  display: flex;
+
+}
+
+input:focus {
+  border-bottom: .5px solid #00A884; /* green underline on focus */
+  outline: none;
+}
+
+.input-field {
+    width: 100%;
+    border: none;
+    border-bottom: .5px solid #ccc;
+    outline: none;
+    padding: 1px 0;
+    font-size: 19px;
+    font-family: HindLight;
+    background-color: transparent;
+    color: black;
+    padding-bottom: 25px;
+    height: 15px;
+}
+
+.input-field-ea {
+    width: 59.5%;
+    border: none;
+    border-bottom: .5px solid #ccc;
+    outline: none;
+    padding: 10px 0;
+    font-size: 19px;
+    font-family: HindLight;
+    background-color: transparent;
+    color: black;
+    
+}
+
+.input-group-full-width {
+    padding-top: 25px;
+}
+
+.register-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 30px;
+  font-family: HindLight;
+  font-size: 14px;
+  color: #333;
+}
+
+.register-checkbox input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: #D7C1C1; /* checkbox color (modern browsers only) */
+  margin: 0;
+}
+
+.terms-text {
+    color: black;
+    cursor: pointer;
+    font-family: HindLight;
+    font-size: 13px;
+}
+
+.terms-link {
+  color: black;
+  text-decoration: underline;
+  cursor: pointer;
+  font-family: HindSemiBold;
+  letter-spacing: 1px;
+}
+
+.google-icon {
+    padding-left: 20px;
+}
+
+.submit-button-wrapper {
+    display:flex;
+    align-items: flex-end;
+ 
+}
+
+.submit-button {
+    font-family: HindMedium;
+    width: 30%;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #363131;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 20px;
+    letter-spacing: 2px;
+}
+
+.existing-account-text {
+    padding-top: 5px;
+    margin: 0;
+    font-size: 12px;
+    opacity: .44;
+    font-family: HindLight;
+    cursor: pointer;
+    letter-spacing: 1px;
+}
+
+.error-icon-container {
+  position: relative;
+  display: flex;
+  float: right;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@media (max-width: 516px) {
+  .input-label {
+    font-size: 13px;
+  }
+}
+
+
+@font-face {
+  font-family: 'HindMedium';
+  src: url('../../assets/fonts/hind/Hind-Medium.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: 'HindLight';
+  src: url('../../assets/fonts/hind/Hind-Light.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'HindBold';
+  src: url('../../assets/fonts/hind/Hind-Bold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

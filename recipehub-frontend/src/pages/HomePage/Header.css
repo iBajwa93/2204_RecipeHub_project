@@ -1,0 +1,153 @@
+.homepage-header {
+ 
+}
+
+.homepage-header-bg {
+    width: 100%;
+    height: 741px;
+    background-image: url("../../assets/images/headerbg.png");
+    background-size: cover;        
+    background-position: center;   
+    background-repeat: no-repeat;  
+    max-height: 741px;
+    min-height: 700px;
+}
+
+.homepage-header-input-container {
+    position: relative;
+
+    width: 75%;
+    margin: auto;
+}
+
+.homepage-header-input-wrapper {
+    position: relative;
+    width: 75%;
+  
+}
+
+.homepage-header-input {
+    font-family: HindLight;
+    font-weight: 400;
+    letter-spacing: 1px;
+    font-size: 18px;
+    border: none;
+    width: 48%;
+    min-width: 300px;
+    height: 65px;
+    min-height: 65px;
+    border-radius: 5px;
+    display: block; 
+    margin: 0;   
+    padding: 5px 60px 5px 20px;
+    color: black;
+}
+
+
+
+.homepage-header-input::placeholder {
+  color: black;
+  font-weight: 400;
+  letter-spacing: 3px;
+  font-size: 18px;
+  padding-left: 25px;
+  font-family: HindLight;
+  opacity: .44;
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  opacity: 0.8;
+  z-index: 2;
+}
+
+.homepage-header-hamburger-wrapper {
+    padding: 25px;
+    width: 100%;
+}
+
+.homepage-header-text-wrapper {
+    width: 75%;
+    margin: auto;
+    padding-top: 120px;
+
+}
+
+.homepage-header-text {
+    text-align: left;
+    color: white;
+    letter-spacing: 5px;
+    font-family: HindSemiBold;
+    font-size: 48px;
+}
+
+.homepage-header-text-underline {
+    position: relative;
+    display: inline-block;
+    z-index: 1;
+}
+
+.search-icon:hover {
+  animation: bounce 0.5s ease;
+}
+
+.homepage-header-text-underline::after {
+    content: "";
+    position: absolute;
+    top: 45px;
+    left: 25%;
+    width: 80%;
+    height: 20px;
+    background-color: #00A884;
+    border-radius: 2px;
+    z-index: -1;
+}
+
+.homepage-header-search-wrapper {
+    width: 100%;
+    height: 100px;
+    position: relative;
+    display: inline-block;
+}
+
+/* Responsive */
+
+@media (max-width: 1113px) {
+    .search-icon {
+        display: none;
+        
+    }
+}
+
+/* Animations */
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-50%) scale(1);
+  }
+  50% {
+    transform: translateY(-65%) scale(1.1);
+  }
+}
+
+/* Fonts */
+
+@font-face {
+  font-family: 'HindSemiBold';
+  src: url('../../assets/fonts/hind/Hind-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: 'HindLight';
+  src: url('../../assets/fonts/hind/Hind-Light.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}

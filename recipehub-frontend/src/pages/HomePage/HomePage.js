@@ -1,11 +1,11 @@
-import React from 'react';
-import Header from './Header'
-import './HomePage.css'; // Optional styling
+import React from "react";
+import Header from "./Header";
+import "./HomePage.css"; // Optional styling
 
 const HomePage = () => {
   return (
     <div>
-        <Header />
+      <Header />
     </div>
   );
 };

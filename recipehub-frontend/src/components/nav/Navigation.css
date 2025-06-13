@@ -4,14 +4,14 @@
 .nav {
   position: fixed;
   top: 0;
-  left: -280px;              /* Hide off‐screen initially */
-  width: 280px;              /* Sidebar width */
+  left: -280px; /* Hide off‐screen initially */
+  width: 280px; /* Sidebar width */
   height: 100vh;
   background-color: #ffffff; /* White background */
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
   transition: left 0.3s ease-in-out;
-  z-index: 1000;             /* Above most other content */
-  overflow: hidden;          /* Prevent scrollbars */
+  z-index: 1000; /* Above most other content */
+  overflow: hidden; /* Prevent scrollbars */
   display: flex;
 }
 
@@ -27,7 +27,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
- 
+
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease-in-out;
@@ -41,7 +41,7 @@
 /* The actual sidebar content (scrollable if needed) */
 .nav-content {
   position: relative;
-  z-index: 1100;  /* Above the overlay */
+  z-index: 1100; /* Above the overlay */
   width: 280px;
   padding: 2rem 1.5rem;
   display: flex;
@@ -110,7 +110,7 @@
 }
 
 .nav-item a::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 50%;
   bottom: 0;
@@ -118,19 +118,19 @@
   width: 0%;
   transform: translateX(-50%);
   background-color: black;
-  opacity: .3;
+  opacity: 0.3;
   transition: width 0.3s ease;
 }
 
 /* Highlight the “Home” link or whichever should be active */
 .nav-item.active a {
-  color: #FFA500; /* Orange for active */
+  color: #ffa500; /* Orange for active */
 }
 
 /* Hover state for links */
 .nav-item a:hover::after {
-    height: .5px;
-    width: 40%;
+  height: 0.5px;
+  width: 40%;
 }
 
 /* -------------- “Portal” Button -------------- */
@@ -140,7 +140,7 @@
 .nav-portal-btn {
   display: block;
   text-align: center;
-  background-color: #FFA500; /* Solid Orange */
+  background-color: #ffa500; /* Solid Orange */
   color: white;
   font-family: HindSemiBold;
   font-size: 1rem;
@@ -154,7 +154,6 @@
 .nav-portal-btn:hover {
   background-color: #e69500; /* Slightly darker on hover */
 }
-
 
 /* -------------- Responsive Tweaks -------------- */
 @media (max-width: 768px) {
@@ -177,23 +176,48 @@
 }
 
 @font-face {
-  font-family: 'HindSemiBold';
-  src: url('../../assets/fonts/hind/Hind-SemiBold.ttf') format('truetype');
-  font-weight: 600;
-  font-style: normal;
-}
-
-
-@font-face {
-  font-family: 'HindLight';
-  src: url('../../assets/fonts/hind/Hind-Light.ttf') format('truetype');
+  font-family: "HindSemiBold";
+  src: url("../../assets/fonts/hind/Hind-SemiBold.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'HindRegular';
-  src: url('../../assets/fonts/hind/Hind-Regular.ttf') format('truetype');
+  font-family: "HindLight";
+  src: url("../../assets/fonts/hind/Hind-Light.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
+}
+
+@font-face {
+  font-family: "HindRegular";
+  src: url("../../assets/fonts/hind/Hind-Regular.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+.nav-auth-section {
+  margin-top: auto; /* Push to bottom */
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 1.5rem;
+}
+
+.nav-auth-btn {
+  flex: 1;
+  background-color: #ffa500;
+  color: white;
+  font-family: HindSemiBold;
+  font-size: 0.95rem;
+  padding: 0.6rem 0;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.nav-auth-btn:hover {
+  background-color: #e69500;
 }

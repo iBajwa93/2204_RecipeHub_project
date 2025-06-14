@@ -1,6 +1,7 @@
 import React from 'react';
 import './Body.css';
 import dummy1 from '../../assets/images/dummy.png'
+import dummy2 from '../../assets/images/dummy2.png'
 import star from '../../assets/icons/star.png'
 import italian from '../../assets/images/italian.png'
 import indian from '../../assets/images/indian.png'
@@ -91,6 +92,54 @@ const Body = () => {
                         </h1>
                         <p className="browse-category-item-description">Lorem ipsum dolor sit amet</p>
                     </div>
+                </div>
+                <div className="explore-container">
+                    <div className="explore-item-wrapper">
+                        <div className="explore-title-wrapper">
+                            <h1 className="explore-title-text">
+                                Explore
+                            </h1>
+                        </div>
+                        <div className="explore-item-video-container">
+                            <div className="explore-item-video-wrapper">
+                                <img className="explore-item-video-tn" src={dummy2} />
+                                <h1 className="explore-item-video-title">
+                                    Best Crepe | Recipe
+                                </h1>
+                                <h2 className="explore-item-video-author">
+                                    Dan H.
+                                </h2>
+                                <p className="explore-item-stats">
+                                    1942 views | 10 minutes
+                                </p>
+                            </div>
+                            <div className="explore-item-video-wrapper">
+                                <img className="explore-item-video-tn" src={dummy2}/>
+                                <h1 className="explore-item-video-title">
+                                    Linguine Pasta
+                                </h1>
+                                <h2 className="explore-item-video-author">
+                                    Dan H.
+                                </h2>
+                                <p className="explore-item-stats">
+                                    15 views | 35 minutes
+                                </p>
+                            </div>
+                            <div className="explore-item-video-wrapper">
+                                <img className="explore-item-video-tn" src={dummy2}/>
+                                <h1 className="explore-item-video-title">
+                                    Creamy Butter Chicken
+                                </h1>
+                                <h2 className="explore-item-video-author">
+                                    Dan H.
+                                </h2>
+                                <p className="explore-item-stats">
+                                    988 views | 20 minutes
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
             

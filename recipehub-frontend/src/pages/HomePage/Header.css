@@ -1,5 +1,5 @@
 .homepage-header {
- 
+    width: 100%;
 }
 
 .homepage-header-bg {
@@ -67,8 +67,9 @@
 }
 
 .homepage-header-hamburger-wrapper {
-    padding: 25px;
+   
     width: 100%;
+    padding: 25px;
 }
 
 .homepage-header-text-wrapper {

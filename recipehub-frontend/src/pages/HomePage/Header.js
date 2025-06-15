@@ -20,9 +20,11 @@ const Header = () => {
       <Navigation isOpen={isNavOpen} onClose={toggleNav} />
 
         <div className="homepage-header-bg">
-            <div className="homepage-header-hamburger-wrapper">
-                <Hamburger toggled={isNavOpen}
-            toggle={setIsNavOpen} className="homepage-header-hamburger" distance='sm' color="#FFFFFF" rounded size={30}/>
+            <div className="homepage-header-hamburger-container">
+                <div className="homepage-header-hamburger-wrapper">
+                    <Hamburger toggled={isNavOpen}
+                    toggle={setIsNavOpen} className="homepage-header-hamburger" distance='sm' color="#FFFFFF" rounded size={30}/>
+                </div>
             </div>
             <div className="homepage-header-text-wrapper">
                 

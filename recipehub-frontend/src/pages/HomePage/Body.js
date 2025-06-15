@@ -137,6 +137,7 @@ const Body = () => {
                                     988 views | 20 minutes
                                 </p>
                             </div>
+                            
                         </div>
                     </div>
                     

@@ -1,11 +1,15 @@
-import React from "react";
-import Header from "./Header";
-import "./HomePage.css"; // Optional styling
+import React from 'react';
+import Header from './Header'
+import Body from './Body'
+import Footer from './Footer'
+import './HomePage.css';
 
 const HomePage = () => {
   return (
     <div>
-      <Header />
+        <Header />
+        <Body />
+        <Footer />
     </div>
   );
 };

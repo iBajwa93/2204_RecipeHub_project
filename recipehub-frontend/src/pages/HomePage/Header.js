@@ -20,12 +20,13 @@ const Header = () => {
       <Navigation isOpen={isNavOpen} onClose={toggleNav} />
 
         <div className="homepage-header-bg">
-            <div className="homepage-header-hamburger-wrapper">
-                <Hamburger toggled={isNavOpen}
-            toggle={setIsNavOpen} className="homepage-header-hamburger" distance='sm' color="#FFFFFF" rounded size={30}/>
+            <div className="homepage-header-hamburger-container">
+                <div className="homepage-header-hamburger-wrapper">
+                    <Hamburger toggled={isNavOpen}
+                    toggle={setIsNavOpen} className="homepage-header-hamburger" distance='sm' color="#FFFFFF" rounded size={30}/>
+                </div>
             </div>
             <div className="homepage-header-text-wrapper">
-                
                 <h1 className="homepage-header-text">
                     Your hub for <span className="homepage-header-text-underline">amazing</span><br/>
                     recipes
@@ -33,7 +34,7 @@ const Header = () => {
             </div>
             <div className="homepage-header-input-container">
                 <div className="homepage-header-input-wrapper">
-                    <input type="text" placeholder="search recipes... " className="homepage-header-input"/>
+                    <input type="text" placeholder="search recipes..." className="homepage-header-input"/>
                     <IoSearchOutline className="search-icon" size={40} /> 
                 </div>
             </div>

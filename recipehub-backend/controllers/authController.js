@@ -11,7 +11,7 @@ const registerUser = async (req, res) => {
 
     // Check all fields
     if (!fullName || !username || !email || !password || !confirmPassword)
-      return res.status(400).json({ message: "Please fill in all fields" });
+      return res.status(400).json({ message: "" });
 
     // Password match
     if (password !== confirmPassword)

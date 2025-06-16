@@ -1,5 +1,5 @@
 .homepage-header {
- 
+    width: 100%;
 }
 
 .homepage-header-bg {
@@ -66,10 +66,14 @@
   z-index: 2;
 }
 
-.homepage-header-hamburger-wrapper {
-    padding: 25px;
+.homepage-header-hamburger-container {
     width: 100%;
 }
+
+.homepage-header-hamburger-wrapper {
+    padding: 20px;
+}
+
 
 .homepage-header-text-wrapper {
     width: 75%;

@@ -2,7 +2,7 @@ const Recipe = require("../models/Recipe");
 
 // Create a new recipe
 exports.createRecipe = async (req, res) => {
-  const { title, prepTime, description, ingredients, category, videoUrl, creator } = req.body;
+  const { title, prepTime, description, ingredients, category, videoUrl, creatorID, creatorUsername, creator } = req.body;
 
   try {
     const newRecipe = new Recipe({

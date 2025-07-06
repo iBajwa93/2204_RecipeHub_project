@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Body.css';
 import dummy1 from '../../assets/images/dummy.png'
 import dummy2 from '../../assets/images/dummy2.png'
@@ -7,7 +7,24 @@ import italian from '../../assets/images/italian.png'
 import indian from '../../assets/images/indian.png'
 import mexican from '../../assets/images/mexican.png'
 
+
+
 const Body = () => {
+const [recipes, setRecipes] = useState([]);
+useEffect(() => {
+  const fetchRecipes = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/recipe");
+      const data = await response.json();
+      setRecipes(data);
+    } catch (error) {
+      console.error("Error fetching recipes:", error);
+    }
+  };
+
+  fetchRecipes();
+}, []);
+
   return (
     <div className="homepage-body">
         <div className="body-container">
@@ -101,43 +118,19 @@ const Body = () => {
                             </h1>
                         </div>
                         <div className="explore-item-video-container">
-                            <div className="explore-item-video-wrapper">
-                                <img className="explore-item-video-tn" src={dummy2} />
-                                <h1 className="explore-item-video-title">
-                                    Best Crepe | Recipe
-                                </h1>
-                                <h2 className="explore-item-video-author">
-                                    Dan H.
-                                </h2>
+                            {recipes.map((recipe) => (
+                                <div className="explore-item-video-wrapper" key={recipe._id}>
+                                <video className="explore-item-video-tn" controls>
+                                    <source src={`http://localhost:5000/uploads/${recipe.videoUrl}`} type="video/mp4" />
+                                    Your browser does not support the video tag.
+                                </video>
+                                <h1 className="explore-item-video-title">{recipe.title}</h1>
+                                <h2 className="explore-item-video-author">{recipe.creator || "Anonymous"}</h2>
                                 <p className="explore-item-stats">
-                                    1942 views | 10 minutes
+                                    {recipe.views || 0} views | {recipe.prepTime}
                                 </p>
-                            </div>
-                            <div className="explore-item-video-wrapper">
-                                <img className="explore-item-video-tn" src={dummy2}/>
-                                <h1 className="explore-item-video-title">
-                                    Linguine Pasta
-                                </h1>
-                                <h2 className="explore-item-video-author">
-                                    Dan H.
-                                </h2>
-                                <p className="explore-item-stats">
-                                    15 views | 35 minutes
-                                </p>
-                            </div>
-                            <div className="explore-item-video-wrapper">
-                                <img className="explore-item-video-tn" src={dummy2}/>
-                                <h1 className="explore-item-video-title">
-                                    Creamy Butter Chicken
-                                </h1>
-                                <h2 className="explore-item-video-author">
-                                    Dan H.
-                                </h2>
-                                <p className="explore-item-stats">
-                                    988 views | 20 minutes
-                                </p>
-                            </div>
-                            
+                                </div>
+                            ))}
                         </div>
                     </div>
                     

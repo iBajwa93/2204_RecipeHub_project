@@ -32,6 +32,7 @@ const CreateModal = ({ isOpen, onClose }) => {
     const token = localStorage.getItem('token');
     const userInfo = JSON.parse(localStorage.getItem('info'));
     const userId = userInfo?.id;
+    const username = userInfo?.username;
     if (!title || !prepTime || !description || !ingredients || !selectedCategory || !videoFile) {
     console.error('❌ Please fill out all fields and upload a video before submitting.');
     setError(true);
@@ -45,7 +46,9 @@ const CreateModal = ({ isOpen, onClose }) => {
     formData.append('description', description);
     formData.append('ingredients', ingredients);
     formData.append('category', selectedCategory);
-    formData.append('creator', userId)
+    formData.append('creatorID', userId);
+    formData.append('creatorUsername', username);
+    formData.append('creator', userId);
     if (videoFile) formData.append('video', videoFile);
 
     try {

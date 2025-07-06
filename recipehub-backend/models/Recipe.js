@@ -11,9 +11,15 @@ const recipeSchema = new mongoose.Schema(
     category: { type: String },
     videoUrl: { type: String }, // store video file URL or path after upload
     averageRating: {type: Number},
+    views: {type: Number},
     reviews: {type: Array},
-    // Reference to the user who created this recipe
-    creator: {type: String}
+    creatorID: {type: String},
+    creatorUsername: {type: String},
+    creator: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User", // This enables .populate() later
+      required: true
+  },
   },
   { timestamps: true }
 );

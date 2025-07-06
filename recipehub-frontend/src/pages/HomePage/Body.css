@@ -250,7 +250,7 @@ i
 }
 
 .explore-item-video-author {
-    font-size: 18px;
+    font-size: 16px;
     font-family: HindLight;
     text-align: left;
     margin: 0;
@@ -258,11 +258,24 @@ i
 }
 
 .explore-item-stats {
-    font-size: 18px;
+    font-size: 14px;
     font-family: HindLight;
     text-align: left;
     margin: 0;
     letter-spacing: 1px;
+}
+
+.explore-item-ingred {
+    font-size: 13px;
+    font-family: HindLight;
+    text-align: left;
+    margin: auto;
+    padding-top: 15px;
+    opacity: .47;
+}
+
+.explore-item-ingred-bold {
+    font-family: HindBold;
 }
 
 @font-face {

@@ -129,6 +129,10 @@ useEffect(() => {
                                 <p className="explore-item-stats">
                                     {recipe.views || 0} views | {recipe.prepTime}
                                 </p>
+                                <p className="explore-item-ingred">
+                                    <span className="explore-item-ingred-bold">Ingredients: </span>
+                                    {recipe.ingredients || " no ingredients listed"}
+                                </p>
                                 </div>
                             ))}
                         </div>

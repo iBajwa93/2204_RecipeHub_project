@@ -128,9 +128,9 @@
   repeating-linear-gradient(to bottom, black 0 10px, transparent 10px 20px),
   repeating-linear-gradient(to right, black 0 10px, transparent 10px 20px),
   repeating-linear-gradient(to bottom, black 0 10px, transparent 10px 20px);
-background-repeat: no-repeat;
-background-position: top left, top right, bottom left, top left;
-background-size: 100% 2px, 2px 100%, 100% 2px, 2px 100%;
+  background-repeat: no-repeat;
+  background-position: top left, top right, bottom left, top left;
+  background-size: 100% 2px, 2px 100%, 100% 2px, 2px 100%;
 }
 
 .drop-zone:hover {

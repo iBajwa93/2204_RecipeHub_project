@@ -10,13 +10,10 @@ const recipeSchema = new mongoose.Schema(
     ingredients: { type: String }, // or [String] if you want an array
     category: { type: String },
     videoUrl: { type: String }, // store video file URL or path after upload
-
+    averageRating: {type: Number},
+    reviews: {type: Array},
     // Reference to the user who created this recipe
-    creator: { 
-      type: mongoose.Schema.Types.ObjectId, 
-      ref: "User", 
-      required: true 
-    },
+    creator: {type: String}
   },
   { timestamps: true }
 );

@@ -2,7 +2,6 @@
 
 const express = require("express");
 const router = express.Router();
-const recipeController = require("../controllers/recipeController");
 const { registerUser, loginUser } = require("../controllers/authController");
 
 // POST /api/auth/register

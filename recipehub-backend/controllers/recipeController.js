@@ -2,8 +2,7 @@ const Recipe = require("../models/Recipe");
 
 // Create a new recipe
 exports.createRecipe = async (req, res) => {
-  const { title, prepTime, description, ingredients, category, videoUrl } = req.body;
-  const userId = req.user._id; // assuming auth middleware sets req.user
+  const { title, prepTime, description, ingredients, category, videoUrl, creator } = req.body;
 
   try {
     const newRecipe = new Recipe({
@@ -13,7 +12,7 @@ exports.createRecipe = async (req, res) => {
       ingredients,
       category,
       videoUrl,
-      creator: userId,
+      creator
     });
 
     await newRecipe.save();

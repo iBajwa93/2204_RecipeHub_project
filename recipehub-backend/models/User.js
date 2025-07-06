@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema(
     avgRating: { type: Number, default: 0, min: 0, max: 5 },
     followers: {type: Number, required: true},
     dailyVisits: {type: Number, required: true},
-    recipes: {type: Number, required: true}
+    recipes: {type: Array, required: true}
 
   },
   { timestamps: true }

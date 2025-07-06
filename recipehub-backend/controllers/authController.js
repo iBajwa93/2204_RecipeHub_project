@@ -4,14 +4,6 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const createToken = (user) => {
-  return jwt.sign(
-    { id: user._id, username: user.username },
-    process.env.JWT_SECRET,
-    { expiresIn: '1d' }
-  );
-};
-
 // POST /api/auth/register
 const registerUser = async (req, res) => {
   try {

@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const recipeController = require("../controllers/recipeController");
-const authMiddleware = require("../middleware/authMiddleware");
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' }); // simple disk storage
 
 // Create a recipe (protected)
-router.post("/", authMiddleware, recipeController.createRecipe);
+router.post("/", upload.single('video'), recipeController.createRecipe);
 
 // Get all recipes (public)
 router.get("/", recipeController.getRecipes);

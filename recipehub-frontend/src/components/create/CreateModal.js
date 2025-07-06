@@ -26,6 +26,9 @@ const CreateModal = ({ isOpen, onClose }) => {
 
   const handleSubmit = async () => {
     const token = localStorage.getItem('token');
+    const userInfo = JSON.parse(localStorage.getItem('info'));
+    const userId = userInfo?.id;
+    console.log(userId);
     console.log("Submitted.");
     // Build FormData because of file upload
     const formData = new FormData();
@@ -34,6 +37,7 @@ const CreateModal = ({ isOpen, onClose }) => {
     formData.append('description', description);
     formData.append('ingredients', ingredients);
     formData.append('category', selectedCategory);
+    formData.append('creator', userId)
     if (videoFile) formData.append('video', videoFile);
 
     try {

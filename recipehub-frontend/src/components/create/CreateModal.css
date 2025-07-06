@@ -46,10 +46,7 @@
 }
 
 .create-form-item {
-  background-color: #f2f2f2;
-
   text-align: center;
-  border: 1px solid #ccc;
 }
 
 .create-form-item-field-title {
@@ -77,7 +74,7 @@
 }
 
 .create-form-item-field-ingred {
-  padding-top: 40px;
+  padding-top: 60px;
   text-align: left;
   font-size: 20px;
   font-family: HindLight;
@@ -86,12 +83,13 @@
 }
 
 .create-form-item-field-categ {
-   padding-top: 40px;
+  padding-top: 40px;
   text-align: left;
   font-size: 20px;
   font-family: HindLight;
   margin: 0;
   letter-spacing: 2px;
+  padding-bottom: 40px;
 }
 
 .desc-form-spacer {
@@ -112,13 +110,18 @@
 }
 
 .drop-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   border-radius: 3px;
   padding: 30px;
   text-align: center;
   background-color: #fafafa;
   color: #555;
   transition: background-color 0.3s ease;
-  height: 50%;
+  height: 100%;
+  position: relative;
    
   background-image: 
   repeating-linear-gradient(to right, black 0 10px, transparent 10px 20px),
@@ -139,11 +142,87 @@ background-size: 100% 2px, 2px 100%, 100% 2px, 2px 100%;
   font-family: HindLight;
   opacity: .46;
   font-size: 13px;
+  text-align: center;
+  margin: auto;
+  margin-top: 20px;
 }
 
 .cloudIcon {
-  display: absolute;
-  padding-top: 20px;
+  margin: auto;
+  padding: 0;
+  margin-bottom: 0;
+  
+}
+.category-scroll-container {
+  max-height: 120px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.category-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px; 
+}
+
+.category-button {
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  border: none;
+  background-color: #ebebeb;
+  color: black;
+  font-family: HindSemiBold;
+  font-size: 13px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  
+  text-overflow: ellipsis;
+}
+
+.category-button.selected {
+  background-color: black;
+  color: white;
+}
+
+.category-buttons-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px; 
+}
+
+.create-form-item-create-btn {
+  width: 40%;
+  padding: 12px;
+  font-size: 16px;
+  background-color: #363131;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: HindLight;
+  letter-spacing: 1px;
+  transition: background-color 0.3s ease;
+}
+
+
+.create-form-item:last-child {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.drop-zone,
+.create-form-item-input {
+  max-width: 100%;
+  box-sizing: border-box; 
+  overflow-wrap: break-word; 
 }
 
 
@@ -177,5 +256,48 @@ background-size: 100% 2px, 2px 100%, 100% 2px, 2px 100%;
   to {
     transform: scale(1);
     opacity: 1;
+  }
+}
+
+
+/* Responsive modal width */
+@media (max-width: 1068px) {
+  .create-modal {
+    width: 90%;   
+    padding: 25px;
+  }
+
+  .create-form-container {
+    grid-template-columns: 1fr; 
+    grid-template-rows: auto;
+    gap: 30px;
+  }
+
+  .create-form-item {
+    width: 100%;
+  }
+
+ 
+  .create-form-item-create-btn {
+    width: 100%; 
+  }
+}
+
+@media (max-width: 400px) {
+  .create-modal {
+    padding: 15px;
+  }
+
+  .create-form-item-field-title,
+  .create-form-item-field-prep,
+  .create-form-item-field-desc,
+  .create-form-item-field-ingred,
+  .create-form-item-field-categ {
+    font-size: 18px;
+  }
+
+  .category-button {
+    font-size: 12px;
+    padding: 8px;
   }
 }

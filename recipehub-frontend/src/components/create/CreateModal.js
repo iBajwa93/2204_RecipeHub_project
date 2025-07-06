@@ -1,9 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './CreateModal.css';
 import chefIcon from '../../assets/images/chef.png';
 import cloudIcon from '../../assets/icons/cloud.png';
 
 const CreateModal = ({ isOpen, onClose }) => {
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [title, setTitle] = useState('');
+  const [prepTime, setPrepTime] = useState('');
+  const [description, setDescription] = useState('');
+  const [ingredients, setIngredients] = useState('');
+  const [videoFile, setVideoFile] = useState(null);
+
+  const categories = [
+    "Indian",
+    "Middle Eastern",
+    "Mediterranean",
+    "Asian",
+    "Italian",
+    "Mexican",
+    "Caribbean",
+    "American",
+    "French",
+    "African"
+  ];
+
+  const handleSubmit = () => {
+    const recipeData = {
+      title,
+      prepTime,
+      description,
+      ingredients,
+      category: selectedCategory,
+      video: videoFile
+    };
+
+    console.log('Submitting Recipe:', recipeData);
+    // Send to backend here
+  };
+
+
   if (!isOpen) return null;
 
   return (
@@ -44,9 +79,27 @@ const CreateModal = ({ isOpen, onClose }) => {
               </div>
           </div>
           <div className="create-form-item">
-            <h1 className="create-form-item-field-categ">Category</h1>
+          <h1 className="create-form-item-field-categ">Category</h1>
+          <div className="category-scroll-container">
+            <div className="category-buttons-wrapper">
+              {categories.map((cat, index) => (
+                <button
+                  key={index}
+                  className={`category-button ${selectedCategory === cat ? "selected" : ""}`}
+                  onClick={() => setSelectedCategory(cat)}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
           </div>
-          <div className="create-form-item">Item 6</div>
+        </div>
+
+          <div className="create-form-item">
+            <button className="create-form-item-create-btn">
+              Create
+            </button>
+          </div>
         </div>
        
       </div>

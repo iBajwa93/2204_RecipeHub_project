@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './CreateModal.css';
 import chefIcon from '../../assets/images/chef.png';
 import cloudIcon from '../../assets/icons/cloud.png';
+import { MdError } from "react-icons/md";
 
 const CreateModal = ({ isOpen, onClose }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -10,6 +11,8 @@ const CreateModal = ({ isOpen, onClose }) => {
   const [description, setDescription] = useState('');
   const [ingredients, setIngredients] = useState('');
   const [videoFile, setVideoFile] = useState(null);
+
+  const [error, setError] = useState();
 
   const categories = [
     "Indian",
@@ -25,11 +28,16 @@ const CreateModal = ({ isOpen, onClose }) => {
   ];
 
   const handleSubmit = async () => {
+    
     const token = localStorage.getItem('token');
     const userInfo = JSON.parse(localStorage.getItem('info'));
     const userId = userInfo?.id;
-    console.log(userId);
-    console.log("Submitted.");
+    if (!title || !prepTime || !description || !ingredients || !selectedCategory || !videoFile) {
+    console.error('❌ Please fill out all fields and upload a video before submitting.');
+    setError(true);
+    return;
+  }
+   
     // Build FormData because of file upload
     const formData = new FormData();
     formData.append('title', title);
@@ -70,6 +78,12 @@ const CreateModal = ({ isOpen, onClose }) => {
       <div className="create-modal" onClick={(e) => e.stopPropagation()}>
         <div className="create-header">
           <h2 className="create-title">Upload</h2>
+          {error && (
+                    <div className="error-icon-container">
+                      <h2 className="error-icon"><MdError /></h2>
+                    
+                    </div>
+                  )}
         </div>
         <div className="create-form-container">
           <div className="create-form-item">

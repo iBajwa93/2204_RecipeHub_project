@@ -23,6 +23,7 @@ const Portal = () => {
     return (
       <div className="portal-container">
         <h2 className="portal-logout-message">Logging out</h2>
+     
       </div>
     );
   }

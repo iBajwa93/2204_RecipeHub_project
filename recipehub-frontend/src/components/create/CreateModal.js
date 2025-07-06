@@ -24,20 +24,40 @@ const CreateModal = ({ isOpen, onClose }) => {
     "African"
   ];
 
-  const handleSubmit = () => {
-    const recipeData = {
-      title,
-      prepTime,
-      description,
-      ingredients,
-      category: selectedCategory,
-      video: videoFile
-    };
+  const handleSubmit = async () => {
+    const token = localStorage.getItem('token');
+    console.log("Submitted.");
+    // Build FormData because of file upload
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('prepTime', prepTime);
+    formData.append('description', description);
+    formData.append('ingredients', ingredients);
+    formData.append('category', selectedCategory);
+    if (videoFile) formData.append('video', videoFile);
 
-    console.log('Submitting Recipe:', recipeData);
-    // Send to backend here
+    try {
+      const response = await fetch('http://localhost:5000/recipe', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+        body: formData,
+        // Don't set content-type header; browser sets it automatically for FormData
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create recipe');
+      }
+
+      const data = await response.json();
+      console.log('Recipe created:', data);
+      // Optionally reset form or close modal here:
+      onClose();
+    } catch (error) {
+      console.error('Error submitting recipe:', error);
+    }
   };
-
 
   if (!isOpen) return null;
 
@@ -50,19 +70,39 @@ const CreateModal = ({ isOpen, onClose }) => {
         <div className="create-form-container">
           <div className="create-form-item">
             <h1 className="create-form-item-field-title">Title</h1>
-            <input type="name" className="create-form-item-input"/>
+            <input
+              type="text"
+              className="create-form-item-input"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
           </div>
           <div className="create-form-item">
             <h1 className="create-form-item-field-prep">Prep Time</h1>
-            <input type="name" className="create-form-item-input"/>
+            <input
+              type="text"
+              className="create-form-item-input"
+              value={prepTime}
+              onChange={(e) => setPrepTime(e.target.value)}
+            />
           </div>
           <div className="create-form-item">
             <h1 className="create-form-item-field-desc">Description</h1>
             <span className="desc-form-spacer"></span>
-            <input type="name" className="create-form-item-input"/>
+            <input
+              type="text"
+              className="create-form-item-input"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
 
             <h1 className="create-form-item-field-ingred">Ingredients</h1>
-            <input type="name" className="create-form-item-input"/>
+            <input
+              type="text"
+              className="create-form-item-input"
+              value={ingredients}
+              onChange={(e) => setIngredients(e.target.value)}
+            />
           </div>
           <div className="create-form-item">
             <div
@@ -71,37 +111,41 @@ const CreateModal = ({ isOpen, onClose }) => {
               onDrop={(e) => {
                 e.preventDefault();
                 const file = e.dataTransfer.files[0];
-                console.log('Dropped file:', file); // Handle the file as needed
+                setVideoFile(file);
+                console.log('Dropped file:', file);
               }}
             >
-              <img className="cloudIcon" src={cloudIcon} />
+              <img className="cloudIcon" src={cloudIcon} alt="Cloud icon" />
               <p className="create-form-item-field-drag">Drag & Drop video file here</p>
-              </div>
-          </div>
-          <div className="create-form-item">
-          <h1 className="create-form-item-field-categ">Category</h1>
-          <div className="category-scroll-container">
-            <div className="category-buttons-wrapper">
-              {categories.map((cat, index) => (
-                <button
-                  key={index}
-                  className={`category-button ${selectedCategory === cat ? "selected" : ""}`}
-                  onClick={() => setSelectedCategory(cat)}
-                >
-                  {cat}
-                </button>
-              ))}
+              {videoFile && <p>Selected file: {videoFile.name}</p>}
             </div>
           </div>
-        </div>
+          <div className="create-form-item">
+            <h1 className="create-form-item-field-categ">Category</h1>
+            <div className="category-scroll-container">
+              <div className="category-buttons-wrapper">
+                {categories.map((cat, index) => (
+                  <button
+                    key={index}
+                    className={`category-button ${selectedCategory === cat ? "selected" : ""}`}
+                    onClick={() => setSelectedCategory(cat)}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
 
           <div className="create-form-item">
-            <button className="create-form-item-create-btn">
+            <button
+              className="create-form-item-create-btn"
+              onClick={handleSubmit}
+            >
               Create
             </button>
           </div>
         </div>
-       
       </div>
     </div>
   );

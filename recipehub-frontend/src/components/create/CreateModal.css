@@ -13,9 +13,9 @@
 
 .create-modal {
   background-color: #fff;
-  padding: 30px;
+  padding: 45px;
   border-radius: 12px;
-  width: 400px;
+  width: 50%;
   font-family: HindLight;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   animation: fadeIn 0.3s ease-in-out;
@@ -29,8 +29,143 @@
 }
 
 .create-title {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
+  font-family: HindRegular;
+  margin: 0;
+  letter-spacing: 3px;
+
+}
+
+.create-form-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columns */
+  grid-template-rows: repeat(3, auto);   /* 3 rows */
+  gap: 50px; /* optional space between items */
+  padding: 10px;
+}
+
+.create-form-item {
+  background-color: #f2f2f2;
+
+  text-align: center;
+  border: 1px solid #ccc;
+}
+
+.create-form-item-field-title {
+  text-align: left;
+  font-size: 20px;
+  font-family: HindLight;
+  margin: 0;
+  letter-spacing: 2px;
+}
+
+.create-form-item-field-prep {
+  text-align: left;
+  font-size: 20px;
+  font-family: HindLight;
+  margin: 0;
+  letter-spacing: 2px;
+}
+
+.create-form-item-field-desc {
+  text-align: left;
+  font-size: 20px;
+  font-family: HindLight;
+  margin: 0;
+  letter-spacing: 2px;
+}
+
+.create-form-item-field-ingred {
+  padding-top: 40px;
+  text-align: left;
+  font-size: 20px;
+  font-family: HindLight;
+  margin: 0;
+  letter-spacing: 2px;
+}
+
+.create-form-item-field-categ {
+   padding-top: 40px;
+  text-align: left;
+  font-size: 20px;
+  font-family: HindLight;
+  margin: 0;
+  letter-spacing: 2px;
+}
+
+.desc-form-spacer {
+  display: block;
+  padding: 30px;
+}
+
+
+.create-form-item-input {
+  width: 100%;
+  border: none;
+  border-bottom: .5px solid #ccc;
+  padding: 6px 0;
+  font-size: 16px;
+  background-color: transparent;
+  color: black;
+  outline: none;
+}
+
+.drop-zone {
+  border-radius: 3px;
+  padding: 30px;
+  text-align: center;
+  background-color: #fafafa;
+  color: #555;
+  transition: background-color 0.3s ease;
+  height: 50%;
+   
+  background-image: 
+  repeating-linear-gradient(to right, black 0 10px, transparent 10px 20px),
+  repeating-linear-gradient(to bottom, black 0 10px, transparent 10px 20px),
+  repeating-linear-gradient(to right, black 0 10px, transparent 10px 20px),
+  repeating-linear-gradient(to bottom, black 0 10px, transparent 10px 20px);
+background-repeat: no-repeat;
+background-position: top left, top right, bottom left, top left;
+background-size: 100% 2px, 2px 100%, 100% 2px, 2px 100%;
+}
+
+.drop-zone:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.create-form-item-field-drag {
+  font-family: HindLight;
+  opacity: .46;
+  font-size: 13px;
+}
+
+.cloudIcon {
+  display: absolute;
+  padding-top: 20px;
+}
+
+
+@font-face {
+  font-family: "HindSemiBold";
+  src: url("../../assets/fonts/hind/Hind-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "HindLight";
+  src: url("../../assets/fonts/hind/Hind-Light.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "HindRegular";
+  src: url("../../assets/fonts/hind/Hind-Regular.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
 }
 
 

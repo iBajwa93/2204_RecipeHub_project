@@ -1,8 +1,10 @@
+import SuccessModal from '../success/SuccessModal'
 import React, { useState } from 'react';
 import './CreateModal.css';
 import chefIcon from '../../assets/images/chef.png';
 import cloudIcon from '../../assets/icons/cloud.png';
 import { MdError } from "react-icons/md";
+
 
 const CreateModal = ({ isOpen, onClose }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -13,6 +15,8 @@ const CreateModal = ({ isOpen, onClose }) => {
   const [videoFile, setVideoFile] = useState(null);
 
   const [error, setError] = useState();
+  const [showSuccess, setShowSuccess] = useState(false);
+
 
   const categories = [
     "Indian",
@@ -24,7 +28,8 @@ const CreateModal = ({ isOpen, onClose }) => {
     "Caribbean",
     "American",
     "French",
-    "African"
+    "African",
+    "European"
   ];
 
   const handleSubmit = async () => {
@@ -68,7 +73,7 @@ const CreateModal = ({ isOpen, onClose }) => {
       const data = await response.json();
       console.log('Recipe created:', data);
       // Optionally reset form or close modal here:
-      onClose();
+      setShowSuccess(true);
     } catch (error) {
       console.error('Error submitting recipe:', error);
     }
@@ -78,12 +83,13 @@ const CreateModal = ({ isOpen, onClose }) => {
 
   return (
     <div className="create-modal-overlay" onClick={onClose}>
+      
       <div className="create-modal" onClick={(e) => e.stopPropagation()}>
         <div className="create-header">
           <h2 className="create-title">Upload</h2>
           {error && (
                     <div className="error-icon-container">
-                      <h2 className="error-icon"><MdError /></h2>
+                      <h2 className="error-icon"><MdError /><span className="error-icon-msg">Please fill out all fields and upload a video before submitting.</span></h2>
                     
                     </div>
                   )}
@@ -138,7 +144,7 @@ const CreateModal = ({ isOpen, onClose }) => {
             >
               <img className="cloudIcon" src={cloudIcon} alt="Cloud icon" />
               <p className="create-form-item-field-drag">Drag & Drop video file here</p>
-              {videoFile && <p>Selected file: {videoFile.name}</p>}
+              {videoFile && <p className="selected-file">Selected file: {videoFile.name}</p>}
             </div>
           </div>
           <div className="create-form-item">
@@ -167,8 +173,18 @@ const CreateModal = ({ isOpen, onClose }) => {
             </button>
           </div>
         </div>
+        <SuccessModal
+          isOpen={showSuccess}
+          onClose={() => {
+            setShowSuccess(false);
+            onClose(); // close the CreateModal after dismissing success
+          }}
+          message="Your recipe has successfully been uploaded"
+        />
       </div>
+      
     </div>
+    
   );
 };
 

@@ -12,6 +12,8 @@ exports.createRecipe = async (req, res) => {
       ingredients,
       category,
       videoUrl,
+      creatorUsername,
+      creatorID,
       creator
     });
 

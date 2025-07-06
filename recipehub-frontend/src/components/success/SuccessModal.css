@@ -1,0 +1,86 @@
+.success-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.success-modal {
+  animation: fadeIn 0.4s ease forwards;
+  background-color: #fff;
+  padding: 30px 40px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.success-icon {
+  width: 60px;
+  margin-bottom: 15px;
+}
+
+.success-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #4BB543;
+  font-family: HindLight;
+}
+
+.success-message {
+  font-size: 16px;
+  margin-bottom: 20px;
+  font-family: HindLight;
+  letter-spacing: 1.5px;
+}
+
+.success-close-btn {
+  background-color: #FF7B00;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+  font-family: HindSemiBold;
+  width: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.success-close-btn:hover {
+  background-color: #ED7506;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@font-face {
+  font-family: "HindSemiBold";
+  src: url("../../assets/fonts/hind/Hind-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "HindLight";
+  src: url("../../assets/fonts/hind/Hind-Light.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}

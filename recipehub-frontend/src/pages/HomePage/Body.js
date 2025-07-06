@@ -125,7 +125,7 @@ useEffect(() => {
                                     Your browser does not support the video tag.
                                 </video>
                                 <h1 className="explore-item-video-title">{recipe.title}</h1>
-                                <h2 className="explore-item-video-author">{recipe.creator || "Anonymous"}</h2>
+                                <h2 className="explore-item-video-author">{recipe.creatorUsername || "Anonymous"}</h2>
                                 <p className="explore-item-stats">
                                     {recipe.views || 0} views | {recipe.prepTime}
                                 </p>

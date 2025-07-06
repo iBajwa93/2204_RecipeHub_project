@@ -21,6 +21,17 @@
   animation: fadeIn 0.3s ease-in-out;
 }
 
+
+.error-icon-msg {
+  font-size: 14px;
+  padding-left: 20px;
+  margin-top: 0;
+  display: block;
+  font-family: HindLight;
+  opacity: .5;
+  color: black;
+}
+
 .create-header {
   display: flex;
   align-items: center;
@@ -107,6 +118,14 @@
   background-color: transparent;
   color: black;
   outline: none;
+}
+
+.selected-file {
+  text-align: center;
+  margin: 0;
+  display: block;
+  font-family: HindLight;
+  width: 100%;
 }
 
 .drop-zone {

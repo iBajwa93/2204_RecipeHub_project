@@ -13,6 +13,8 @@
     min-height: 700px;
 }
 
+
+
 .homepage-header-input-container {
     position: relative;
 
@@ -68,17 +70,85 @@
 
 .homepage-header-hamburger-container {
     width: 100%;
+    position: absolute;
 }
 
 .homepage-header-hamburger-wrapper {
     padding: 20px;
+ 
 }
 
+.careers-box, .about-box {
+  position: relative;
+  top: 20%;
+  z-index: 0;
+  height: 57%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+  text-align: center;
+  animation: fadeIn 0.4s ease;
+  background-color: rgba(0, 0, 0, 0.57);
+  border-radius: 2px;
+  margin-bottom: 0;
+}
+
+.about-box-title, .careers-box-title {
+  text-align: left;
+  font-family: HindRegular;
+  letter-spacing: 1px;
+  color: white;
+  display: block;
+  width: 90%;
+  font-size: 26px;
+  margin-top: 0;
+  padding: 5px;
+}
+
+.about-box-desc, .careers-box-desc {
+  text-align: left;
+  width: 90%;
+  font-family: HindLight;
+  color: white;
+  letter-spacing: 1px;
+  font-size: 16px;
+  padding: 5px;
+}
+
+.careers-box {
+  display: flex;
+  position: relative;
+  padding: 20px;
+}
+
+
+.careers-apply-btn-wrapper {
+  width: 90%;
+  margin: 0;
+  padding-top: 30px;
+}
+.careers-apply-btn {
+  position: relative;
+  width: 20%;
+  height: 50px;
+  color: white;
+  background-color: #FF7B00;
+  border: none;
+  border-radius: 2px;
+  font-family: HindRegular;
+  font-size: 16px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  float: left;
+}
 
 .homepage-header-text-wrapper {
     width: 75%;
     margin: auto;
-    padding-top: 120px;
+    padding-top: 200px;
 
 }
 
@@ -136,6 +206,17 @@
   }
   50% {
     transform: translateY(-65%) scale(1.1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

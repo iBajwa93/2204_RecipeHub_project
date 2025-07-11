@@ -1,26 +1,26 @@
 /* src/components/Navigation.css */
 
-/* -------------- Structure -------------- */
+
 .nav {
   position: fixed;
   top: 0;
-  left: -280px; /* Hide off‐screen initially */
-  width: 280px; /* Sidebar width */
+  left: -280px; 
+  width: 280px; 
   height: 100vh;
-  background-color: #ffffff; /* White background */
+  background-color: #ffffff; 
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
   transition: left 0.3s ease-in-out;
-  z-index: 1000; /* Above most other content */
-  overflow: hidden; /* Prevent scrollbars */
+  z-index: 1000; 
+  overflow: hidden; 
   display: flex;
 }
 
-/* When `open` is true, slide it into view */
+
 .nav.open {
   left: 0;
 }
 
-/* A semi‐transparent full‐screen overlay to darken rest of page */
+
 .nav-overlay {
   position: fixed;
   top: 0;
@@ -31,17 +31,17 @@
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease-in-out;
-  z-index: 900; /* sits behind .nav but above page content */
+  z-index: 900; 
 }
 .nav.open .nav-overlay {
   opacity: 1;
   visibility: visible;
 }
 
-/* The actual sidebar content (scrollable if needed) */
+
 .nav-content {
   position: relative;
-  z-index: 1100; /* Above the overlay */
+  z-index: 1100; 
   width: 280px;
   padding: 2rem 1.5rem;
   display: flex;
@@ -49,7 +49,7 @@
   align-items: flex-start;
 }
 
-/* -------------- Logo & Title -------------- */
+
 .nav-header {
   display: flex;
   flex-direction: column;
@@ -70,12 +70,13 @@
   padding-top: 15px;
   font-family: HindRegular;
   font-size: 1.2rem;
-  color: black; /* Dark Brown */
+  color: black; 
   text-decoration: none;
   width: 100%;
 }
 
-/* -------------- Link Lists -------------- */
+
+
 .nav-links {
   list-style: none;
   padding: 0;
@@ -122,25 +123,25 @@
   transition: width 0.3s ease;
 }
 
-/* Highlight the “Home” link or whichever should be active */
+
 .nav-item.active a {
-  color: #ffa500; /* Orange for active */
+  color: #ffa500;
 }
 
-/* Hover state for links */
+
 .nav-item a:hover::after {
   height: 0.5px;
   width: 40%;
 }
 
-/* -------------- “Portal” Button -------------- */
+
 .nav-portal-wrapper {
   width: 100%;
 }
 .nav-portal-btn {
   display: block;
   text-align: center;
-  background-color: #ffa500; /* Solid Orange */
+  background-color: #ffa500; 
   color: white;
   font-family: HindSemiBold;
   font-size: 1rem;
@@ -165,7 +166,7 @@
 }
 
 .nav-portal-btn:hover {
-  background-color: #e69500; /* Slightly darker on hover */
+  background-color: #e69500; 
 }
 
 /* -------------- Responsive Tweaks -------------- */

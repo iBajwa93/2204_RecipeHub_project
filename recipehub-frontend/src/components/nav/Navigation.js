@@ -8,7 +8,7 @@ import pfp from '../../assets/images/pfp.png';
 import miniChef from '../../assets/icons/minichef.png'
 import { useNavigate } from 'react-router-dom';
 
-const Navigation = ({ isOpen, onClose }) => {
+const Navigation = ({ isOpen, onClose, onSectionChange, currentSection }) => {
   const [showRegister, setShowRegister] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
@@ -16,11 +16,6 @@ const Navigation = ({ isOpen, onClose }) => {
   const [isProChef, setIsProChef] = useState();
   
   const navigate = useNavigate();
-
-  const handleCareersClick = (e) => {
-    e.preventDefault(); // prevent link navigation
-    setShowRegister(true);
-  };
 
   useEffect(() => {
     const userInfo = localStorage.getItem('info');
@@ -44,59 +39,78 @@ const Navigation = ({ isOpen, onClose }) => {
           <div className="nav-header">
             {!loggedInUser && (<img src={chefIcon} alt="Chef Icon" className="nav-logo" />)}
             <span className="nav-title">
-            {loggedInUser && <img src={pfp} alt="PFP" className="userpfp" />}
-            <br />
-            {loggedInUser ? (
-              <>
-                Welcome, {loggedInUser}
-                <br />
-                
-                <span className="chef-label">
-                  
-                  {isProChef ? 'Pro Chef' : 'Amateur Chef'}
-                </span>
-                            </>
+              {loggedInUser && <img src={pfp} alt="PFP" className="userpfp" />}
+              <br />
+              {loggedInUser ? (
+                <>
+                  Welcome, {loggedInUser}
+                  <br />
+                  <span className="chef-label">
+                    {isProChef ? 'Pro Chef' : 'Amateur Chef'}
+                  </span>
+                </>
               ) : (
                 'RecipeHub'
               )}
             </span>
 
-            
             {loggedInUser && (
-            <div className="nav-auth-section">
-              <button
-                className="nav-logout-btn"
-                onClick={() => {
-                  localStorage.removeItem('token');
-                  localStorage.removeItem('info');
-                  setLoggedInUser('');
-                  window.location.href = '/'; // redirect to home
-                }}
-              >
-                Logout
-              </button>
-            </div>
-          )}
+              <div className="nav-auth-section">
+                <button
+                  className="nav-logout-btn"
+                  onClick={() => {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('info');
+                    setLoggedInUser('');
+                    window.location.href = '/'; // redirect to home
+                  }}
+                >
+                  Logout
+                </button>
+              </div>
+            )}
           </div>
 
           <ul className="nav-links primary-links">
-            <li className="nav-item active">
-              <a href="/">Home</a>
+            <li className={`nav-item ${currentSection === "home" ? "active" : ""}`}>
+              <a href="#" onClick={(e) => { e.preventDefault(); onSectionChange("home"); onClose(); }}>
+                Home
+              </a>
             </li>
-            <li className="nav-item">
-              <a href="/about">About</a>
+            <li className={`nav-item ${currentSection === "about" ? "active" : ""}`}>
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onClose();
+                  onSectionChange("about");
+                }}
+              >
+                About
+              </a>
             </li>
-            <li className="nav-item">
-              <a href="/recipes">Recipes</a>
+            <li className={`nav-item ${currentSection === "recipes" ? "active" : ""}`}>
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onClose();
+                  onSectionChange("recipes");
+                }}
+              >
+                Recipes
+              </a>
             </li>
-            <li className="nav-item">
+            <li className={`nav-item ${currentSection === "create" ? "active" : ""}`}>
               <a
                 href="#"
                 onClick={(e) => {
                   e.preventDefault();
                   const userInfo = localStorage.getItem('info');
+                  onClose();
                   if (userInfo) {
                     setShowCreate(true);
+                    onSectionChange("create");
                   } else {
                     setShowLogin(true);
                   }
@@ -126,13 +140,29 @@ const Navigation = ({ isOpen, onClose }) => {
           </div>
 
           <ul className="nav-links secondary-links">
-            <li className="nav-item">
-              <a href="/" onClick={handleCareersClick}>
+            <li className={`nav-item ${currentSection === "careers" ? "active" : ""}`}>
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onClose();
+                  onSectionChange("careers");
+                }}
+              >
                 Careers
               </a>
             </li>
-            <li className="nav-item">
-              <a href="/chefs">Chefs</a>
+            <li className={`nav-item ${currentSection === "chefs" ? "active" : ""}`}>
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onClose();
+                  onSectionChange("chefs");
+                }}
+              >
+                Chefs
+              </a>
             </li>
           </ul>
 
@@ -149,8 +179,6 @@ const Navigation = ({ isOpen, onClose }) => {
               </button>
             </div>
           )}
-          
-
         </div>
       </nav>
 

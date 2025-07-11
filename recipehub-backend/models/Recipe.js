@@ -2,6 +2,28 @@
 
 const mongoose = require("mongoose");
 
+const reviewSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    rating: {
+      type: Number,
+      required: true,
+      min: 1,
+      max: 5,
+    },
+    comment: {
+      type: String,
+      default: "",
+    },
+  },
+  { timestamps: true }
+);
+
+
 const recipeSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
@@ -10,9 +32,9 @@ const recipeSchema = new mongoose.Schema(
     ingredients: { type: String }, // or [String] if you want an array
     category: { type: String },
     videoUrl: { type: String }, // store video file URL or path after upload
-    averageRating: {type: Number},
+    averageRating: {type: Number, default: 0},
     views: {type: Number},
-    reviews: {type: Array},
+    reviews: [reviewSchema],
     creatorID: {type: String},
     creatorUsername: {type: String},
     creator: {

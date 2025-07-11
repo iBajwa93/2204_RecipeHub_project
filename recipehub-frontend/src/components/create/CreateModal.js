@@ -57,7 +57,7 @@ const CreateModal = ({ isOpen, onClose }) => {
     if (videoFile) formData.append('video', videoFile);
 
     try {
-      const response = await fetch('http://localhost:5000/recipe', {
+      const response = await fetch('http://localhost:5000/api/recipe', {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${token}`,

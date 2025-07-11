@@ -18,7 +18,7 @@ app.use(express.json()); // Parses JSON bodies
 
 // Routes
 app.use("/api/auth", authRoutes);
-app.use("/recipe", recipeRoutes);
+app.use("/api/recipe", recipeRoutes);
   
 
 // Connect to MongoDB

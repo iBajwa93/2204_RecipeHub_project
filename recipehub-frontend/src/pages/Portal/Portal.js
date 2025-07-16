@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './Portal.css';
 import pfp from '../../assets/images/pfp.png'
 import dummy2 from '../../assets/images/dummy2.png'
+import search from '../../assets/icons/search.png';
 
 
 const Portal = () => {
@@ -90,20 +91,37 @@ elit dolor ipsum</p>
                 <button className="filter-newer">Newer</button>
                 <button className="filter-older">Older</button>
                 <button className="filter-top">Top</button>
+                
             </div>
             <div className="portal-body-recipes-list-container">
                 <div className="portal-body-recipes-item">
                     <h1 className="portal-body-recipes-item-title">Lorem ipsum  </h1>
                     <p className="portal-body-recipes-item-desc">Lorem ipsum dolor sit amet, consectetur</p>
+                    <div className="portal-body-recipes-item-delete-btn-wrapper">
+                        <button className="portal-body-recipes-item-delete-btn">Delete</button>
+                    </div>
                 </div>
                 <div className="portal-body-recipes-item">
                     <h1 className="portal-body-recipes-item-title">Lorem ipsum  </h1>
                     <p className="portal-body-recipes-item-desc">Lorem ipsum dolor sit amet, consectetur</p>
+                    <div className="portal-body-recipes-item-delete-btn-wrapper">
+                        <button className="portal-body-recipes-item-delete-btn">Delete</button>
+                    </div>
                 </div>
                 <div className="portal-body-recipes-item">
                     <h1 className="portal-body-recipes-item-title">Lorem ipsum  </h1>
                     <p className="portal-body-recipes-item-desc">Lorem ipsum dolor sit amet, consectetur</p>
+                    <div className="portal-body-recipes-item-delete-btn-wrapper">
+                        <button className="portal-body-recipes-item-delete-btn">Delete</button>
+                    </div>
+                    
                 </div>
+            </div>
+            <div className="portal-body-recipes-list-search-btn-wrapper">
+              
+                <input type="text" className="filter-user-search" placeholder='search recipe'/>
+                
+              
             </div>
         </div>
         <div className="portal-body-grid-item">

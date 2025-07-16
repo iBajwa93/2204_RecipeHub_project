@@ -109,6 +109,7 @@
 
 .top-recipe-image {
     display: block;
+    cursor: pointer;
 }
 
 .top-recipe-name {
@@ -250,6 +251,31 @@
     margin-left: 20px;
 }
 
+.portal-body-recipes-list-search-btn-wrapper {
+    width: 100%;
+    margin-top: 25px;
+
+    text-align: left;
+}
+
+.filter-user-search {
+    width: 40%;
+    padding-right: 40px;
+    padding-left: 10px;
+    height: 40px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.filter-user-search::placeholder {
+    font-family: HindBold;
+    padding: 15px;
+    font-size: 14px;
+    letter-spacing: 1px;
+    opacity: .6;
+}
+
 .portal-body-recipes-list-container {
     width: 100%;
     height: auto;
@@ -261,7 +287,8 @@
     
     width: 50%;
     height:auto;
-    border-bottom: solid 0.5px rgba(0, 0, 0, 0.27);    
+    border-bottom: solid 0.5px rgba(0, 0, 0, 0.27);  
+    padding-bottom: 20px;  
 }
 
 .portal-body-recipes-item-title {
@@ -301,6 +328,29 @@
     text-align: left;
     font-size: 23px;
     letter-spacing: .5px;
+}
+
+.portal-body-recipes-item-delete-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-start;
+    border: none;
+    padding: 15px;
+    width: 30%;
+    color: white;
+    height: 30px;
+   
+    border-radius: 5px;
+    font-family: HindLight;
+    letter-spacing: 1px;
+    background-color: #DF0B0B;
+    cursor: pointer;
+}
+
+.portal-body-recipes-item-delete-btn-wrapper {
+    width: 100%;
+    
 }
 
 @font-face {

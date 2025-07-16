@@ -2,7 +2,22 @@ const Recipe = require("../models/Recipe");
 
 // Create a new recipe
 exports.createRecipe = async (req, res) => {
-  const { title, prepTime, description, ingredients, category, videoUrl, creatorID, creatorUsername, creator } = req.body;
+  const {
+    title,
+    prepTime,
+    description,
+    ingredients,
+    category,
+    creatorID,
+    creatorUsername,
+    creator
+  } = req.body;
+
+  const videoPath = req.file?.filename; // multer adds this
+
+  if (!videoPath) {
+    return res.status(400).json({ message: "Video file is missing." });
+  }
 
   try {
     const newRecipe = new Recipe({
@@ -11,9 +26,9 @@ exports.createRecipe = async (req, res) => {
       description,
       ingredients,
       category,
-      videoUrl,
-      creatorUsername,
+      videoUrl: videoPath, // save filename here
       creatorID,
+      creatorUsername,
       creator
     });
 

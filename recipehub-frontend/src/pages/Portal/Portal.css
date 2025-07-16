@@ -92,7 +92,7 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    gap: 60px 20px;
+    gap: 0px 20px;
 }
 
 .portal-body-grid-item {
@@ -117,14 +117,16 @@
     margin-bottom: 0;
     font-size: 20px;
     font-family: HindBold;
+    letter-spacing:1px;
 }
 
 .top-recipe-desc {
     text-align: left;
     margin-top: 5px;
-    font-size: 20px;
+    font-size: 16px;
     width: 55%;
     font-family: HindLight;
+      letter-spacing:1px;
 }
 
 .portal-body-analytic-title {

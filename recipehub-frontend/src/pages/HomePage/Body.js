@@ -14,7 +14,7 @@ const [recipes, setRecipes] = useState([]);
 useEffect(() => {
   const fetchRecipes = async () => {
     try {
-      const response = await fetch("http://localhost:5000/recipe");
+      const response = await fetch("http://localhost:5000/api/recipe");
       const data = await response.json();
       setRecipes(data);
     } catch (error) {

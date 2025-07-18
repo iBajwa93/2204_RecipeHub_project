@@ -8,10 +8,11 @@ const jwt = require("jsonwebtoken");
 const registerUser = async (req, res) => {
   try {
     const { fullName, username, email, password, confirmPassword } = req.body;
+    console.log(req.body);
 
     // Check all fields
     if (!fullName || !username || !email || !password || !confirmPassword)
-      return res.status(400).json({ message: "" });
+      return res.status(400).json({ message: "yesss" });
 
     // Password match
     if (password !== confirmPassword)

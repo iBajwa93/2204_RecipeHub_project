@@ -10,9 +10,9 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     isProChef: { type: Boolean, default: false }, // future feature
     avgRating: { type: Number, default: 0, min: 0, max: 5 },
-    followers: {type: Number, required: true},
-    dailyVisits: {type: Number, required: true},
-    recipes: {type: Array, required: true}
+    followers: {type: Number},
+    dailyVisits: {type: Number},
+    recipes: {type: Array}
 
   },
   { timestamps: true }

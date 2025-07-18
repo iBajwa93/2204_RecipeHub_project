@@ -27,10 +27,19 @@
     margin: auto;
 }
 
+.portal-logout-btn-wrapper {
+    height: 20px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-align: left;
+}
+
 .portal-logout-btn {
     cursor: pointer;
     transition: background-color 0.2s ease;
-    width: 50%;
+    width: 100%;
     background-color: #EA261C;
     border: none;
     height: 35px;
@@ -40,7 +49,7 @@
     letter-spacing: .5px;
     border-radius: 5px;
     margin: auto;
-    float: left;
+    
 }
 
 .portal-profile-sec2-fullName {
@@ -70,10 +79,17 @@
     font-size: 14px;
     opacity: .49;
     padding: 5px;
+    width: 100%;
+    height: auto;
+    z-index: 0;
+    text-align: left;
+    padding-top: 20px;
+    cursor: pointer;
 }
 
 .portal-profile-sec2-wrapper {
     padding-left: 30px;
+    width: 20%;
 }
 
 .portal-body-container {
@@ -92,11 +108,14 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    gap: 0px 20px;
+    gap: 0px 0px;
 }
 
 .portal-body-grid-item {
     background-color: white;
+    margin-bottom: 0;
+    height: 500px;
+    min-height: 500px;
 }
 
 .top-recipe-title {
@@ -126,7 +145,38 @@
     font-size: 16px;
     width: 55%;
     font-family: HindLight;
-      letter-spacing:1px;
+    letter-spacing:1px;
+}
+
+.edit-profile-form-input-wrapper {
+    padding-bottom: 20px;
+}
+
+.edit-profile-form {
+    text-align: left;
+}
+.create-form-item-input {
+    border: none;
+    display: block;
+    margin-top: 15px;
+    background-color: #F9F6F6;
+    padding: 15px;
+    border-radius: 5px;
+    width: 50%;
+    font-family: HindBold;
+    font-size: 14px;
+    letter-spacing: 1px;
+    
+}
+
+.edit-profile-form-label {
+    width: 100%;
+    height: auto;
+    text-align: left;
+    margin: 0;
+    font-family: HindBold;
+    font-size: 15px;
+    letter-spacing: 1px;
 }
 
 .portal-body-analytic-title {
@@ -256,7 +306,6 @@
 .portal-body-recipes-list-search-btn-wrapper {
     width: 100%;
     margin-top: 25px;
-
     text-align: left;
 }
 
@@ -317,13 +366,11 @@
 }
 
 .portal-body-current-month-revenue, .portal-body-total-revenue {
-    font-size: 32px;
+    font-size: 23px;
     font-family: HindMedium;
     text-align: left;
     letter-spacing: .5px;
 }
-
-
 
 .currentMonth, .totalRevenue {
     font-family: HindLight;
@@ -339,20 +386,34 @@
     align-self: flex-start;
     border: none;
     padding: 15px;
-    width: 30%;
+    width: 20%;
     color: white;
     height: 30px;
-   
     border-radius: 5px;
-    font-family: HindLight;
+    font-family: HindBold;
     letter-spacing: 1px;
-    background-color: #DF0B0B;
+    background-color: black;
     cursor: pointer;
 }
 
 .portal-body-recipes-item-delete-btn-wrapper {
     width: 100%;
-    
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-in-out forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
 }
 
 @font-face {

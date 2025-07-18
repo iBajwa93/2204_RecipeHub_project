@@ -3,17 +3,29 @@ import './Portal.css';
 import pfp from '../../assets/images/pfp.png'
 import dummy2 from '../../assets/images/dummy2.png'
 import search from '../../assets/icons/search.png';
+import SuccessModal from '../../components/success/SuccessModal';
+import { MdError } from "react-icons/md";
 
 
 const Portal = () => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [error, setError] = useState('');
+
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     const userInfo = localStorage.getItem('info');
+    setError('');
     if (userInfo) {
       try {
         const parsedUser = JSON.parse(userInfo);
         setUser(parsedUser);
+        setEmail(parsedUser.email || '');
+        setUsername(parsedUser.username || '');
       } catch (err) {
         console.error('Invalid user data');
       }
@@ -38,7 +50,8 @@ const Portal = () => {
         <div className="portal-profile-sec2-wrapper">
             <h1 className="portal-profile-sec2-fullName">{user.fullName}</h1>
             <h2 className="portal-profile-sec2-icon">{user.isProChef ? 'Pro Chef' : 'Amateur Chef'}</h2>
-            <button
+            <div className="portal-logout-btn-wrapper">
+              <button
                 className="portal-logout-btn"
                 onClick={() => {
                   localStorage.removeItem('token');
@@ -49,21 +62,109 @@ const Portal = () => {
               >
                 Logout
               </button>
-              <h1 className="portal-profile-sec-3-editProfile">Edit Profile</h1>
+              <h1
+                className="portal-profile-sec-3-editProfile"
+                onClick={() => setIsEditing((prev) => !prev)}
+              >
+                {isEditing ? 'Top Recipe' : 'Edit Profile'}
+              </h1>
+            </div>
+              
         </div>
       </div>
     
       <div className="portal-body-container">
         <div className="portal-body-grid-item">
-            <h1 className="top-recipe-title">Your Top Recipe</h1>
-            <div className="top-recipe-image-wrapper">
-                <img className="top-recipe-image" width="332px" height="166px" src={dummy2}/>
-            </div>
-            
-            <h2 className="top-recipe-name">Lorem ipsum dolor</h2>
-            <p className="top-recipe-desc">Lorem ipsum dolor sit amet, consectetur adipiscing 
-elit dolor ipsum</p>
+          {isEditing ? (
+            <>
+              {showSuccessModal && (
+                <SuccessModal
+                  message="Password updated successfully!"
+                  isOpen={showSuccessModal}
+                  onClose={() => setShowSuccessModal(false)}
+                />
+              )}
+              <div className="edit-profile-form">
+                <div className="edit-profile-form-input-wrapper">
+                  <label className="edit-profile-form-label">Email</label>
+                  <br/>
+                  <input value={email} disabled className="create-form-item-input" />
+                </div>
+                
+                <div className="edit-profile-form-input-wrapper">
+                  <label className="edit-profile-form-label">Username</label>
+                  <br/>
+                  <input value={username} disabled className="create-form-item-input" />
+                </div>
+                  
+
+                <div className="edit-profile-form-input-wrapper">
+                  <label className="edit-profile-form-label">New Password</label>
+                  <br/>
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="create-form-item-input"
+                  />
+                </div>
+                
+
+
+                <button
+                  className="portal-body-recipes-item-delete-btn"
+                  onClick={async () => {
+                    if (!password) {
+                      setError('Password cant be left blank...');
+                      
+                      return;
+                    }
+
+                    try {
+                      const response = await fetch(`http://localhost:5000/api/users/${user.id}`, {
+                        method: 'PATCH',
+                        headers: {
+                          'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ password }),
+                      });
+
+                      const data = await response.json();
+
+                      if (response.ok) {
+                        setShowSuccessModal(true);
+                        setPassword('');
+                      } else {
+                        setError('Server error');
+                        alert(`Failed to update password: ${data.message}`);
+                      }
+                    } catch (err) {
+                      console.error('Error updating password:', err);
+                      alert('An error occurred. Please try again.');
+                      setError('Server error');
+                    }
+                  }}
+                >
+                  Save
+                </button>
+                {error !== '' && (
+                  <h2 className="error-icon"><MdError /></h2>
+                )}
+                </div>
+            </>
+            ) : (
+      <>
+        <h1 className="top-recipe-title">Your Top Recipe</h1>
+        <div className="top-recipe-image-wrapper">
+          <img className="top-recipe-image" width="332px" height="166px" src={dummy2} />
         </div>
+        <h2 className="top-recipe-name">Lorem ipsum dolor</h2>
+        <p className="top-recipe-desc">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit dolor ipsum
+        </p>
+      </>
+    )}
+  </div>
         <div className="portal-body-grid-item">
             <h1 className="portal-body-analytic-title">Analytics</h1>
             <div className="portal-body-analytic-grid">

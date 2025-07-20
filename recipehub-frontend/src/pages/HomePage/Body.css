@@ -4,6 +4,14 @@
     margin-top: 50px;
 }
 
+.featured-error {
+    font-family: HindLight;
+    opacity: .3;
+    
+    width: 100%;
+    margin: auto;
+}
+
 .featured-title-wrapper {
     width: 76%;
     margin: auto;

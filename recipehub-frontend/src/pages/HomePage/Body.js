@@ -26,7 +26,8 @@ const Body = () => {
     }, []);
 
     const top3Recipes = [...recipes]
-        .sort((a, b) => (b.averageRating || b.avgRating || 0) - (a.averageRating || a.avgRating || 0))
+        .filter(recipe => (recipe.averageRating || 0) >= 3)
+        .sort((a, b) => (b.averageRating || 0) - (a.averageRating || 0))
         .slice(0, 3);
 
         const renderStars = (rating) => {
@@ -55,7 +56,7 @@ const Body = () => {
                     <h1 className="featured-title">Featured Videos</h1>
                 </div>
                 <div className="featured-videos-container">
-                    {top3Recipes.length === 0 && <p>No featured recipes yet.</p>}
+                    {top3Recipes.length === 0 && <p className="featured-error">No featured recipes yet.</p>}
 
                     {top3Recipes.map((recipe) => (
                     <div className="featured-videos-item" key={recipe._id}>

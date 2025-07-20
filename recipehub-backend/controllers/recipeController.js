@@ -1,5 +1,35 @@
 const Recipe = require("../models/Recipe");
 
+// Get a recipe from user
+exports.getRecipesByUser = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const recipes = await Recipe.find({ creatorID: userId }).sort({ avgRating: -1});
+    res.status(200).json(recipes);
+  } catch (err) {
+    console.error("Error fetching user's recipes: ", err);
+    res.status(500).json({ message: "Server error"});
+  }
+}
+
+// Delete a recipe
+exports.deleteRecipe = async (req, res) => {
+  try {
+    const recipe = await Recipe.findByIdAndDelete(req.params.id);
+
+    if (!recipe) {
+      return res.status(404).json({ message: 'Recipe not found' });
+    }
+
+    res.json({ message: 'Recipe deleted successfully' });
+  } catch (err) {
+    console.error('Error deleting recipe:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
 // Create a new recipe
 exports.createRecipe = async (req, res) => {
   const {

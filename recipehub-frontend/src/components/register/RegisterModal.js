@@ -4,10 +4,11 @@ import './RegisterModal.css';
 import Google from '../../assets/icons/google.png'
 import chefIcon from '../../assets/images/chef.png'
 import { MdError } from "react-icons/md";
+import SuccessModal from '../../components/success/SuccessModal';
 
 const RegisterModal = ({ isOpen, onClose }) => {
     const [error, setError] = useState('');
-
+    const [showSuccess, setShowSuccess] = useState(false);
 
     const [formData, setFormData] = useState({
         fullName: '',
@@ -33,7 +34,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
 
     if (response.ok) {
       setError(''); // clear any previous error
-      alert('Registered successfully!');
+      setShowSuccess(true);
       onClose();
     } else {
       setError(data.message || 'Something went wrong.');
@@ -48,6 +49,14 @@ const RegisterModal = ({ isOpen, onClose }) => {
 
   return (
     <div className="register-modal-overlay" onClick={onClose}>
+       <SuccessModal
+          isOpen={showSuccess}
+          onClose={() => {
+            setShowSuccess(false);
+            onClose(); // close the CreateModal after dismissing success
+          }}
+          message="Your recipe has successfully been uploaded"
+        />
       <div className="register-modal" onClick={(e) => e.stopPropagation()}>
         {error && (
           <div className="error-icon-container">

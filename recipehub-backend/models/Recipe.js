@@ -1,6 +1,7 @@
-// models/Recipe.js
-
+// Inside recipehub-backend/models/Recipe.js
 const mongoose = require("mongoose");
+
+const Recipe = require("../models/Recipe"); // double check import
 
 const reviewSchema = new mongoose.Schema(
   {
@@ -23,28 +24,17 @@ const reviewSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-
-const recipeSchema = new mongoose.Schema(
-  {
-    title: { type: String, required: true },
-    prepTime: { type: String }, // you can use Number if you want minutes as a number
-    description: { type: String },
-    ingredients: { type: String }, // or [String] if you want an array
-    category: { type: String },
-    videoUrl: { type: String },
-    thumbnailUrl: {type: String},
-    averageRating: {type: Number, default: 0},
-    views: {type: Number},
-    reviews: [reviewSchema],
-    creatorID: {type: String},
-    creatorUsername: {type: String},
-    creator: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // This enables .populate() later
-      required: true
+const recipeSchema = new mongoose.Schema({
+  title: String,
+  description: String,
+  ingredients: [String],
+  instructions: [String],
+  // New field:
+  reviews: [reviewSchema],
+  averageRating: {
+    type: Number,
+    default: 0,
   },
-  },
-  { timestamps: true }
-);
+});
 
 module.exports = mongoose.model("Recipe", recipeSchema);

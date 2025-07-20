@@ -9,11 +9,6 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     isProChef: { type: Boolean, default: false }, // future feature
-    avgRating: { type: Number, default: 0, min: 0, max: 5 },
-    followers: {type: Number},
-    dailyVisits: {type: Number},
-    recipes: {type: Array}
-
   },
   { timestamps: true }
 );

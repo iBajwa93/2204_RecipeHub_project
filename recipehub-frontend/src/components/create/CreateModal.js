@@ -6,6 +6,7 @@ import cloudIcon from '../../assets/icons/cloud.png';
 import { MdError } from "react-icons/md";
 
 
+
 const CreateModal = ({ isOpen, onClose }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [title, setTitle] = useState('');
@@ -72,7 +73,8 @@ const CreateModal = ({ isOpen, onClose }) => {
 
       const data = await response.json();
       console.log('Recipe created:', data);
-      // Optionally reset form or close modal here:
+
+      
       setShowSuccess(true);
     } catch (error) {
       console.error('Error submitting recipe:', error);

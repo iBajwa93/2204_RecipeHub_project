@@ -21,6 +21,7 @@ app.use(express.json()); // Parses JSON bodies
 app.use("/api/auth", authRoutes);
 app.use("/api/recipe", recipeRoutes);
 app.use("/api/users", userRoutes);
+app.use('/uploads', express.static('uploads'));
   
 
 // Connect to MongoDB

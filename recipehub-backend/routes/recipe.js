@@ -2,7 +2,18 @@ const express = require("express");
 const router = express.Router();
 const recipeController = require("../controllers/recipeController");
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' }); // simple disk storage
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/'); // this folder must exist
+  },
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname);
+    cb(null, Date.now() + ext);
+  }
+});
+
+const upload = multer({ storage });
 
 // Create a recipe (protected)
 router.post("/", upload.single('video'), recipeController.createRecipe);

@@ -6,12 +6,13 @@ import star from '../../assets/icons/star.png'
 import italian from '../../assets/images/italian.png'
 import indian from '../../assets/images/indian.png'
 import mexican from '../../assets/images/mexican.png'
-import american from '../../assets/images/american.jpg'
-import asian from '../../assets/images/asian.jpg'
-import european from '../../assets/images/european.jpg'
-import mediterranean from '../../assets/images/mediterranean.jpeg'
-import african from '../../assets/images/african.jpg'
-import middleeastern from '../../assets/images/middleeastern.jpg'
+import american from '../../assets/images/american.png'
+import asian from '../../assets/images/asian.png'
+import european from '../../assets/images/european.png'
+import mediterranean from '../../assets/images/mediterranean.png'
+import african from '../../assets/images/african.png'
+import middleeastern from '../../assets/images/middleeastern.png'
+import caribbean from '../../assets/images/caribbean.png';
 
 const Body = () => {
     const [recipes, setRecipes] = useState([]);
@@ -22,7 +23,7 @@ const Body = () => {
         "Asian": asian,
         "Italian": italian,
         "Mexican": mexican,
-        "Caribbean": dummy1, // since you don’t have an import for Caribbean, use a dummy or add import
+        "Caribbean": caribbean, // since you don’t have an import for Caribbean, use a dummy or add import
         "American": american,
         "African": african,
         "European": european,
@@ -120,7 +121,7 @@ const Body = () => {
                         const imageSrc = categoryImages[cuisine] || dummy2; // fallback image or dummy
                         return (
                             <div className="browse-category-item-container" key={index}>
-                            <img width="100" className="category-img" src={imageSrc} alt={cuisine} />
+                            <img width="100" height="100" className="category-img" src={imageSrc} alt={cuisine} />
                             <h1 className="browse-category-item-title">{cuisine}</h1>
                             <p className="browse-category-item-description">Explore {cuisine} Cuisine</p>
                             </div>

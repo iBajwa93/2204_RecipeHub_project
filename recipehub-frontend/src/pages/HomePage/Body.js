@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Body.css";
 import dummy1 from "../../assets/images/dummy.png";
 import dummy2 from "../../assets/images/dummy2.png";
@@ -6,9 +6,31 @@ import star from "../../assets/icons/star.png";
 import italian from "../../assets/images/italian.png";
 import indian from "../../assets/images/indian.png";
 import mexican from "../../assets/images/mexican.png";
-import StarRating from "../../components/ratings/StarRating";
+import { useNavigate } from "react-router-dom";
 
 const Body = () => {
+  const [recipes, setRecipes] = useState([]);
+  const navigate = useNavigate();
+
+  // ✅ Move this OUTSIDE useEffect
+  const handleNavigate = (id) => {
+    navigate(`/recipe/${id}`);
+  };
+
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/recipe");
+        const data = await response.json();
+        setRecipes(data);
+      } catch (error) {
+        console.error("Error fetching recipes:", error);
+      }
+    };
+
+    fetchRecipes();
+  }, []);
+
   return (
     <div className="homepage-body">
       <div className="body-container">
@@ -32,7 +54,26 @@ const Body = () => {
               </h2>
               <div className="featured-videos-item-btnstar-container">
                 <button className="featured-videos-item-btn">View</button>
-                <StarRating recipeId="684f9d8e762ceeea5d73edc0" />
+                <div className="featured-videos-item-star-container">
+                  <img
+                    className="featured-videos-item-star"
+                    src={star}
+                    width="35px"
+                    height="35px"
+                  />
+                  <img
+                    className="featured-videos-item-star"
+                    src={star}
+                    width="35px"
+                    height="35px"
+                  />
+                  <img
+                    className="featured-videos-item-star"
+                    src={star}
+                    width="35px"
+                    height="35px"
+                  />
+                </div>
               </div>
             </div>
 
@@ -51,7 +92,38 @@ const Body = () => {
               </h2>
               <div className="featured-videos-item-btnstar-container">
                 <button className="featured-videos-item-btn">View</button>
-                <StarRating recipeId="684f9d8e762ceeea5d73edc0" />
+                <div className="featured-videos-item-star-container">
+                  <img
+                    className="featured-videos-item-star"
+                    src={star}
+                    width="35px"
+                    height="35px"
+                  />
+                  <img
+                    className="featured-videos-item-star"
+                    src={star}
+                    width="35px"
+                    height="35px"
+                  />
+                  <img
+                    className="featured-videos-item-star"
+                    src={star}
+                    width="35px"
+                    height="35px"
+                  />
+                  <img
+                    className="featured-videos-item-star"
+                    src={star}
+                    width="35px"
+                    height="35px"
+                  />
+                  <img
+                    className="featured-videos-item-star"
+                    src={star}
+                    width="35px"
+                    height="35px"
+                  />
+                </div>
               </div>
             </div>
 
@@ -70,7 +142,32 @@ const Body = () => {
               </h2>
               <div className="featured-videos-item-btnstar-container">
                 <button className="featured-videos-item-btn">View</button>
-                <StarRating recipeId="684f9d8e762ceeea5d73edc0" />
+                <div className="featured-videos-item-star-container">
+                  <img
+                    className="featured-videos-item-star"
+                    src={star}
+                    width="35px"
+                    height="35px"
+                  />
+                  <img
+                    className="featured-videos-item-star"
+                    src={star}
+                    width="35px"
+                    height="35px"
+                  />
+                  <img
+                    className="featured-videos-item-star"
+                    src={star}
+                    width="35px"
+                    height="35px"
+                  />
+                  <img
+                    className="featured-videos-item-star"
+                    src={star}
+                    width="35px"
+                    height="35px"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -109,28 +206,67 @@ const Body = () => {
                 <h1 className="explore-title-text">Explore</h1>
               </div>
               <div className="explore-item-video-container">
+                {/* 🔧 Quick test video entry for navigation */}
                 <div className="explore-item-video-wrapper">
-                  <img className="explore-item-video-tn" src={dummy2} />
-                  <h1 className="explore-item-video-title">
-                    Best Crepe | Recipe
-                  </h1>
-                  <h2 className="explore-item-video-author">Dan H.</h2>
-                  <p className="explore-item-stats">1942 views | 10 minutes</p>
+                  <img
+                    className="explore-item-video-tn"
+                    src="https://via.placeholder.com/464x232.png?text=Test+Recipe"
+                    alt="Test Thumbnail"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => navigate("/recipe/686ae2526c81176facb64105")}
+                  />
+                  <h1 className="explore-item-video-title">Test Recipe</h1>
+                  <h2 className="explore-item-video-author">Test User</h2>
+                  <p className="explore-item-stats">123 views | 10 min</p>
+                  <p className="explore-item-ingred">
+                    <span className="explore-item-ingred-bold">
+                      Ingredients:
+                    </span>{" "}
+                    Cheese, Bread, Sauce
+                  </p>
+                  <button
+                    className="featured-videos-item-btn"
+                    onClick={() => navigate("/recipe/686ae2526c81176facb64105")}
+                  >
+                    View
+                  </button>
                 </div>
-                <div className="explore-item-video-wrapper">
-                  <img className="explore-item-video-tn" src={dummy2} />
-                  <h1 className="explore-item-video-title">Linguine Pasta</h1>
-                  <h2 className="explore-item-video-author">Dan H.</h2>
-                  <p className="explore-item-stats">15 views | 35 minutes</p>
-                </div>
-                <div className="explore-item-video-wrapper">
-                  <img className="explore-item-video-tn" src={dummy2} />
-                  <h1 className="explore-item-video-title">
-                    Creamy Butter Chicken
-                  </h1>
-                  <h2 className="explore-item-video-author">Dan H.</h2>
-                  <p className="explore-item-stats">988 views | 20 minutes</p>
-                </div>
+
+                {recipes.map((recipe) => (
+                  <div className="explore-item-video-wrapper" key={recipe._id}>
+                    <video
+                      className="explore-item-video-tn"
+                      controls
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleNavigate(recipe._id)}
+                    >
+                      <source
+                        src={`http://localhost:5000/uploads/${recipe.videoUrl}`}
+                        type="video/mp4"
+                      />
+                      Your browser does not support the video tag.
+                    </video>
+                    <h1 className="explore-item-video-title">{recipe.title}</h1>
+                    <h2 className="explore-item-video-author">
+                      {recipe.creatorUsername || "Anonymous"}
+                    </h2>
+                    <p className="explore-item-stats">
+                      {recipe.views || 0} views | {recipe.prepTime}
+                    </p>
+                    <p className="explore-item-ingred">
+                      <span className="explore-item-ingred-bold">
+                        Ingredients:{" "}
+                      </span>
+                      {recipe.ingredients || " no ingredients listed"}
+                    </p>
+                    <button
+                      className="featured-videos-item-btn"
+                      onClick={() => handleNavigate(recipe._id)}
+                    >
+                      View
+                    </button>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

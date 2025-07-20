@@ -14,12 +14,16 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
+<<<<<<< Updated upstream
 app.use("/api/recipes", recipeRoutes);
 
 app.use((req, res) => {
   console.warn("Unknown route:", req.originalUrl);
   res.status(404).send(`<h1>404 Not Found: ${req.originalUrl}</h1>`);
 });
+=======
+app.use("/api/recipe", recipeRoutes);
+>>>>>>> Stashed changes
 
 mongoose
   .connect(process.env.MONGO_URI, {})

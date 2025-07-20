@@ -31,7 +31,8 @@ const recipeSchema = new mongoose.Schema(
     description: { type: String },
     ingredients: { type: String }, // or [String] if you want an array
     category: { type: String },
-    videoUrl: { type: String }, // store video file URL or path after upload
+    videoUrl: { type: String },
+    thumbnailUrl: {type: String},
     averageRating: {type: Number, default: 0},
     views: {type: Number},
     reviews: [reviewSchema],

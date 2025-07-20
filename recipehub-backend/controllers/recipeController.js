@@ -1,4 +1,9 @@
 const Recipe = require("../models/Recipe");
+const ffmpeg = require('fluent-ffmpeg');
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+ffmpeg.setFfmpegPath(ffmpegPath);
+const path = require('path');
+const fs = require('fs');
 
 // Get a recipe from user
 exports.getRecipesByUser = async (req, res) => {
@@ -29,6 +34,8 @@ exports.deleteRecipe = async (req, res) => {
   }
 };
 
+/*
+
 
 // Create a new recipe
 exports.createRecipe = async (req, res) => {
@@ -43,7 +50,7 @@ exports.createRecipe = async (req, res) => {
     creator
   } = req.body;
 
-  const videoPath = req.file?.filename; // multer adds this
+  const videoPath = req.file ? `/uploads/${req.file.filename}` : '';
 
   if (!videoPath) {
     return res.status(400).json({ message: "Video file is missing." });
@@ -64,6 +71,74 @@ exports.createRecipe = async (req, res) => {
 
     await newRecipe.save();
     res.status(201).json(newRecipe);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error creating recipe", error });
+  }
+};
+*/
+
+exports.createRecipe = async (req, res) => {
+  const {
+    title,
+    prepTime,
+    description,
+    ingredients,
+    category,
+    creatorID,
+    creatorUsername,
+    creator
+  } = req.body;
+
+  const videoFile = req.file;
+  if (!videoFile) {
+    return res.status(400).json({ message: "Video file is missing." });
+  }
+
+  const videoPath = `/uploads/${videoFile.filename}`;
+  const fullVideoPath = path.join(__dirname, '..', videoPath);
+
+  // Prepare thumbnail file paths
+  const thumbnailFilename = `${path.parse(videoFile.filename).name}.jpg`;
+  const thumbnailDir = path.join(__dirname, '..', 'uploads', 'thumbnails');
+  const thumbnailPath = path.join(thumbnailDir, thumbnailFilename);
+  const thumbnailUrl = `/uploads/thumbnails/${thumbnailFilename}`;
+
+  try {
+    // Ensure thumbnail directory exists
+    fs.mkdirSync(thumbnailDir, { recursive: true });
+
+    // Generate thumbnail using ffmpeg
+    ffmpeg(fullVideoPath)
+      .screenshots({
+        timestamps: ['00:00:01'],
+        filename: thumbnailFilename,
+        folder: thumbnailDir,
+        size: '320x240'
+      })
+      .on('end', async () => {
+        // Save recipe to DB after thumbnail is created
+        const newRecipe = new Recipe({
+          title,
+          prepTime,
+          description,
+          ingredients,
+          category,
+          videoUrl: videoPath,
+          thumbnailUrl: thumbnailUrl,
+          creatorID,
+          creatorUsername,
+          creator
+        });
+
+        await newRecipe.save();
+        res.status(201).json(newRecipe);
+      })
+      .on('error', (err) => {
+        console.error('FFmpeg error:', err);
+        res.status(500).json({ message: 'Error generating thumbnail' });
+      });
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error creating recipe", error });

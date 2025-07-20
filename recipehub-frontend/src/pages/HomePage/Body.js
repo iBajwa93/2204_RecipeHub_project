@@ -120,10 +120,12 @@ useEffect(() => {
                         <div className="explore-item-video-container">
                             {recipes.map((recipe) => (
                                 <div className="explore-item-video-wrapper" key={recipe._id}>
-                                <video className="explore-item-video-tn" controls>
-                                    <source src={`http://localhost:5000/uploads/${recipe.videoUrl}`} type="video/mp4" />
-                                    Your browser does not support the video tag.
-                                </video>
+                                <img
+                                
+                                    className="explore-item-video-tn"
+                                    src={`http://localhost:5000${recipe.thumbnailUrl || '/fallback.jpg'}`}
+                                    alt="thumbnail"
+                                    />
                                 <h1 className="explore-item-video-title">{recipe.title}</h1>
                                 <h2 className="explore-item-video-author">{recipe.creatorUsername || "Anonymous"}</h2>
                                 <p className="explore-item-stats">

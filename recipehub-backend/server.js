@@ -7,6 +7,7 @@ const cors = require("cors");
 const authRoutes = require("./routes/auth");
 const recipeRoutes = require("./routes/recipe");
 const userRoutes = require('./routes/user');
+const path = require('path');
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -21,7 +22,8 @@ app.use(express.json()); // Parses JSON bodies
 app.use("/api/auth", authRoutes);
 app.use("/api/recipe", recipeRoutes);
 app.use("/api/users", userRoutes);
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
   
 
 // Connect to MongoDB

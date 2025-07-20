@@ -220,8 +220,8 @@ i
     display: block;
     margin-bottom: 25px;
     border-radius: 20px;
-    width: 100%;
-    height: auto;
+    width: 90%;
+    height: 250px;
     display: block;
     border-radius: 25px;
     transition: box-shadow 0.3s ease, transform 0.3s ease;

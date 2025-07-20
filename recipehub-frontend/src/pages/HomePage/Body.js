@@ -6,11 +6,40 @@ import star from '../../assets/icons/star.png'
 import italian from '../../assets/images/italian.png'
 import indian from '../../assets/images/indian.png'
 import mexican from '../../assets/images/mexican.png'
-
-
+import american from '../../assets/images/american.jpg'
+import asian from '../../assets/images/asian.jpg'
+import european from '../../assets/images/european.jpg'
+import mediterranean from '../../assets/images/mediterranean.jpeg'
+import african from '../../assets/images/african.jpg'
+import middleeastern from '../../assets/images/middleeastern.jpg'
 
 const Body = () => {
     const [recipes, setRecipes] = useState([]);
+    const categoryImages = {
+        "Indian": indian,
+        "Middle Eastern": middleeastern,
+        "Mediterranean": mediterranean,
+        "Asian": asian,
+        "Italian": italian,
+        "Mexican": mexican,
+        "Caribbean": dummy1, // since you don’t have an import for Caribbean, use a dummy or add import
+        "American": american,
+        "African": african,
+        "European": european,
+    };
+    const categories = [
+        "Indian", //
+        "Middle Eastern", //
+        "Mediterranean", //
+        "Asian", //
+        "Italian", //
+        "Mexican", //
+        "Caribbean", //
+        "American", //
+        "African", //
+        "European" //
+    ];
+
     useEffect(() => {
     const fetchRecipes = async () => {
         try {
@@ -87,27 +116,16 @@ const Body = () => {
                     <h1 className="browse-title-text">Browse by Category</h1>
                 </div>
                 <div className="browse-category-container">
-                    <div className="browse-category-item-container">
-                        <img className="category-img" src={italian} />
-                        <h1 className="browse-category-item-title">
-                            Italian
-                        </h1>
-                        <p className="browse-category-item-description">Explore Italian Cuisine</p>
-                    </div>
-                    <div className="browse-category-item-container">
-                        <img className="category-img" src={mexican} />
-                        <h1 className="browse-category-item-title">
-                            Mexican
-                        </h1>
-                        <p className="browse-category-item-description">Explore Mexican Cuisine</p>
-                    </div>
-                    <div className="browse-category-item-container">
-                        <img className="category-img" src={indian} />
-                        <h1 className="browse-category-item-title">
-                            Indian
-                        </h1>
-                        <p className="browse-category-item-description">Explore Indian Cuisine</p>
-                    </div>
+                    {categories.map((cuisine, index) => {
+                        const imageSrc = categoryImages[cuisine] || dummy2; // fallback image or dummy
+                        return (
+                            <div className="browse-category-item-container" key={index}>
+                            <img width="100" className="category-img" src={imageSrc} alt={cuisine} />
+                            <h1 className="browse-category-item-title">{cuisine}</h1>
+                            <p className="browse-category-item-description">Explore {cuisine} Cuisine</p>
+                            </div>
+                        );
+                    })}
                 </div>
                 <div className="explore-container">
                     <div className="explore-item-wrapper">

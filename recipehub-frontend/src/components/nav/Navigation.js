@@ -187,7 +187,13 @@ const Navigation = ({ isOpen, onClose, onSectionChange, currentSection }) => {
         onClose={() => setShowRegister(false)}
       />
       <LoginModal isOpen={showLogin} onClose={() => setShowLogin(false)} />
-      <CreateModal isOpen={showCreate} onClose={() => setShowCreate(false)} />
+      <CreateModal
+        isOpen={showCreate}
+        onClose={() => {
+          setShowCreate(false);
+          navigate('/');
+        }}
+      />
     </>
   );
 };

@@ -115,7 +115,7 @@
 .browse-container {
     width: 100%;
     margin-top: 25px;
-
+    overflow: hidden;
     height: auto;
 }
 
@@ -136,16 +136,27 @@
 .browse-category-container {
     width: 76%;
     height: auto;
+    flex-wrap: nowrap; 
     margin: auto;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap; /* allows wrapping on small screens */
     gap: 20px;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE 10+ */
+}
+
+.browse-category-container::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
 }
 
 .browse-category-item-container {
     width: 30%;
     height: auto;
+    flex: 0 0 auto;
+    min-width: 200px;
+    max-width: 200px;
 }
 
 .browse-category-item-title {
@@ -158,7 +169,7 @@
 
 .browse-category-item-description {
     margin: 0;
-    font-size: 19px;
+    font-size: 15px;
     font-family: HindLight;
     letter-spacing: 1px;
 }
@@ -166,6 +177,9 @@
 .category-img {
     padding-bottom: 25px;
     transition: transform 0.5s ease;
+    width: 40%;
+    border-radius: 50px;
+    height: auto;
 }
 
 .category-img:hover {

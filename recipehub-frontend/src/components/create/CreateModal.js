@@ -4,7 +4,7 @@ import './CreateModal.css';
 import chefIcon from '../../assets/images/chef.png';
 import cloudIcon from '../../assets/icons/cloud.png';
 import { MdError } from "react-icons/md";
-
+import { useNavigate } from 'react-router-dom';
 
 
 const CreateModal = ({ isOpen, onClose }) => {
@@ -18,6 +18,8 @@ const CreateModal = ({ isOpen, onClose }) => {
   const [error, setError] = useState();
   const [showSuccess, setShowSuccess] = useState(false);
 
+  const navigate = useNavigate();
+
 
   const categories = [
     "Indian",
@@ -28,7 +30,6 @@ const CreateModal = ({ isOpen, onClose }) => {
     "Mexican",
     "Caribbean",
     "American",
-    "French",
     "African",
     "European"
   ];
@@ -179,7 +180,8 @@ const CreateModal = ({ isOpen, onClose }) => {
           isOpen={showSuccess}
           onClose={() => {
             setShowSuccess(false);
-            onClose(); // close the CreateModal after dismissing success
+            onClose();
+            navigate('/')
           }}
           message="Your recipe has successfully been uploaded"
         />

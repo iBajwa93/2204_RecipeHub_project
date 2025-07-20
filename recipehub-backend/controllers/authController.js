@@ -8,11 +8,10 @@ const jwt = require("jsonwebtoken");
 const registerUser = async (req, res) => {
   try {
     const { fullName, username, email, password, confirmPassword } = req.body;
-    console.log(req.body);
 
     // Check all fields
     if (!fullName || !username || !email || !password || !confirmPassword)
-      return res.status(400).json({ message: "yesss" });
+      return res.status(400).json({ message: "" });
 
     // Password match
     if (password !== confirmPassword)
@@ -64,9 +63,11 @@ const loginUser = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
 
     // Generate JWT
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "2d",
-    });
+    const token = jwt.sign(
+      { id: user._id, username: user.username },
+      process.env.JWT_SECRET,
+      { expiresIn: "2d" }
+    );
 
     res.json({
       token,

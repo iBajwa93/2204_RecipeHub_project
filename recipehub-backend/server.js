@@ -1,37 +1,39 @@
 // server.js
-
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const authRoutes = require("./routes/auth");
-const recipeRoutes = require("./routes/recipe");
-const userRoutes = require('./routes/user');
-const path = require('path');
+const recipeRoutes = require("./routes/recipes");
 
-dotenv.config(); // Load environment variables from .env file
-
+dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
 app.use(cors());
-app.use(express.json()); // Parses JSON bodies
+app.use(express.json());
 
-// Routes
 app.use("/api/auth", authRoutes);
+<<<<<<< Updated upstream
+app.use("/api/recipes", recipeRoutes);
+
+app.use((req, res) => {
+  console.warn("Unknown route:", req.originalUrl);
+  res.status(404).send(`<h1>404 Not Found: ${req.originalUrl}</h1>`);
+});
+=======
 app.use("/api/recipe", recipeRoutes);
-app.use("/api/users", userRoutes);
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+>>>>>>> Stashed changes
 
-  
-
-// Connect to MongoDB
 mongoose
   .connect(process.env.MONGO_URI, {})
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
+app.get("/test-server", (req, res) => {
+  res.send("✅ The backend server is connected and responding!");
+});
+
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log("🚀 Server running on port", PORT);
 });

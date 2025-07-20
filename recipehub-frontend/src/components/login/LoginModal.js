@@ -24,11 +24,9 @@ const LoginModal = ({ isOpen, onClose }) => {
 
       if (response.ok) {
         setError('');
+        alert('Login successful!');
         // Optional: Save token to localStorage
         localStorage.setItem('token', data.token);
-        // Save user data to storage until logout.
-        localStorage.setItem('info', JSON.stringify(data.user));
-        window.location.href = '/'; // redirect to home
         onClose();
       } else {
         setError(data.message || 'Invalid credentials');

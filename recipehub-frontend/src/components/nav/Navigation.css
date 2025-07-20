@@ -1,26 +1,26 @@
 /* src/components/Navigation.css */
 
-
+/* -------------- Structure -------------- */
 .nav {
   position: fixed;
   top: 0;
-  left: -280px; 
-  width: 280px; 
+  left: -280px; /* Hide off‐screen initially */
+  width: 280px; /* Sidebar width */
   height: 100vh;
-  background-color: #ffffff; 
+  background-color: #ffffff; /* White background */
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
   transition: left 0.3s ease-in-out;
-  z-index: 1000; 
-  overflow: hidden; 
+  z-index: 1000; /* Above most other content */
+  overflow: hidden; /* Prevent scrollbars */
   display: flex;
 }
 
-
+/* When `open` is true, slide it into view */
 .nav.open {
   left: 0;
 }
 
-
+/* A semi‐transparent full‐screen overlay to darken rest of page */
 .nav-overlay {
   position: fixed;
   top: 0;
@@ -31,17 +31,17 @@
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease-in-out;
-  z-index: 900; 
+  z-index: 900; /* sits behind .nav but above page content */
 }
 .nav.open .nav-overlay {
   opacity: 1;
   visibility: visible;
 }
 
-
+/* The actual sidebar content (scrollable if needed) */
 .nav-content {
   position: relative;
-  z-index: 1100; 
+  z-index: 1100; /* Above the overlay */
   width: 280px;
   padding: 2rem 1.5rem;
   display: flex;
@@ -49,7 +49,7 @@
   align-items: flex-start;
 }
 
-
+/* -------------- Logo & Title -------------- */
 .nav-header {
   display: flex;
   flex-direction: column;
@@ -63,20 +63,19 @@
   width: 48px;
   height: 48px;
   object-fit: contain;
-  margin-bottom: 0.1rem;
+  margin-bottom: 0.5rem;
 }
 
 .nav-title {
   padding-top: 15px;
   font-family: HindRegular;
   font-size: 1.2rem;
-  color: black; 
+  color: black; /* Dark Brown */
   text-decoration: none;
   width: 100%;
 }
 
-
-
+/* -------------- Link Lists -------------- */
 .nav-links {
   list-style: none;
   padding: 0;
@@ -123,25 +122,25 @@
   transition: width 0.3s ease;
 }
 
-
+/* Highlight the “Home” link or whichever should be active */
 .nav-item.active a {
-  color: #ffa500;
+  color: #ffa500; /* Orange for active */
 }
 
-
+/* Hover state for links */
 .nav-item a:hover::after {
   height: 0.5px;
   width: 40%;
 }
 
-
+/* -------------- “Portal” Button -------------- */
 .nav-portal-wrapper {
   width: 100%;
 }
 .nav-portal-btn {
   display: block;
   text-align: center;
-  background-color: #ffa500; 
+  background-color: #ffa500; /* Solid Orange */
   color: white;
   font-family: HindSemiBold;
   font-size: 1rem;
@@ -152,21 +151,8 @@
   transition: background-color 0.2s ease;
 }
 
-.chef-label {
-
-  
-  font-size: 15px;
-  color: #D7352D;
-  font-family: HindMedium;
-}
-
-.chef-icon {
-  margin: auto;
-  padding: 10px;
-}
-
 .nav-portal-btn:hover {
-  background-color: #e69500; 
+  background-color: #e69500; /* Slightly darker on hover */
 }
 
 /* -------------- Responsive Tweaks -------------- */
@@ -232,32 +218,6 @@
   cursor: pointer;
 }
 
-.nav-logout-btn {
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  width: 50%;
-  background-color: #EA261C;
-  border: none;
-  height: 35px;
-  color: white;
-  font-family: HindMedium;
-  font-size: 14px;
-  letter-spacing: .5px;
-  border-radius: 5px;
-  margin: auto;
-}
-
 .nav-auth-btn:hover {
   background-color: #e69500;
-}
-
-.nav-logout-btn:hover {
-  background-color: #D7352D;
-}
-
-@font-face {
-  font-family: 'HindMedium';
-  src: url('../../assets/fonts/hind/Hind-Medium.ttf') format('truetype');
-  font-weight: 600;
-  font-style: normal;
 }

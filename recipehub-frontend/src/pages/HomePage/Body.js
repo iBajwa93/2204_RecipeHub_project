@@ -10,20 +10,42 @@ import mexican from '../../assets/images/mexican.png'
 
 
 const Body = () => {
-const [recipes, setRecipes] = useState([]);
-useEffect(() => {
-  const fetchRecipes = async () => {
-    try {
-      const response = await fetch("http://localhost:5000/api/recipe");
-      const data = await response.json();
-      setRecipes(data);
-    } catch (error) {
-      console.error("Error fetching recipes:", error);
-    }
-  };
+    const [recipes, setRecipes] = useState([]);
+    useEffect(() => {
+    const fetchRecipes = async () => {
+        try {
+        const response = await fetch("http://localhost:5000/api/recipe");
+        const data = await response.json();
+        setRecipes(data);
+        } catch (error) {
+        console.error("Error fetching recipes:", error);
+        }
+    };
 
-  fetchRecipes();
-}, []);
+    fetchRecipes();
+    }, []);
+
+    const top3Recipes = [...recipes]
+        .sort((a, b) => (b.averageRating || b.avgRating || 0) - (a.averageRating || a.avgRating || 0))
+        .slice(0, 3);
+
+        const renderStars = (rating) => {
+        const rounded = Math.round(rating) || 0;
+        const stars = [];
+        for (let i = 0; i < rounded; i++) {
+        stars.push(
+            <img
+            key={i}
+            className="featured-videos-item-star"
+            src={star}
+            width="35px"
+            height="35px"
+            alt={`${i + 1} star`}
+            />
+        );
+        }
+        return stars;
+    };
 
   return (
     <div className="homepage-body">
@@ -33,55 +55,31 @@ useEffect(() => {
                     <h1 className="featured-title">Featured Videos</h1>
                 </div>
                 <div className="featured-videos-container">
-                    
-                    <div className="featured-videos-item">
-                        <img className="featured-videos-item-img" src={dummy1} width="464px" height="232px" />
-                        <h1 className="featured-videos-item-title">Lorem ipsum dolor sit amet</h1>
-                        <h2 className="featured-videos-item-description">Lorem ipsum dolor sit amet, consectetur adipiscing</h2>
+                    {top3Recipes.length === 0 && <p>No featured recipes yet.</p>}
+
+                    {top3Recipes.map((recipe) => (
+                    <div className="featured-videos-item" key={recipe._id}>
+                        <img
+                        className="featured-videos-item-img"
+                        src={`http://localhost:5000${recipe.thumbnailUrl || '/fallback.jpg'}`}
+                        alt={recipe.title}
+                        width="464px"
+                        height="232px"
+                        />
+                        <h1 className="featured-videos-item-title">{recipe.title}</h1>
+                        <h2 className="featured-videos-item-description">
+                        {recipe.description || "No description available"}
+                        </h2>
                         <div className="featured-videos-item-btnstar-container">
-                           <button className="featured-videos-item-btn">View</button> 
-                           <div className="featured-videos-item-star-container">
-                                <img className="featured-videos-item-star" src={star} width="35px" height="35px" />
-                                <img className="featured-videos-item-star" src={star} width="35px" height="35px" />
-                                <img className="featured-videos-item-star" src={star} width="35px" height="35px" />
-                           </div>
-                           
+                        <button className="featured-videos-item-btn">View</button>
+                        <div className="featured-videos-item-star-container">
+                            {renderStars(recipe.averageRating || recipe.avgRating || 0)}
+                        </div>
                         </div>
                     </div>
-
-                    <div className="featured-videos-item">
-                        <img className="featured-videos-item-img" src={dummy1} width="464px" height="232px" />
-                        <h1 className="featured-videos-item-title">Lorem ipsum dolor sit amet</h1>
-                        <h2 className="featured-videos-item-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit</h2>
-                        <div className="featured-videos-item-btnstar-container">
-                           <button className="featured-videos-item-btn">View</button> 
-                            <div className="featured-videos-item-star-container">
-                                <img className="featured-videos-item-star" src={star} width="35px" height="35px" />
-                                <img className="featured-videos-item-star" src={star} width="35px" height="35px" />
-                                <img className="featured-videos-item-star" src={star} width="35px" height="35px" />
-                                <img className="featured-videos-item-star" src={star} width="35px" height="35px" />
-                                <img className="featured-videos-item-star" src={star} width="35px" height="35px" />
-                           </div>
-                        </div>
-                    </div>
-
-                    <div className="featured-videos-item">
-                        <img className="featured-videos-item-img" src={dummy1} width="464px" height="232px" />
-                        <h1 className="featured-videos-item-title">Lorem ipsum dolor sit amet</h1>
-                        <h2 className="featured-videos-item-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit</h2>
-                        <div className="featured-videos-item-btnstar-container">
-                           <button className="featured-videos-item-btn">View</button> 
-                            <div className="featured-videos-item-star-container">
-                                <img className="featured-videos-item-star" src={star} width="35px" height="35px" />
-                                <img className="featured-videos-item-star" src={star} width="35px" height="35px" />
-                                <img className="featured-videos-item-star" src={star} width="35px" height="35px" />
-                                <img className="featured-videos-item-star" src={star} width="35px" height="35px" />
-                           </div>
-                        </div>
-                    </div>
-
+                    ))}
                 </div>
-            </div>
+                </div>
 
             <div className="browse-container">
                 <div className="browse-title-wrapper">
@@ -93,21 +91,21 @@ useEffect(() => {
                         <h1 className="browse-category-item-title">
                             Italian
                         </h1>
-                        <p className="browse-category-item-description">Lorem ipsum dolor sit amet</p>
+                        <p className="browse-category-item-description">Explore Italian Cuisine</p>
                     </div>
                     <div className="browse-category-item-container">
                         <img className="category-img" src={mexican} />
                         <h1 className="browse-category-item-title">
                             Mexican
                         </h1>
-                        <p className="browse-category-item-description">Lorem ipsum dolor sit amet</p>
+                        <p className="browse-category-item-description">Explore Mexican Cuisine</p>
                     </div>
                     <div className="browse-category-item-container">
                         <img className="category-img" src={indian} />
                         <h1 className="browse-category-item-title">
                             Indian
                         </h1>
-                        <p className="browse-category-item-description">Lorem ipsum dolor sit amet</p>
+                        <p className="browse-category-item-description">Explore Indian Cuisine</p>
                     </div>
                 </div>
                 <div className="explore-container">
@@ -124,7 +122,7 @@ useEffect(() => {
                                 
                                     className="explore-item-video-tn"
                                     src={`http://localhost:5000${recipe.thumbnailUrl || '/fallback.jpg'}`}
-                                    alt="thumbnail"
+                                
                                     />
                                 <h1 className="explore-item-video-title">{recipe.title}</h1>
                                 <h2 className="explore-item-video-author">{recipe.creatorUsername || "Anonymous"}</h2>

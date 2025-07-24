@@ -16,6 +16,7 @@
     width: 76%;
     margin: auto;
     padding: 0;
+    
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -265,11 +266,10 @@ i
 .explore-item-video-tn {
     display: block;
     margin-bottom: 25px;
-    border-radius: 20px;
+    border-radius: 5px;
     width: 90%;
     height: 250px;
     display: block;
-    border-radius: 25px;
     transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 

@@ -1,5 +1,4 @@
 // server.js
-
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
@@ -24,13 +23,16 @@ app.use("/api/recipe", recipeRoutes);
 app.use("/api/users", userRoutes);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-  
 
 // Connect to MongoDB
 mongoose
   .connect(process.env.MONGO_URI, {})
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
+
+app.get("/test-server", (req, res) => {
+  res.send("✅ The backend server is connected and responding!");
+});
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);

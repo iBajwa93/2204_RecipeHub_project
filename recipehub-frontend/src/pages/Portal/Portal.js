@@ -39,8 +39,7 @@ const Portal = () => {
 
   const totalRecipes = userRecipes.length;
 
-  const avgRating =
-    totalRecipes > 0
+  const avgRating = totalRecipes > 0
       ? (userRecipes.reduce((acc, r) => acc + (r.avgRating || 0), 0) / totalRecipes).toFixed(1)
       : 0;
 
@@ -178,9 +177,7 @@ const Portal = () => {
                     className="edit-form-item-input"
                   />
                 </div>
-                
-
-
+            
                 <button
                   className="portal-body-recipes-item-delete-btn"
                   onClick={async () => {
@@ -225,6 +222,7 @@ const Portal = () => {
             ) : (
       <>
         <h1 className="top-recipe-title">Your Top Recipe</h1>
+        
         {topRecipe ? (
           <>
             <div className="top-recipe-image-wrapper">

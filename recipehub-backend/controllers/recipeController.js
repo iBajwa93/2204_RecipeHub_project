@@ -5,6 +5,32 @@ ffmpeg.setFfmpegPath(ffmpegPath);
 const path = require('path');
 const fs = require('fs');
 
+
+// Delete a recipe
+exports.deleteReview = asyncHandler(async (req, res) => {
+  const recipe = await Recipe.findById(req.params.id).populate(
+    "reviews.user",
+    "username fullName"
+  );
+  if (!recipe) throw new Error("Recipe not found");
+
+  const userId = req.user._id;
+  const reviewIndex = recipe.reviews.findIndex(
+    (r) => r.user.toString() === userId.toString()
+  );
+
+  if (reviewIndex === -1) {
+    return res.status(404).json({ message: "Review not found for this user" });
+  }
+
+  recipe.reviews.splice(reviewIndex, 1);
+  await recipe.save();
+  await recipe.populate("reviews.user", "username fullName");
+
+  res.json({ message: "Review deleted", reviews: recipe.reviews });
+});
+
+
 // Get a recipe from user
 exports.getRecipesByUser = async (req, res) => {
   const { userId } = req.params;
@@ -33,51 +59,6 @@ exports.deleteRecipe = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
-
-/*
-
-
-// Create a new recipe
-exports.createRecipe = async (req, res) => {
-  const {
-    title,
-    prepTime,
-    description,
-    ingredients,
-    category,
-    creatorID,
-    creatorUsername,
-    creator
-  } = req.body;
-
-  const videoPath = req.file ? `/uploads/${req.file.filename}` : '';
-
-  if (!videoPath) {
-    return res.status(400).json({ message: "Video file is missing." });
-  }
-
-  try {
-    const newRecipe = new Recipe({
-      title,
-      prepTime,
-      description,
-      ingredients,
-      category,
-      videoUrl: videoPath, // save filename here
-      creatorID,
-      creatorUsername,
-      creator
-    });
-
-    await newRecipe.save();
-    res.status(201).json(newRecipe);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error creating recipe", error });
-  }
-};
-*/
-
 exports.createRecipe = async (req, res) => {
   const {
     title,

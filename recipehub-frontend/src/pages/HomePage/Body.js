@@ -177,6 +177,7 @@ const Body = () => {
                 {recipes.map((recipe) => (
                   <div className="explore-item-video-wrapper" key={recipe._id}>
                     <img
+                      onClick={() => navigate(`/recipe/${recipe._id}`)}
                       className="explore-item-video-tn"
                       src={`http://localhost:5000${
                         recipe.thumbnailUrl || "/fallback.jpg"

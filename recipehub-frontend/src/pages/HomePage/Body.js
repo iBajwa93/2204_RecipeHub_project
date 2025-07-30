@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 
 const Body = () => {
   const [recipes, setRecipes] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const navigate = useNavigate();
 
   const categoryImages = {
@@ -125,9 +126,14 @@ const Body = () => {
           </div>
           <div className="browse-category-container">
             {categories.map((cuisine, index) => {
-              const imageSrc = categoryImages[cuisine] || dummy2; // fallback image or dummy
+              const imageSrc = categoryImages[cuisine] || dummy2;
               return (
-                <div className="browse-category-item-container" key={index}>
+                <div
+                  className="browse-category-item-container"
+                  key={index}
+                  onClick={() => setSelectedCategory(cuisine)}
+                  style={{ cursor: "pointer" }}
+                >
                   <img
                     width="100"
                     height="100"
@@ -146,15 +152,38 @@ const Body = () => {
           <div className="explore-container">
             <div className="explore-item-wrapper">
               <div className="explore-title-wrapper">
-                <h1 className="explore-title-text">Explore</h1>
-              </div>
+                <h1 className="explore-title-text">
+                  Explore {selectedCategory ? `(${selectedCategory})` : ""}
+                </h1>
+                {selectedCategory && (
+                  <button
+                    onClick={() => setSelectedCategory(null)}
+                    style={{
+                      marginTop: "10px",
+                      backgroundColor: "#363131",
+                      border: "1px solid #ccc",
+                      padding: "6px 12px",
+                      cursor: "pointer",
+                      borderRadius: "4px",
+                      color: 'white',
+                      fontFamily: 'HindLight',
+                      width: '10%',
+                      margin: '0',
+                      marginLeft: '20px',
+                      textAlign: 'center'
+                    }}
+                  >
+                    Clear Filter
+                  </button>
+                )}
+                              </div>
               <div className="explore-item-video-container">
                 {/* 🔧 Quick test video entry for navigation */}
                 <div className="explore-item-video-wrapper">
                   <img
                     className="explore-item-video-tn"
                     src="https://via.placeholder.com/464x232.png?text=Test+Recipe"
-                    alt="Test Thumbnail"
+                    alt=""
                     style={{ cursor: "pointer" }}
                     onClick={() => navigate("/recipe/686ae2526c81176facb64105")}
                   />
@@ -174,31 +203,33 @@ const Body = () => {
                     View
                   </button>
                 </div>
-                {recipes.map((recipe) => (
-                  <div className="explore-item-video-wrapper" key={recipe._id}>
-                    <img
-                      onClick={() => navigate(`/recipe/${recipe._id}`)}
-                      className="explore-item-video-tn"
-                      src={`http://localhost:5000${
-                        recipe.thumbnailUrl || "/fallback.jpg"
-                      }`}
-                    />
-
-                    <h1 className="explore-item-video-title">{recipe.title}</h1>
-                    <h2 className="explore-item-video-author">
-                      {recipe.creatorUsername || "Anonymous"}
-                    </h2>
-                    <p className="explore-item-stats">
-                      {recipe.views || 0} views | {recipe.prepTime}
-                    </p>
-                    <p className="explore-item-ingred">
-                      <span className="explore-item-ingred-bold">
-                        Ingredients:{" "}
-                      </span>
-                      {recipe.ingredients || " no ingredients listed"}
-                    </p>
-                  </div>
+                {recipes
+                  .filter((recipe) =>
+                    selectedCategory ? recipe.category === selectedCategory : true
+                  )
+                  .map((recipe) => (
+                    <div className="explore-item-video-wrapper" key={recipe._id}>
+                      <img
+                        onClick={() => navigate(`/recipe/${recipe._id}`)}
+                        className="explore-item-video-tn"
+                        src={`http://localhost:5000${
+                          recipe.thumbnailUrl || "/fallback.jpg"
+                        }`}
+                      />
+                      <h1 className="explore-item-video-title">{recipe.title}</h1>
+                      <h2 className="explore-item-video-author">
+                        {recipe.creatorUsername || "Anonymous"}
+                      </h2>
+                      <p className="explore-item-stats">
+                        {recipe.views || 0} views | {recipe.prepTime}
+                      </p>
+                      <p className="explore-item-ingred">
+                        <span className="explore-item-ingred-bold">Ingredients: </span>
+                        {recipe.ingredients || " no ingredients listed"}
+                      </p>
+                    </div>
                 ))}
+
               </div>
             </div>
           </div>

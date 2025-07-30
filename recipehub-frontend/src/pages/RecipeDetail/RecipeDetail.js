@@ -139,7 +139,25 @@ const RecipeDetail = () => {
         </label>
         <br />
         <div className="recipeDetail-actions" style={{ marginTop: "15px" }}>
-          <button onClick={handleSubmit}>Submit</button>
+          <button
+            onClick={handleSubmit}
+            disabled={!localStorage.getItem("token")}
+            style={{
+              backgroundColor: localStorage.getItem("token") ? "#363131" : "#ccc",
+              color: "#fff",
+              padding: "10px 20px",
+              border: "none",
+              cursor: localStorage.getItem("token") ? "pointer" : "not-allowed",
+              borderRadius: "4px",
+            }}
+            title={
+              localStorage.getItem("token")
+                ? "Submit your comment"
+                : "You must be logged in to comment"
+            }
+          >
+            Submit
+          </button>
         </div>
       </div>
 
@@ -165,7 +183,15 @@ const RecipeDetail = () => {
               >
                 {rev.user?.username || "Anonymous"} – ⭐ {rev.rating}
               </h3>
-              <h2 className="recipeDetail-body-recipes-item">Pro</h2>
+              <h2
+                className="recipeDetail-body-recipes-user-title"
+                style={{
+                  color: rev.user?.isProChef ? "#D7352D" : "#3DBA58",
+                  marginBottom: "5px",
+                }}
+              >
+                {rev.user?.proChef ? "Pro" : "Amateur Chef"}
+              </h2>
               <p className="recipeDetail-body-recipes-item-desc">
                 {rev.comment || "No comment found"}
               </p>

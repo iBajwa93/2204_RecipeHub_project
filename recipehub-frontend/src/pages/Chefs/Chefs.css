@@ -27,6 +27,17 @@
     padding-top: 50px;
 }
 
+.chefs-rank-badge.pro {
+    color: #D7352D;
+    font-family: HindBold;
+    font-size: 15px;
+}
+.chefs-rank-badge.amateur {
+    color: #3DBA58;
+    font-family: HindRegular;
+    font-size: 15px;
+}
+
 .chefs-top-performers-wrapper {
     width: 90%;
     height: auto;

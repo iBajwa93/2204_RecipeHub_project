@@ -54,6 +54,9 @@ const Chefs = () => {
                                 style={{ cursor: "pointer" }}
                             />
                             <h1 className="chefs-top-performer-name">{chef.fullName}</h1>
+                            <div className={`chefs-rank-badge ${chef.isProChef ? 'pro' : 'amateur'}`}>
+                                {chef.isProChef ? 'Pro Chef' : 'Amateur Chef'}
+                            </div>
                             <div className="chefs-top-performer-rating">
                                 {[...Array(Math.round(chef.avgRating))].map((_, i) => (
                                     <img key={i} className="chefs-star" width="25px" src={star} />
@@ -83,6 +86,9 @@ const Chefs = () => {
                                     style={{ cursor: "pointer" }}
                                 />
                                 <h1 className="chefs-performer-name">{chef.fullName}</h1>
+                                <div className={`chefs-rank-badge ${chef.isProChef ? 'pro' : 'amateur'}`}>
+                                    {chef.isProChef ? 'Pro Chef' : 'Amateur Chef'}
+                                </div>
                             </div>
                         ))}
                     </div>

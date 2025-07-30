@@ -178,31 +178,7 @@ const Body = () => {
                 )}
                               </div>
               <div className="explore-item-video-container">
-                {/* 🔧 Quick test video entry for navigation */}
-                <div className="explore-item-video-wrapper">
-                  <img
-                    className="explore-item-video-tn"
-                    src="https://via.placeholder.com/464x232.png?text=Test+Recipe"
-                    alt=""
-                    style={{ cursor: "pointer" }}
-                    onClick={() => navigate("/recipe/686ae2526c81176facb64105")}
-                  />
-                  <h1 className="explore-item-video-title">Test Recipe</h1>
-                  <h2 className="explore-item-video-author">Test User</h2>
-                  <p className="explore-item-stats">123 views | 10 min</p>
-                  <p className="explore-item-ingred">
-                    <span className="explore-item-ingred-bold">
-                      Ingredients:
-                    </span>{" "}
-                    Cheese, Bread, Sauce
-                  </p>
-                  <button
-                    className="featured-videos-item-btn"
-                    onClick={() => navigate("/recipe/686ae2526c81176facb64105")}
-                  >
-                    View
-                  </button>
-                </div>
+               
                 {recipes
                   .filter((recipe) =>
                     selectedCategory ? recipe.category === selectedCategory : true

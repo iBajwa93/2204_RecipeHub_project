@@ -158,6 +158,7 @@ const Navigation = ({ isOpen, onClose, onSectionChange, currentSection }) => {
                 onClick={(e) => {
                   e.preventDefault();
                   onClose();
+                  navigate("/chefs");
                   onSectionChange("chefs");
                 }}
               >

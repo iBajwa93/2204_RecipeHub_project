@@ -1,0 +1,107 @@
+.chefs-container {
+    width: 100%;
+    margin: 0;
+   
+    height: auto;
+}
+
+.chefs-top-performers-container {
+    width: 85%;
+    
+    height: auto;
+    margin: auto;
+}
+
+.chefs-top-performer-name {
+    padding-top: 10px;
+    margin: 0;
+    font-size: 20px;
+    font-family: HindBold;
+}
+
+.chefs-top-performers-title {
+    text-align: left;
+    font-family: HindRegular;
+    letter-spacing: 2px;
+    font-size: 30px;
+    padding-top: 50px;
+}
+
+.chefs-top-performers-wrapper {
+    width: 90%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+.chefs-top-performer-item {
+    width: 30%;
+    margin: auto;
+}
+
+.chefs-top-performer-rating {
+    padding-top: 10px;
+    width: 50%;
+    margin: auto;
+}
+
+.chefs-star {
+    padding: 5px;
+}
+
+.chefs-divider-wrapper {
+    width: 100%;
+    margin-top: 35px;
+}
+
+.chefs-divider {
+    width: 80%;
+    margin: auto;
+    height: .5px;
+    opacity: .2;
+    background-color: grey;
+}
+
+.chefs-all-container {
+    margin-top: 35px;
+    width: 100%;
+  
+    height: auto;
+  
+}
+
+.chefs-all-title {
+    font-family: HindRegular;
+    width: 85%;
+    
+    text-align: left;
+    margin: auto;
+    letter-spacing: 2px;
+    height: auto;
+}
+
+.chefs-all-wrapper {
+    width: 100%;
+    
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.chefs-pfp {
+    cursor: pointer;
+}
+
+.chefs-performer-name {
+    font-family: HindRegular;
+    font-size: 20px;
+    text-align: center;
+}
+
+.chefs-item {
+    width: 10%;
+}

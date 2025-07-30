@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import "../Portal/Portal.css"; // ✅ Using existing styles
+import "./RecipeDetail.css";
 
 const RecipeDetail = () => {
   const { id } = useParams();
@@ -82,8 +82,8 @@ const RecipeDetail = () => {
   if (!recipe) return <div className="portal-container">Loading...</div>;
 
   return (
-    <div className="portal-container">
-      <h1 className="portal-body-recipes-title">{recipe.title}</h1>
+    <div className="recipeDetail-container">
+      <h1 className="recipeDetail-body-recipes-title">{recipe.title}</h1>
 
       <video
         controls
@@ -91,17 +91,17 @@ const RecipeDetail = () => {
         style={{ width: "100%", borderRadius: "8px", marginBottom: "20px" }}
       />
 
-      <p className="portal-body-recipes-item-desc">{recipe.description}</p>
-      <p className="portal-body-recipes-item-desc">
+      <p className="recipeDetail-body-recipes-item-desc">{recipe.description}</p>
+      <p className="recipeDetail-body-recipes-item-desc-details">
         <strong  className="boldStrong">Prep Time:</strong> {recipe.prepTime}
       </p>
-      <p className="portal-body-recipes-item-desc">
+      <p className="recipeDetail-body-recipes-item-desc-details">
         <strong className="boldStrong">Ingredients:</strong> {recipe.ingredients}
       </p>
 
-      <div className="portal-body-recipes-item" style={{ marginTop: "30px" }}>
+      <div className="recipeDetail-body-recipes-item" style={{ marginTop: "30px" }}>
         <textarea
-        className="comment-input"
+          className="comment-input"
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           rows="1.5"
@@ -138,7 +138,7 @@ const RecipeDetail = () => {
           </select>
         </label>
         <br />
-        <div className="portal-actions" style={{ marginTop: "15px" }}>
+        <div className="recipeDetail-actions" style={{ marginTop: "15px" }}>
           <button onClick={handleSubmit}>Submit</button>
         </div>
       </div>
@@ -146,12 +146,12 @@ const RecipeDetail = () => {
       <div style={{ marginTop: "40px" }}>
         
         {reviews.length === 0 ? (
-          <p className="portal-body-recipes-item-desc">No comments yet.</p>
+          <p className="recipeDetail-body-recipes-item-desc">No comments yet.</p>
         ) : (
           reviews.map((rev) => (
             <div
               key={rev._id}
-              className="portal-body-recipes-item"
+              className="recipeDetail-body-recipes-item"
               style={{
                 backgroundColor: "#FAF8F8",
                 padding: "15px",
@@ -160,18 +160,19 @@ const RecipeDetail = () => {
               }}
             >
               <h3
-                className="portal-body-recipes-item-title"
+                className="recipeDetail-body-recipes-item-title"
                 style={{ marginBottom: "5px" }}
               >
                 {rev.user?.username || "Anonymous"} – ⭐ {rev.rating}
               </h3>
-              <p className="portal-body-recipes-item-desc">
+              <h2 className="recipeDetail-body-recipes-item">Pro</h2>
+              <p className="recipeDetail-body-recipes-item-desc">
                 {rev.comment || "No comment found"}
               </p>
               {rev.user?.username === currentUser && (
                 <button
                   onClick={() => handleDelete(rev._id)}
-                  className="portal-logout-btn"
+                  className="recipeDetail-logout-btn"
                   style={{ marginTop: "10px", width: "auto" }}
                 >
                   Delete

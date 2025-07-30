@@ -1,4 +1,4 @@
-.portal-container {
+.recipeDetail-container {
   padding: 40px;
   margin: auto;
 }
@@ -10,7 +10,7 @@
   margin-bottom: 10px;
 }
 
-.portal-actions {
+.recipeDetail-actions {
   margin-top: 20px;
   text-align: left;
 }
@@ -27,7 +27,7 @@
     
 }
 
-.portal-actions button {
+.recipeDetail-actions button {
   margin-right: 10px;
   padding: 10px 16px;
   background-color: #363131;
@@ -41,17 +41,17 @@
   width: 20%;
 }
 
-.portal-actions button:hover {
+.recipeDetail-actions button:hover {
   background-color: #645dc1;
 }
 
-.portal-profile-container {
+.recipeDetail-profile-container {
   display: flex;
   width: 100%;
   margin: auto;
 }
 
-.portal-logout-btn-wrapper {
+.recipeDetail-logout-btn-wrapper {
   height: 20px;
   width: 100%;
   display: flex;
@@ -60,7 +60,7 @@
   text-align: left;
 }
 
-.portal-logout-btn {
+.recipeDetail-logout-btn {
   cursor: pointer;
   transition: background-color 0.2s ease;
   width: 100%;
@@ -75,7 +75,7 @@
   margin: auto;
 }
 
-.portal-profile-sec2-fullName {
+.recipeDetail-profile-sec2-fullName {
   font-size: 30px;
   font-family: HindLight;
   text-align: left;
@@ -85,7 +85,7 @@
   margin-top: 40px;
 }
 
-.portal-profile-sec2-icon {
+.recipeDetail-profile-sec2-icon {
   font-family: HindMedium;
   font-size: 15px;
   text-align: left;
@@ -95,7 +95,7 @@
   margin-top: 0;
 }
 
-.portal-profile-sec-3-editProfile {
+.recipeDetail-profile-sec-3-editProfile {
   font-family: HindRegular;
   font-size: 14px;
   opacity: 0.49;
@@ -108,29 +108,29 @@
   cursor: pointer;
 }
 
-.portal-profile-sec2-wrapper {
+.recipeDetail-profile-sec2-wrapper {
   padding-left: 30px;
   width: 20%;
 }
 
-.portal-body-container {
+.recipeDetail-body-container {
   width: 100%;
   height: auto;
 }
 
-.portal-logout-message {
+.recipeDetail-logout-message {
   font-size: 20px;
   font-family: HindLight;
 }
 
-.portal-body-container {
+.recipeDetail-body-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, 1fr);
   gap: 0px 0px;
 }
 
-.portal-body-grid-item {
+.recipeDetail-body-grid-item {
   background-color: white;
   margin-bottom: 0;
   height: 500px;
@@ -210,7 +210,7 @@
   letter-spacing: 1px;
 }
 
-.portal-body-analytic-title {
+.recipeDetail-body-analytic-title {
   text-align: left;
   font-size: 28px;
   font-family: HindLight;
@@ -218,7 +218,7 @@
   padding-bottom: 25px;
 }
 
-.portal-body-analytic-grid {
+.recipeDetail-body-analytic-grid {
   width: 45%;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -226,7 +226,7 @@
   gap: 10%;
 }
 
-.portal-body-analytic-grid-item1 {
+.recipeDetail-body-analytic-grid-item1 {
   width: 251px;
   height: 151px;
   background-color: #f94932;
@@ -234,7 +234,7 @@
   color: white;
 }
 
-.portal-body-analytic-grid-item2 {
+.recipeDetail-body-analytic-grid-item2 {
   width: 251px;
   height: 151px;
   background-color: #f9d132;
@@ -242,7 +242,7 @@
   color: white;
 }
 
-.portal-body-analytic-grid-item3 {
+.recipeDetail-body-analytic-grid-item3 {
   width: 251px;
   height: 151px;
   background-color: #f932de;
@@ -250,7 +250,7 @@
   color: white;
 }
 
-.portal-body-analytic-grid-item4 {
+.recipeDetail-body-analytic-grid-item4 {
   width: 251px;
   height: 151px;
   background-color: #3261f9;
@@ -276,7 +276,7 @@
   margin-top: 0;
 }
 
-.portal-body-recipes-title {
+.recipeDetail-body-recipes-title {
   font-size: 28px;
   font-family: HindLight;
   text-align: left;
@@ -292,13 +292,13 @@
     letter-spacing: 1px;
 }
 
-.portal-body-revenue-title {
+.recipeDetail-body-revenue-title {
   font-size: 28px;
   font-family: HindLight;
   text-align: left;
 }
 
-.portal-body-recipes-filters-container {
+.recipeDetail-body-recipes-filters-container {
   width: 100%;
   display: flex;
   height: auto;
@@ -347,7 +347,7 @@
   cursor: pointer;
 }
 
-.portal-body-recipes-list-search-btn-wrapper {
+.recipeDetail-body-recipes-list-search-btn-wrapper {
   width: 100%;
   margin-top: 25px;
   text-align: left;
@@ -372,12 +372,12 @@
   opacity: 0.6;
 }
 
-.portal-body-recipes-list-container {
+.recipeDetail-body-recipes-list-container {
   width: 100%;
   height: auto;
 }
 
-.portal-body-recipes-item {
+.recipeDetail-body-recipes-item {
   margin-top: 25px;
 
   width: 50%;
@@ -386,7 +386,7 @@
   padding-bottom: 20px;
 }
 
-.portal-body-recipes-item-title {
+.recipeDetail-body-recipes-item-title {
   font-size: 17px;
   font-family: HindBold;
   text-align: left;
@@ -394,7 +394,7 @@
   letter-spacing: 0.5px;
 }
 
-.portal-body-recipes-item-desc {
+.recipeDetail-body-recipes-item-desc {
   font-size: 20px;
   font-family: HindLight;
   text-align: left;
@@ -403,7 +403,7 @@
 }
 
 
-.portal-body-recipes-item-desc-details {
+.recipeDetail-body-recipes-item-desc-details {
   font-size: 15px;
   font-family: HindLight;
   text-align: left;
@@ -415,15 +415,15 @@
     font-family: hindbold;
 }
 
-.portal-body-revenue-stats-container {
+.recipeDetail-body-revenue-stats-container {
   width: 100%;
   height: auto;
   display: flex;
   gap: 25%;
 }
 
-.portal-body-current-month-revenue,
-.portal-body-total-revenue {
+.recipeDetail-body-current-month-revenue,
+.recipeDetail-body-total-revenue {
   font-size: 23px;
   font-family: HindMedium;
   text-align: left;
@@ -438,7 +438,7 @@
   letter-spacing: 0.5px;
 }
 
-.portal-body-recipes-item-delete-btn {
+.recipeDetail-body-recipes-item-delete-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -455,7 +455,7 @@
   cursor: pointer;
 }
 
-.portal-body-recipes-item-delete-btn-wrapper {
+.recipeDetail-body-recipes-item-delete-btn-wrapper {
   width: 100%;
 }
 

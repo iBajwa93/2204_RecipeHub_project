@@ -1,7 +1,5 @@
-// Recipes.js
 import React, { useEffect, useState } from "react";
-import { useLocation, Link } from "react-router-dom";
-import miniChef from '../../assets/icons/minichef.png';
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Recipes.css";
 
@@ -9,6 +7,7 @@ const Recipes = () => {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const queryParams = new URLSearchParams(location.search);
   const searchQuery = queryParams.get("search")?.toLowerCase() || "";
@@ -16,14 +15,19 @@ const Recipes = () => {
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/recipe");
+        const res = await axios.get("http://localhost:5000/api/recipe"); // adjust endpoint
         const allRecipes = res.data;
 
         const filtered = allRecipes.filter((recipe) =>
           recipe.title.toLowerCase().includes(searchQuery)
         );
 
-        setRecipes(filtered);
+        if (filtered.length === 1) {
+          // Redirect directly if exactly one match
+          navigate(`/recipe/${filtered[0]._id}`);
+        } else {
+          setRecipes(filtered);
+        }
       } catch (err) {
         console.error(err);
         setRecipes([]);
@@ -33,33 +37,28 @@ const Recipes = () => {
     };
 
     fetchRecipes();
-  }, [searchQuery]);
+  }, [searchQuery, navigate]);
 
   if (loading) return <p>Loading...</p>;
 
+  if (recipes.length === 0) {
+    return <p>No recipes found for "{searchQuery}".</p>;
+  }
+
+  // Show list if multiple or zero matches (zero handled above)
   return (
-    
     <div className="recipes-container">
-      
-      <div className="recipes-search-container">
-        {recipes.length > 0 ? (
-                recipes.map((recipe) => (
-                <Link to={`/recipe/${recipe._id}`} key={recipe._id} className="recipe-card-link">
-                    <div className="recipe-card">
-                    <h3 className="recipe-title">{recipe.title}</h3>
-                    <p className="recipe-creator">By {recipe.creatorUsername}</p>
-                    </div>
-                </Link>
-                ))
-            ) : (
-                <div>
-                    <img className="no-recipes-found" src={miniChef}/>
-                    <p className="no-recipes-found">No recipes found for "{searchQuery}".</p>
-                </div>
-                
-            )}
-      </div>
-      
+      {recipes.map((recipe) => (
+        <div
+          key={recipe._id}
+          className="recipe-card"
+          onClick={() => navigate(`/recipe/${recipe._id}`)}
+          style={{ cursor: "pointer" }}
+        >
+          <h3 className="recipe-title">{recipe.title}</h3>
+          <p className="recipe-creator">By {recipe.creatorUsername}</p>
+        </div>
+      ))}
     </div>
   );
 };

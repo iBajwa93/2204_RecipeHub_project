@@ -1,6 +1,6 @@
 
-import { useState, useEffect } from 'react';
-import { useLocation } from "react-router-dom";
+import { useState, useEffect} from 'react';
+import { useLocation, useNavigate } from "react-router-dom";
 import React from 'react';
 import './Header.css';
 import search from '../../assets/icons/search.png'
@@ -13,8 +13,17 @@ const Header = () => {
   const [isNavOpen, setIsNavOpen] = useState();
   const [loggedInUser, setLoggedInUser] = useState('');
   const toggleNav = () => setIsNavOpen(prev => !prev);
-  const [headerSection, setHeaderSection] = useState("home"); // "home", "about", or "careers"
+  const [headerSection, setHeaderSection] = useState("home");
 
+  const [query, setQuery] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+      e.preventDefault();
+      if (query.trim()) {
+        navigate(`/recipes?search=${encodeURIComponent(query.trim())}`);
+      }
+    };
 
 
   useEffect(() => {
@@ -69,8 +78,8 @@ const Header = () => {
               </div>
               <div className="homepage-header-input-container">
                 <div className="homepage-header-input-wrapper">
-                  <input type="text" placeholder="search recipes..." className="homepage-header-input" />
-                  <IoSearchOutline className="search-icon" size={40} />
+                  <input value={query} onChange={(e) => setQuery(e.target.value)} type="text" placeholder="search recipes..." className="homepage-header-input" />
+                  <IoSearchOutline className="search-icon"  onClick={handleSearch} size={40} />
                 </div>
               </div>
             </>

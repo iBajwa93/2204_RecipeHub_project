@@ -5,6 +5,7 @@ import Portal from './pages/Portal/Portal';
 import RecipeDetail from "./pages/RecipeDetail/RecipeDetail.js";
 import Recipe from './pages/Recipe/Recipe';
 import Chefs from './pages/Chefs/Chefs.js';
+import Recipes from './pages/Recipes/Recipes.js';
 import './App.css';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route path="/recipe" element={<Recipe />}/>
           <Route path="/recipe/:id" element={<RecipeDetail />} />
           <Route path="/chefs" element={<Chefs/>}/>
+          <Route path="/recipes" element={<Recipes/>}/>
         </Routes>
       </Router>
     </div>

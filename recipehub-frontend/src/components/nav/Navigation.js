@@ -70,7 +70,6 @@ const Navigation = ({ isOpen, onClose, onSectionChange, currentSection }) => {
               </div>
             )}
           </div>
-
           <ul className="nav-links primary-links">
             <li className={`nav-item ${currentSection === "home" ? "active" : ""}`}>
               <a href="#" onClick={(e) => { e.preventDefault(); onSectionChange("home"); onClose(); }}>
@@ -96,6 +95,14 @@ const Navigation = ({ isOpen, onClose, onSectionChange, currentSection }) => {
                   e.preventDefault();
                   onClose();
                   onSectionChange("recipes");
+                  navigate("/#recipes");
+
+                  setTimeout(() => {
+                    const el = document.getElementById("explore-section");
+                    if (el) {
+                      el.scrollIntoView({ behavior: "smooth" });
+                    }
+                  }, 50); // slight delay ensures Body is mounted
                 }}
               >
                 Recipes

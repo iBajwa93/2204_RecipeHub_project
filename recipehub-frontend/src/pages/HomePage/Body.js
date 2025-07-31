@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, forwardRef } from "react";
 import "./Body.css";
 import dummy1 from "../../assets/images/dummy.png";
 import dummy2 from "../../assets/images/dummy2.png";
@@ -110,7 +110,13 @@ const Body = () => {
                   {recipe.description || "No description available"}
                 </h2>
                 <div className="featured-videos-item-btnstar-container">
-                  <button className="featured-videos-item-btn">View</button>
+                  <button
+                    className="featured-videos-item-btn"
+                    onClick={() => navigate(`/recipe/${recipe._id}`)}
+                  >
+                    View
+                  </button>
+
                   <div className="featured-videos-item-star-container">
                     {renderStars(recipe.averageRating || recipe.avgRating || 0)}
                   </div>
@@ -149,7 +155,7 @@ const Body = () => {
               );
             })}
           </div>
-          <div className="explore-container">
+          <div className="explore-container" id="explore-section">
             <div className="explore-item-wrapper">
               <div className="explore-title-wrapper">
                 <h1 className="explore-title-text">

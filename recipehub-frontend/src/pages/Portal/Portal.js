@@ -66,7 +66,7 @@ const Portal = () => {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://localhost:5000/api/users/upload-avatar", {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/upload-avatar`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -106,7 +106,7 @@ const Portal = () => {
       if (!user || !user.id) return;
 
       try {
-        const res = await fetch(`http://localhost:5000/api/users/${user.id}`);
+        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/${user.id}`);
         const data = await res.json();
 
         if (res.ok) {
@@ -128,7 +128,7 @@ const Portal = () => {
       if (!user || !user.id) return;
 
       try {
-        const res = await fetch(`http://localhost:5000/api/users/${user.id}`);
+        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/${user.id}`);
         const data = await res.json();
         if (res.ok || res.status === 200) {
           setDailyVisits(data.dailyVisits || 0);
@@ -150,7 +150,7 @@ const Portal = () => {
 
       try {
         const res = await fetch(
-          `http://localhost:5000/api/recipe/user/${user.id}`
+          `${process.env.REACT_APP_BACKEND_URL}/api/recipe/user/${user.id}`
         );
         const data = await res.json();
 
@@ -178,7 +178,7 @@ const Portal = () => {
           setUserAvgRating(avg);
 
           // ✅ Update in DB
-          await fetch(`http://localhost:5000/api/users/${user.id}/avgRating`, {
+          await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/${user.id}/avgRating`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ avgRating: avg }),
@@ -240,7 +240,7 @@ const Portal = () => {
   const handleDeleteRecipe = async (recipeId) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/recipe/${recipeId}`, {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/recipe/${recipeId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -260,7 +260,7 @@ const Portal = () => {
     }
   };
 
-  const BACKEND_URL = "http://localhost:5000";
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
   const getProfileImageSrc = () => {
     if (previewImage) {
     
@@ -276,7 +276,7 @@ const Portal = () => {
       return pfp;
     }
   };
-  
+
   return (
     <div className="portal-container">
       <div className="portal-profile-container">
@@ -385,7 +385,7 @@ const Portal = () => {
 
                     try {
                       const response = await fetch(
-                        `http://localhost:5000/api/users/${user.id}`,
+                        `${process.env.REACT_APP_BACKEND_URL}/api/users/${user.id}`,
                         {
                           method: "PATCH",
                           headers: {

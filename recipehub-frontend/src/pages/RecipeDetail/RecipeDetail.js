@@ -17,7 +17,7 @@ const RecipeDetail = () => {
     
     const fetchRecipe = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/recipe/${id}`);
+        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/recipe/${id}`);
         const data = await res.json();
         setRecipe(data);
         setReviews(data.reviews || []);
@@ -33,7 +33,7 @@ const RecipeDetail = () => {
   const handleSubmit = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/recipe/${id}/review`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/recipe/${id}/review`,
         {
           method: "POST",
           headers: {
@@ -63,7 +63,7 @@ const RecipeDetail = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/api/recipe/${id}/review/${commentId}`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/recipe/${id}/review/${commentId}`,
         {
           method: "DELETE",
           headers: {
@@ -96,7 +96,7 @@ const RecipeDetail = () => {
         controls
         style={{ width: "100%", borderRadius: "8px", marginBottom: "20px" }}
       >
-        <source src={`http://localhost:5000${recipe.videoUrl}`} type="video/mp4" />
+        <source src={`${process.env.REACT_APP_BACKEND_URL}${recipe.videoUrl}`} type="video/mp4" />
       
       </video>
 

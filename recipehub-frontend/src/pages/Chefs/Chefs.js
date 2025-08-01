@@ -34,7 +34,7 @@ const Chefs = () => {
         const fetchData = async () => {
             try {
                 // Fetch all chefs
-                const response = await fetch("http://localhost:5000/api/users");
+                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users`);
                 const data = await response.json();
                 setAllChefs(data);
 
@@ -52,7 +52,7 @@ const Chefs = () => {
 
                 // Fetch following list of logged-in user
                 if (token) {
-                    const resFollowing = await fetch("http://localhost:5000/api/users/me/following", {
+                    const resFollowing = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/me/following`, {
                         headers: { Authorization: `Bearer ${token}` },
                     });
                     if (resFollowing.ok) {
@@ -70,7 +70,7 @@ const Chefs = () => {
 
     const handleChefClick = async (chef) => {
         try {
-            const res = await fetch(`http://localhost:5000/api/users/${chef._id}/increment-visit`, {
+            const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/${chef._id}/increment-visit`, {
                 method: "PATCH",
             });
             if (!res.ok) {
@@ -94,7 +94,7 @@ const Chefs = () => {
         }
 
         try {
-            const res = await fetch(`http://localhost:5000/api/users/${chefId}/follow`, {
+            const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/${chefId}/follow`, {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${token}`,

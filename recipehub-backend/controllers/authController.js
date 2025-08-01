@@ -83,6 +83,7 @@ const loginUser = async (req, res) => {
         username: user.username,
         email: user.email,
         isProChef: user.isProChef,
+        profileImage: user.profileImage
       },
     });
   } catch (err) {

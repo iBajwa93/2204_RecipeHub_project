@@ -28,6 +28,7 @@ const LoginModal = ({ isOpen, onClose }) => {
         localStorage.setItem('token', data.token);
         // Save user data to storage until logout.
         localStorage.setItem('info', JSON.stringify(data.user));
+        
         window.location.href = '/'; // redirect to home
         onClose();
       } else {

@@ -5,7 +5,6 @@ import RegisterModal from "../register/RegisterModal";
 import LoginModal from "../login/LoginModal";
 import CreateModal from '../create/CreateModal'
 import pfp from '../../assets/images/pfp.png';
-import miniChef from '../../assets/icons/minichef.png'
 import { useNavigate } from 'react-router-dom';
 
 const Navigation = ({ isOpen, onClose, onSectionChange, currentSection }) => {
@@ -14,31 +13,57 @@ const Navigation = ({ isOpen, onClose, onSectionChange, currentSection }) => {
   const [showLogin, setShowLogin] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState('');
-  const [isProChef, setIsProChef] = useState();
+  const [isProChef, setIsProChef] = useState(false);
   
   const navigate = useNavigate();
 
-  useEffect(() => {
+  // 🔹 Load user info from localStorage
+  const loadUserInfo = () => {
     const userInfo = localStorage.getItem('info');
     if (userInfo) {
       try {
         const user = JSON.parse(userInfo);
         setLoggedInUser(user.fullName || '');
-        setIsProChef(user.isProChef || '');
-        setProfileImage(user.profileImage || pfp);
+        setIsProChef(!!user.isProChef);
+        setProfileImage(user.profileImage || null);
+        console.log(profileImage);
+        console.log("TIHSSSS");
       } catch (err) {
-        console.error('Failed to parse user info from localStorage or user isnt logged in yet');
+        console.error('Failed to parse user info from localStorage', err);
       }
+    } else {
+      setLoggedInUser('');
+      setIsProChef(false);
+      setProfileImage(null);
     }
-  }, []);
-
-  const getProfileImageSrc = () => {
-    if (!profileImage) return pfp;
-    return `${process.env.REACT_APP_BACKEND_URL}${
-      profileImage.startsWith("/") ? "" : "/"
-    }${profileImage}`;
   };
 
+  // Run on mount
+  useEffect(() => {
+    loadUserInfo();
+
+    // 🔹 Update if localStorage changes (like after login)
+    window.addEventListener('storage', loadUserInfo);
+    return () => window.removeEventListener('storage', loadUserInfo);
+  }, []);
+
+  // Compute the correct image src
+  const getProfileImageSrc = () => {
+    if (!profileImage) return pfp; // fallback local pfp
+
+    // If it's already a valid URL or local build path
+    if (
+      profileImage.startsWith("http") || 
+      profileImage.startsWith("blob") || 
+      profileImage.startsWith("data:") ||
+      profileImage.includes("static")
+    ) {
+      return profileImage;
+    }
+
+    // Otherwise, assume it's a relative path from the backend
+    return `${process.env.REACT_APP_BACKEND_URL}${profileImage.startsWith("/") ? "" : "/"}${profileImage}`;
+  };
 
   return (
     <>
@@ -74,7 +99,7 @@ const Navigation = ({ isOpen, onClose, onSectionChange, currentSection }) => {
                     localStorage.removeItem('token');
                     localStorage.removeItem('info');
                     setLoggedInUser('');
-                    window.location.href = '/'; // redirect to home
+                    window.location.href = '/';
                   }}
                 >
                   Logout
@@ -82,6 +107,7 @@ const Navigation = ({ isOpen, onClose, onSectionChange, currentSection }) => {
               </div>
             )}
           </div>
+
           <ul className="nav-links primary-links">
             <li className={`nav-item ${currentSection === "home" ? "active" : ""}`}>
               <a href="#" onClick={(e) => { e.preventDefault(); onSectionChange("home"); onClose(); }}>
@@ -114,7 +140,7 @@ const Navigation = ({ isOpen, onClose, onSectionChange, currentSection }) => {
                     if (el) {
                       el.scrollIntoView({ behavior: "smooth" });
                     }
-                  }, 50); // slight delay ensures Body is mounted
+                  }, 50);
                 }}
               >
                 Recipes
@@ -148,9 +174,9 @@ const Navigation = ({ isOpen, onClose, onSectionChange, currentSection }) => {
                 e.preventDefault();
                 const userInfo = localStorage.getItem('info');
                 if (userInfo) {
-                  navigate('/portal'); // redirect if logged in
+                  navigate('/portal');
                 } else {
-                  setShowLogin(true); // open login modal
+                  setShowLogin(true);
                 }
               }}
             >
@@ -160,19 +186,19 @@ const Navigation = ({ isOpen, onClose, onSectionChange, currentSection }) => {
 
           <ul className="nav-links secondary-links">
             {!isProChef && (
-                <li className={`nav-item ${currentSection === "careers" ? "active" : ""}`}>
-                  <a
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      onClose();
-                      onSectionChange("careers");
-                    }}
-                  >
-                    Careers
-                  </a>
-                </li>
-              )}
+              <li className={`nav-item ${currentSection === "careers" ? "active" : ""}`}>
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onClose();
+                    onSectionChange("careers");
+                  }}
+                >
+                  Careers
+                </a>
+              </li>
+            )}
             <li className={`nav-item ${currentSection === "chefs" ? "active" : ""}`}>
               <a
                 href="#"
@@ -193,10 +219,7 @@ const Navigation = ({ isOpen, onClose, onSectionChange, currentSection }) => {
               <button className="nav-auth-btn" onClick={() => setShowLogin(true)}>
                 Login
               </button>
-              <button
-                className="nav-auth-btn"
-                onClick={() => setShowRegister(true)}
-              >
+              <button className="nav-auth-btn" onClick={() => setShowRegister(true)}>
                 Register
               </button>
             </div>
@@ -204,10 +227,7 @@ const Navigation = ({ isOpen, onClose, onSectionChange, currentSection }) => {
         </div>
       </nav>
 
-      <RegisterModal
-        isOpen={showRegister}
-        onClose={() => setShowRegister(false)}
-      />
+      <RegisterModal isOpen={showRegister} onClose={() => setShowRegister(false)} />
       <LoginModal isOpen={showLogin} onClose={() => setShowLogin(false)} />
       <CreateModal
         isOpen={showCreate}

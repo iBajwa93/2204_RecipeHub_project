@@ -89,7 +89,7 @@ const Chefs = () => {
     // Toggle follow/unfollow
     const toggleFollow = async (chefId) => {
         if (!token) {
-            alert("Please log in to follow chefs.");
+            
             return;
         }
 
@@ -205,7 +205,7 @@ const Chefs = () => {
                                 </h2>
                                 <div className="follow-btn-wrapper">
                                    
-                                    {selectedChef._id !== loggedInUserId && (
+                                    {token && selectedChef._id !== loggedInUserId && (
                                         <button
                                             className="follow-btn"
                                             onClick={() => toggleFollow(selectedChef._id)}

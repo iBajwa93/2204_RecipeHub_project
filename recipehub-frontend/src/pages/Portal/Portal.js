@@ -11,6 +11,7 @@ import { jwtDecode } from "jwt-decode";
 import AdminPortal from "../../components/admin/AdminPortal";
 
 const Portal = () => {
+  const [userAvgRating, setUserAvgRating] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -95,32 +96,54 @@ const Portal = () => {
   };
 
   useEffect(() => {
-    const fetchTopRecipeAndRecipes = async () => {
-      if (!user || !user.id) return;
+  const fetchTopRecipeAndRecipes = async () => {
+    if (!user || !user.id) return;
 
-      try {
-        const res = await fetch(
-          `http://localhost:5000/api/recipe/user/${user.id}`
-        );
-        const data = await res.json();
+    try {
+      const res = await fetch(
+        `http://localhost:5000/api/recipe/user/${user.id}`
+      );
+      const data = await res.json();
 
-        if (res.ok) {
-          const sorted = [...data].sort((a, b) => b.avgRating - a.avgRating);
-          setTopRecipe(sorted[0] || null);
-          setUserRecipes(data);
-        } else {
-          setTopRecipe(null);
-          setUserRecipes([]);
-        }
-      } catch (err) {
-        console.error("Failed to fetch recipes:", err);
+      if (res.ok) {
+        // sort by highest rating to get top recipe
+        const sorted = [...data].sort((a, b) => b.averageRating - a.averageRating);
+        setTopRecipe(sorted[0] || null);
+        setUserRecipes(data);
+
+        // ✅ Calculate average rating for this user
+        const ratedRecipes = data.filter((r) => r.averageRating && r.averageRating > 0);
+        const avg =
+          ratedRecipes.length > 0
+            ? (
+                ratedRecipes.reduce((sum, r) => sum + r.averageRating, 0) /
+                ratedRecipes.length
+              ).toFixed(1)
+            : 0;
+
+        // ✅ Save to state for Analytics panel
+        setUserAvgRating(avg);
+
+        // ✅ Update in DB
+        await fetch(`http://localhost:5000/api/users/${user.id}/avgRating`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ avgRating: avg }),
+        });
+      } else {
         setTopRecipe(null);
         setUserRecipes([]);
       }
-    };
+    } catch (err) {
+      console.error("Failed to fetch recipes:", err);
+      setTopRecipe(null);
+      setUserRecipes([]);
+    }
+  };
 
-    fetchTopRecipeAndRecipes();
-  }, [user]);
+  fetchTopRecipeAndRecipes();
+}, [user]);
+
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -358,7 +381,7 @@ const Portal = () => {
               <h2 className="analytic-grid-item-statType">Recipes</h2>
             </div>
             <div className="portal-body-analytic-grid-item4">
-              <h1 className="analytic-grid-item-stat">{avgRating}</h1>
+              <h1 className="analytic-grid-item-stat">{userAvgRating}</h1>
               <h2 className="analytic-grid-item-statType">Avg Rating</h2>
             </div>
           </div>

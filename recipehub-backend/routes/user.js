@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/userController");
+const { updateAvgRating } = require("../controllers/userController");
 const bcrypt = require("bcrypt");
 const multer = require("multer");
 const path = require("path");
@@ -19,6 +20,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+router.patch("/:id/avgRating", updateAvgRating);
+
 // PATCH /api/users/:id → update password
 router.patch("/:id", userController.updatePassword);
 
@@ -33,6 +36,8 @@ router.get("/me", authenticateToken, async (req, res) => {
     res.status(500).json({ error: "Fetch failed" });
   }
 });
+
+
 
 // Update own profile
 router.put("/me", authenticateToken, async (req, res) => {

@@ -15,6 +15,12 @@
   text-align: left;
 }
 
+.date-wrapper {
+  width: 100%;
+  
+  text-align: left;
+}
+
 .delete-review-btn-wrapper {
   width: 100%;
 

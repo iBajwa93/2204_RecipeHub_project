@@ -204,6 +204,12 @@ const RecipeDetail = () => {
               <p className="recipeDetail-body-recipes-item-desc">
                 {rev.comment || "No comment found"}
               </p>
+              <div className="date-wrapper">
+                        <p style={{ fontSize: "12px", color: "#777", fontFamiy: 'HindLight', marginTop: "5px" }}>
+                          Posted on: {new Date(rev.createdAt).toLocaleDateString()}{" "}
+                          {new Date(rev.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </p>
+              </div>
               {rev.user?.username === currentUser && (
                 <div className="delete-review-btn-wrapper">
                   <button

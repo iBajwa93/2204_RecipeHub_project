@@ -320,7 +320,9 @@ const Portal = () => {
         </div>
         <div className="portal-profile-sec2-wrapper">
           <h1 className="portal-profile-sec2-fullName">{user.username}</h1>
-          <h2 className="portal-profile-sec2-icon">
+          <h2 className="portal-profile-sec2-icon" style={{
+    color: user.isProChef ? "#D7352D" : "#3DBA58", // ✅ Conditional color
+  }}>
             {user.isProChef ? "Pro Chef" : "Amateur Chef"}
           </h2>
           <div className="portal-logout-btn-wrapper">

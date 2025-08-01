@@ -5,6 +5,7 @@ import pfp from '../../assets/images/pfp.png';
 import star from '../../assets/icons/star.png';
 import Footer from '../HomePage/Footer';
 import { IoClose } from "react-icons/io5"; // X icon
+import { jwtDecode } from "jwt-decode"; // ✅ Needed to decode logged-in user ID
 
 const Chefs = () => {
     const [allChefs, setAllChefs] = useState([]);
@@ -12,8 +13,21 @@ const Chefs = () => {
     const [regularChefs, setRegularChefs] = useState([]);
     const [selectedChef, setSelectedChef] = useState(null);
     const [followedChefs, setFollowedChefs] = useState(new Set());
+    const [loggedInUserId, setLoggedInUserId] = useState(null);
 
     const token = localStorage.getItem("token");
+
+    // ✅ Decode logged-in user ID
+    useEffect(() => {
+        if (token) {
+            try {
+                const decoded = jwtDecode(token);
+                setLoggedInUserId(decoded.id || decoded._id);
+            } catch (err) {
+                console.error("JWT decode failed:", err);
+            }
+        }
+    }, [token]);
 
     // Fetch who the logged-in user is following + chefs data
     useEffect(() => {
@@ -131,7 +145,6 @@ const Chefs = () => {
                                     <img key={i} className="chefs-star" width="25px" src={star} alt="star" />
                                 ))}
                             </div>
-                       
                         </div>
                     ))}
                 </div>
@@ -160,7 +173,6 @@ const Chefs = () => {
                                 <div className={`chefs-rank-badge ${chef.isProChef ? 'pro' : 'amateur'}`}>
                                     {chef.isProChef ? 'Pro Chef' : 'Amateur Chef'}
                                 </div>
-                               
                             </div>
                         ))}
                     </div>
@@ -176,12 +188,15 @@ const Chefs = () => {
                                         : "No recipes yet"}
                                 </h2>
                                 <div className="follow-btn-wrapper">
-                                    <button
-                                        className="follow-btn"
-                                        onClick={() => toggleFollow(selectedChef._id)}
-                                    >
-                                        {followedChefs.has(selectedChef._id) ? "Unfollow" : "Follow"}
-                                    </button>
+                                    {/* ✅ Hide follow if viewing own profile */}
+                                    {selectedChef._id !== loggedInUserId && (
+                                        <button
+                                            className="follow-btn"
+                                            onClick={() => toggleFollow(selectedChef._id)}
+                                        >
+                                            {followedChefs.has(selectedChef._id) ? "Unfollow" : "Follow"}
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                             <div className="x-icon-wrapper">

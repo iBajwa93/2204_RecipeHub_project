@@ -11,6 +11,7 @@ import { jwtDecode } from "jwt-decode";
 import AdminPortal from "../../components/admin/AdminPortal";
 
 const Portal = () => {
+  const [dailyVisits, setDailyVisits] = useState(0);
   const [userAvgRating, setUserAvgRating] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
   const [email, setEmail] = useState("");
@@ -94,6 +95,28 @@ const Portal = () => {
       handleImageUpload(); // auto-upload
     }
   };
+  
+
+  useEffect(() => {
+    const fetchDailyVisits = async () => {
+      if (!user || !user.id) return;
+
+      try {
+        const res = await fetch(`http://localhost:5000/api/users/${user.id}`);
+        const data = await res.json();
+        if (res.ok || res.status === 200) {
+          setDailyVisits(data.dailyVisits || 0);
+        } else {
+          setDailyVisits(0);
+        }
+      } catch (error) {
+        console.error("Failed to fetch daily visits:", error);
+        setDailyVisits(0);
+      }
+    };
+
+    fetchDailyVisits();
+  }, [user]);
 
   useEffect(() => {
   const fetchTopRecipeAndRecipes = async () => {
@@ -375,7 +398,7 @@ const Portal = () => {
           <h1 className="portal-body-analytic-title">Analytics</h1>
           <div className="portal-body-analytic-grid">
             <div className="portal-body-analytic-grid-item1">
-              <h1 className="analytic-grid-item-stat">0</h1>
+              <h1 className="analytic-grid-item-stat">{dailyVisits}</h1>
               <h2 className="analytic-grid-item-statType">Daily Visits</h2>
             </div>
             <div className="portal-body-analytic-grid-item2">

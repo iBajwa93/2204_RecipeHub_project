@@ -12,6 +12,25 @@ const Chefs = () => {
     const [regularChefs, setRegularChefs] = useState([]);
     const [selectedChef, setSelectedChef] = useState(null);
 
+    const handleChefClick = async (chef) => {
+    try {
+        const res = await fetch(`http://localhost:5000/api/users/${chef._id}/increment-visit`, {
+        method: "PATCH",
+        });
+        if (!res.ok) {
+        console.error("Failed to increment daily visits");
+        } else {
+       
+        const data = await res.json();
+        console.log(data);
+        }
+    } catch (err) {
+        console.error("Error incrementing daily visits:", err);
+    }
+
+    setSelectedChef(chef);
+    };
+
     useEffect(() => {
         const fetchChefs = async () => {
             try {
@@ -47,8 +66,7 @@ const Chefs = () => {
                     {topPerformers.map((chef, index) => (
                         <div className="chefs-top-performer-item" key={index}>
                             <img
-                                onClick={() => setSelectedChef(chef)}
-                                className="chefs-pfp"
+                                onClick={() => handleChefClick(chef)} className="chefs-pfp"
                                 width="95px"
                                 src={chef.profilePicture || pfp}
                                 style={{ cursor: "pointer" }}
@@ -82,8 +100,7 @@ const Chefs = () => {
                                     className="chefs-pfp"
                                     width="75px"
                                     src={chef.profilePicture || pfp}
-                                    onClick={() => setSelectedChef(chef)}
-                                    style={{ cursor: "pointer" }}
+                                    onClick={() => handleChefClick(chef)}                                    style={{ cursor: "pointer" }}
                                 />
                                 <h1 className="chefs-performer-name">{chef.fullName}</h1>
                                 <div className={`chefs-rank-badge ${chef.isProChef ? 'pro' : 'amateur'}`}>

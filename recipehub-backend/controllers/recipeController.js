@@ -1,6 +1,9 @@
 const Recipe = require("../models/Recipe");
 const mongoose = require("mongoose");
 const asyncHandler = require("express-async-handler");
+const ffmpeg = require("fluent-ffmpeg");
+const path = require("path");
+const fs = require("fs");
 
 exports.deleteReview = asyncHandler(async (req, res) => {
   const recipe = await Recipe.findById(req.params.id).populate(
@@ -25,7 +28,7 @@ exports.deleteReview = asyncHandler(async (req, res) => {
   res.json({ message: "Review deleted", reviews: recipe.reviews });
 });
 
-// Create a new recipe
+// Create a new recipe with thumbnail generation
 exports.createRecipe = async (req, res) => {
   const {
     title,
@@ -33,13 +36,50 @@ exports.createRecipe = async (req, res) => {
     description,
     ingredients,
     category,
-    videoUrl,
     creatorID,
     creatorUsername,
     creator,
   } = req.body;
 
   try {
+    if (!req.file) {
+      return res.status(400).json({ message: "Video file is required" });
+    }
+
+    // Save video path
+    const videoFile = req.file;
+    const videoUrl = `/uploads/${videoFile.filename}`;
+
+    // Ensure thumbnails folder exists
+    const thumbnailFolder = path.join(__dirname, "../uploads/thumbnails");
+    if (!fs.existsSync(thumbnailFolder)) {
+      fs.mkdirSync(thumbnailFolder, { recursive: true });
+    }
+
+    // Generate thumbnail filename & path
+    const thumbnailFilename = `${Date.now()}-thumbnail.png`;
+    const thumbnailFullPath = path.join(thumbnailFolder, thumbnailFilename);
+
+    // Generate a single thumbnail (screenshot) with ffmpeg
+    await new Promise((resolve, reject) => {
+      ffmpeg(videoFile.path)
+        .on("end", () => {
+          console.log("✅ Thumbnail generated:", thumbnailFilename);
+          resolve();
+        })
+        .on("error", (err) => {
+          console.error("❌ Thumbnail generation failed:", err);
+          reject(err);
+        })
+        .screenshots({
+          count: 1,
+          folder: thumbnailFolder,
+          filename: thumbnailFilename,
+          size: "464x232", // match your Body.js display size
+        });
+    });
+
+    // Save recipe with video + thumbnail
     const newRecipe = new Recipe({
       title,
       prepTime,
@@ -47,6 +87,7 @@ exports.createRecipe = async (req, res) => {
       ingredients,
       category,
       videoUrl,
+      thumbnailUrl: `/uploads/thumbnails/${thumbnailFilename}`,
       creatorUsername,
       creatorID,
       creator,
@@ -55,7 +96,7 @@ exports.createRecipe = async (req, res) => {
     await newRecipe.save();
     res.status(201).json(newRecipe);
   } catch (error) {
-    console.error(error);
+    console.error("🔥 Error creating recipe:", error);
     res.status(500).json({ message: "Error creating recipe", error });
   }
 };

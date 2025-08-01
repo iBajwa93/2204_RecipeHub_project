@@ -14,6 +14,7 @@ const RecipeDetail = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    
     const fetchRecipe = async () => {
       try {
         const res = await fetch(`http://localhost:5000/api/recipe/${id}`);
@@ -93,7 +94,7 @@ const RecipeDetail = () => {
       </div>
       <video
         controls
-        src={`http://localhost:5000/uploads/${recipe.videoUrl}`}
+        src={`http://localhost:5000/${recipe.videoUrl}`}
         style={{ width: "100%", borderRadius: "8px", marginBottom: "20px" }}
       />
 

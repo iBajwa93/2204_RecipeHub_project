@@ -390,12 +390,32 @@
   
 }
 
+.back-btn {
+  border: none;
+  font-family: HindLight;
+  width: 5%;
+  min-width: 100px;
+  cursor: pointer;
+  background-color: #363131;
+  border-radius: 3px;
+  color: white;
+  letter-spacing: 1.5px;
+  padding: 8px;
+  
+}
+
+.recipeDetail-body-recipes-title-backbtn-container {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .recipeDetail-body-recipes-user-title {
     margin-top: 0;
     text-align: left;
     font-family: HindBold;
     font-size: 14px;
-
 }
 
 .recipeDetail-body-recipes-item-title {

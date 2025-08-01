@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import "./RecipeDetail.css";
 
@@ -9,6 +10,8 @@ const RecipeDetail = () => {
   const [rating, setRating] = useState(5);
   const [reviews, setReviews] = useState([]);
   const currentUser = localStorage.getItem("username") || "guest";
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -83,7 +86,11 @@ const RecipeDetail = () => {
 
   return (
     <div className="recipeDetail-container">
-      <h1 className="recipeDetail-body-recipes-title">{recipe.title}</h1>
+      <div className="recipeDetail-body-recipes-title-backbtn-container">
+        <h1 className="recipeDetail-body-recipes-title">{recipe.title}</h1>
+        <button onClick={() => navigate(-1)}
+        className="back-btn">Back</button>
+      </div>
       <video
         controls
         src={`http://localhost:5000/uploads/${recipe.videoUrl}`}

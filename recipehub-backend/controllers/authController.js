@@ -12,7 +12,7 @@ const registerUser = async (req, res) => {
 
     // Check all fields
     if (!fullName || !username || !email || !password || !confirmPassword)
-      return res.status(400).json({ message: "yesss" });
+      return res.status(400).json({ message: "All fields are required." });
 
     // Password match
     if (password !== confirmPassword)
@@ -25,7 +25,7 @@ const registerUser = async (req, res) => {
         .status(400)
         .json({ message: "Email or username already exists" });
 
-    // Hash password
+    // Hash password (still used for newly registered users)
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -58,15 +58,22 @@ const loginUser = async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
-    // Check password
-    const isMatch = await bcrypt.compare(password, user.password);
+    const hashedInDB = user.password;
+
+    // Intelligent password check
+    const isMatch = hashedInDB.startsWith("$2b$") // bcrypt hash starts like this
+      ? await bcrypt.compare(password, hashedInDB) // use bcrypt
+      : password === hashedInDB; // plain text fallback
+
     if (!isMatch)
       return res.status(400).json({ message: "Invalid credentials" });
 
     // Generate JWT
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "2d",
-    });
+    const token = jwt.sign(
+      { id: user._id, username: user.username, isAdmin: user.isAdmin },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
 
     res.json({
       token,

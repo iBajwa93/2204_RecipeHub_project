@@ -8,12 +8,20 @@ const userSchema = new mongoose.Schema(
     username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    isProChef: { type: Boolean, default: false }, // future feature
+    isProChef: { type: Boolean, default: false },
     avgRating: { type: Number, default: 0, min: 0, max: 5 },
-    followers: {type: Number},
-    dailyVisits: {type: Number},
-    recipes: {type: Array}
-
+    followers: { type: Number },
+    dailyVisits: { type: Number },
+    recipes: { type: Array },
+    isAdmin: { type: Boolean, default: false },
+    isBanned: {
+      type: Boolean,
+      default: false,
+    },
+    profileImage: {
+      type: String,
+      default: "", // or a default avatar URL
+    },
   },
   { timestamps: true }
 );

@@ -9,6 +9,7 @@ const userRoutes = require("./routes/user");
 const revenueRoutes = require("./routes/revenue");
 const proChefRoutes = require("./routes/prochefapps");
 const path = require("path");
+const adminRoutes = require("./routes/admin");
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -24,6 +25,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/recipe", recipeRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/revenue", revenueRoutes);
+app.use("/api/admin", adminRoutes);
 app.use("/api/prochefapps", proChefRoutes);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/uploads", express.static("uploads"));

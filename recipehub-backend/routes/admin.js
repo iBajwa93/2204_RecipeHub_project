@@ -4,18 +4,18 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const { authenticateToken, protect } = require("../middleware/auth");
-const { authorizeAdmin } = require("../middleware/authorizeAdmin"); // You can create this if needed
+
 const { approveApplication, rejectApplication } = require('../controllers/proChefController');
 
 
-router.put('/prochef-applications/:id/approve', protect, isAdmin, approveApplication);
-router.put('/prochef-applications/:id/reject', protect, isAdmin, rejectApplication);
+router.put('/prochef-applications/:id/approve', protect, approveApplication);
+router.put('/prochef-applications/:id/reject', protect, rejectApplication);
 
 // ✅ Ban user
 router.put(
   "/user/:id/ban",
   authenticateToken,
-  authorizeAdmin,
+  
   async (req, res) => {
     try {
       await User.findByIdAndUpdate(req.params.id, { isBanned: true });
@@ -30,7 +30,7 @@ router.put(
 router.put(
   "/user/:id/unban",
   authenticateToken,
-  authorizeAdmin,
+  
   async (req, res) => {
     try {
       await User.findByIdAndUpdate(req.params.id, { isBanned: false });
@@ -42,7 +42,7 @@ router.put(
 );
 
 // ✅ Admin site statistics
-router.get("/stats", authenticateToken, authorizeAdmin, async (req, res) => {
+router.get("/stats", authenticateToken,async (req, res) => {
   try {
     const totalUsers = await User.countDocuments();
     const proChefs = await User.countDocuments({ isProChef: true });

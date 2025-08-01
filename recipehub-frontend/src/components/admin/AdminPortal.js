@@ -60,7 +60,7 @@ const AdminPortal = () => {
         body.password = adminInfo.password;
       }
 
-      const res = await fetch("http://localhost:5000/api/users/me", {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/me`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -142,7 +142,7 @@ const handleReject = async (appId) => {
     formData.append("avatar", file);
 
     try {
-      const res = await fetch("http://localhost:5000/api/user/upload-avatar", {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/user/upload-avatar`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -171,7 +171,7 @@ const handleReject = async (appId) => {
   useEffect(() => {
     const fetchAllRecipes = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/recipe");
+        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/recipe`);
         const data = await res.json();
         if (res.ok) {
           setRecipes(data);
@@ -185,7 +185,7 @@ const handleReject = async (appId) => {
 
     const fetchAllUsers = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/users", {
+        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -203,7 +203,7 @@ const handleReject = async (appId) => {
 
     const fetchAdminStats = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/admin/stats", {
+        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/admin/stats`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -221,7 +221,7 @@ const handleReject = async (appId) => {
 
     const fetchAdminInfo = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/users/me", {
+        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -395,7 +395,7 @@ const handleReject = async (appId) => {
                   onClick={async () => {
                     try {
                       const response = await fetch(
-                        `http://localhost:5000/api/admin/user/${user._id}/ban`,
+                        `${process.env.REACT_APP_BACKEND_URL}/api/admin/user/${user._id}/ban`,
                         {
                           method: "PUT",
                           headers: {
@@ -453,7 +453,7 @@ const handleReject = async (appId) => {
                   onClick={async () => {
                     try {
                       const response = await fetch(
-                        `http://localhost:5000/api/admin/user/${user._id}/unban`,
+                        `${process.env.REACT_APP_BACKEND_URL}/api/admin/user/${user._id}/unban`,
                         {
                           method: "PUT",
                           headers: {

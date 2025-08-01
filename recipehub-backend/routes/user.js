@@ -5,16 +5,21 @@ const { updateAvgRating } = require("../controllers/userController");
 const bcrypt = require("bcrypt");
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 const { authenticateToken } = require("../middleware/auth");
-const User = require("../models/User"); // ✅ Add this missing line
+const User = require("../models/User");
 
-// Storage engine
+// ✅ Storage engine for profile pictures
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/"); // Make sure this folder exists!
+    const uploadPath = path.join(__dirname, "../uploads/pfps");
+    console.log("Saving file to:", uploadPath);
+    if (!fs.existsSync(uploadPath)) fs.mkdirSync(uploadPath, { recursive: true });
+    cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
+    const ext = path.extname(file.originalname);
+    cb(null, `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`);
   },
 });
 
@@ -40,11 +45,11 @@ router.get("/me", authenticateToken, async (req, res) => {
   }
 });
 
-// Follow a user
+// Follow/unfollow a user
 router.post("/:id/follow", authenticateToken, async (req, res) => {
   try {
-    const userId = req.user.id;  // logged-in user
-    const targetId = req.params.id; // user to follow/unfollow
+    const userId = req.user.id;
+    const targetId = req.params.id;
 
     if (userId === targetId) {
       return res.status(400).json({ message: "Cannot follow yourself" });
@@ -57,13 +62,14 @@ router.post("/:id/follow", authenticateToken, async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Check if already following
     const isFollowing = user.following.includes(targetId);
 
     if (isFollowing) {
       // Unfollow
       user.following = user.following.filter((id) => id.toString() !== targetId);
-      targetUser.followers = targetUser.followers.filter((id) => id.toString() !== userId);
+      targetUser.followers = targetUser.followers.filter(
+        (id) => id.toString() !== userId
+      );
     } else {
       // Follow
       user.following.push(targetId);
@@ -94,8 +100,7 @@ router.get("/me/following", authenticateToken, async (req, res) => {
   }
 });
 
-
-// GET /api/users/:id → get user info by id (no auth needed or add auth if you want)
+// GET user by ID
 router.get("/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select("-password");
@@ -106,7 +111,6 @@ router.get("/:id", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
-
 
 // Update own profile
 router.put("/me", authenticateToken, async (req, res) => {
@@ -128,21 +132,45 @@ router.put("/me", authenticateToken, async (req, res) => {
   }
 });
 
-// POST /api/user/upload-avatar
+// ✅ POST /api/users/upload-avatar
 router.post(
   "/upload-avatar",
   authenticateToken,
   upload.single("avatar"),
   async (req, res) => {
     try {
-      const filePath = `/uploads/${req.file.filename}`;
-      await User.findByIdAndUpdate(req.user.id, { profileImage: filePath });
-      res.json({ imageUrl: filePath });
+      if (!req.file) {
+        return res.status(400).json({ error: "No file uploaded" });
+      }
+
+      const filePath = `/uploads/pfps/${req.file.filename}`;
+
+      // Find user first to get old profileImage
+      const user = await User.findById(req.user.id);
+
+      if (user.profileImage) {
+        // Get absolute path to old file
+        const oldImagePath = path.join(__dirname, "..", user.profileImage);
+       
+        // Delete old file if exists
+        if (fs.existsSync(oldImagePath)) {
+          fs.unlink(oldImagePath, (err) => {
+            if (err) console.error("Failed to delete old profile image:", err);
+          });
+        }
+      }
+
+      // Update profileImage in DB with new file path
+      user.profileImage = filePath;
+      await user.save();
+
+      res.json({ imageUrl: filePath, user });
     } catch (err) {
       console.error("Upload failed", err);
       res.status(500).json({ error: "Image upload failed" });
     }
   }
 );
+
 
 module.exports = router;

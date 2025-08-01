@@ -28,6 +28,7 @@ const Portal = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
+  const [showSaveBtn, setShowSaveBtn] = useState(false); // NEW: Save button visibility
   const fileInputRef = React.useRef();
 
   const filteredRecipes = userRecipes.filter((recipe) =>
@@ -55,6 +56,7 @@ const Portal = () => {
         ).toFixed(1)
       : 0;
 
+  // UPDATED: handleImageUpload no longer auto-called on selection
   const handleImageUpload = async () => {
     if (!selectedImage) return;
 
@@ -64,7 +66,7 @@ const Portal = () => {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://localhost:5000/api/user/upload-avatar", {
+      const res = await fetch("http://localhost:5000/api/users/upload-avatar", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -78,7 +80,9 @@ const Portal = () => {
         const updatedUser = { ...user, profileImage: data.imageUrl };
         localStorage.setItem("info", JSON.stringify(updatedUser));
         setUser(updatedUser);
-        alert("Profile picture updated!");
+        setPreviewImage(null);
+        setSelectedImage(null);
+        setShowSaveBtn(false); // hide save button after upload
       } else {
         alert("Image upload failed.");
       }
@@ -93,10 +97,9 @@ const Portal = () => {
     if (file) {
       setSelectedImage(file);
       setPreviewImage(URL.createObjectURL(file));
-      handleImageUpload(); // auto-upload
+      setShowSaveBtn(true); // show save button when image selected
     }
   };
-  
 
   useEffect(() => {
     const fetchFollowersCount = async () => {
@@ -120,7 +123,6 @@ const Portal = () => {
     fetchFollowersCount();
   }, [user]);
 
-
   useEffect(() => {
     const fetchDailyVisits = async () => {
       if (!user || !user.id) return;
@@ -143,54 +145,57 @@ const Portal = () => {
   }, [user]);
 
   useEffect(() => {
-  const fetchTopRecipeAndRecipes = async () => {
-    if (!user || !user.id) return;
+    const fetchTopRecipeAndRecipes = async () => {
+      if (!user || !user.id) return;
 
-    try {
-      const res = await fetch(
-        `http://localhost:5000/api/recipe/user/${user.id}`
-      );
-      const data = await res.json();
+      try {
+        const res = await fetch(
+          `http://localhost:5000/api/recipe/user/${user.id}`
+        );
+        const data = await res.json();
 
-      if (res.ok) {
-        // sort by highest rating to get top recipe
-        const sorted = [...data].sort((a, b) => b.averageRating - a.averageRating);
-        setTopRecipe(sorted[0] || null);
-        setUserRecipes(data);
+        if (res.ok) {
+          // sort by highest rating to get top recipe
+          const sorted = [...data].sort(
+            (a, b) => b.averageRating - a.averageRating
+          );
+          setTopRecipe(sorted[0] || null);
+          setUserRecipes(data);
 
-        // ✅ Calculate average rating for this user
-        const ratedRecipes = data.filter((r) => r.averageRating && r.averageRating > 0);
-        const avg =
-          ratedRecipes.length > 0
-            ? (
-                ratedRecipes.reduce((sum, r) => sum + r.averageRating, 0) /
-                ratedRecipes.length
-              ).toFixed(1)
-            : 0;
+          // ✅ Calculate average rating for this user
+          const ratedRecipes = data.filter(
+            (r) => r.averageRating && r.averageRating > 0
+          );
+          const avg =
+            ratedRecipes.length > 0
+              ? (
+                  ratedRecipes.reduce((sum, r) => sum + r.averageRating, 0) /
+                  ratedRecipes.length
+                ).toFixed(1)
+              : 0;
 
-        // ✅ Save to state for Analytics panel
-        setUserAvgRating(avg);
+          // ✅ Save to state for Analytics panel
+          setUserAvgRating(avg);
 
-        // ✅ Update in DB
-        await fetch(`http://localhost:5000/api/users/${user.id}/avgRating`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ avgRating: avg }),
-        });
-      } else {
+          // ✅ Update in DB
+          await fetch(`http://localhost:5000/api/users/${user.id}/avgRating`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ avgRating: avg }),
+          });
+        } else {
+          setTopRecipe(null);
+          setUserRecipes([]);
+        }
+      } catch (err) {
+        console.error("Failed to fetch recipes:", err);
         setTopRecipe(null);
         setUserRecipes([]);
       }
-    } catch (err) {
-      console.error("Failed to fetch recipes:", err);
-      setTopRecipe(null);
-      setUserRecipes([]);
-    }
-  };
+    };
 
-  fetchTopRecipeAndRecipes();
-}, [user]);
-
+    fetchTopRecipeAndRecipes();
+  }, [user]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -255,19 +260,37 @@ const Portal = () => {
     }
   };
 
+  const BACKEND_URL = "http://localhost:5000";
+  const getProfileImageSrc = () => {
+    if (previewImage) {
+    
+      if (previewImage.startsWith("blob:")) {
+        return previewImage; 
+      } else {
+      
+        return `${BACKEND_URL}${previewImage.startsWith("/") ? "" : "/"}${previewImage}`;
+      }
+    } else if (user.profileImage) {
+      return `${BACKEND_URL}${user.profileImage.startsWith("/") ? "" : "/"}${user.profileImage}`;
+    } else {
+      return pfp;
+    }
+  };
+  
   return (
     <div className="portal-container">
       <div className="portal-profile-container">
         <div className="portal-profile-sec1-wrapper">
           <img
-            src={previewImage || user.profileImage || pfp}
+            src={getProfileImageSrc()}
             width="200px"
             height="200px"
             className="portal-pfp-image"
             onClick={() => fileInputRef.current.click()}
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", borderRadius: "100px" }}
             alt="Profile"
           />
+              
           <input
             type="file"
             ref={fileInputRef}
@@ -275,9 +298,19 @@ const Portal = () => {
             accept="image/*"
             onChange={handleImageSelect}
           />
+          {/* Show Save button only if an image is selected */}
+          {showSaveBtn && (
+            <button
+              className="savepfp-btn"
+              onClick={handleImageUpload}
+              type="button"
+            >
+              Save
+            </button>
+          )}
         </div>
         <div className="portal-profile-sec2-wrapper">
-          <h1 className="portal-profile-sec2-fullName">{user.fullName}</h1>
+          <h1 className="portal-profile-sec2-fullName">{user.username}</h1>
           <h2 className="portal-profile-sec2-icon">
             {user.isProChef ? "Pro Chef" : "Amateur Chef"}
           </h2>
@@ -318,11 +351,7 @@ const Portal = () => {
                 <div className="edit-profile-form-input-wrapper">
                   <label className="edit-profile-form-label">Email</label>
                   <br />
-                  <input
-                    value={email}
-                    disabled
-                    className="edit-form-item-input"
-                  />
+                  <input value={email} disabled className="edit-form-item-input" />
                 </div>
 
                 <div className="edit-profile-form-input-wrapper">
@@ -336,9 +365,7 @@ const Portal = () => {
                 </div>
 
                 <div className="edit-profile-form-input-wrapper">
-                  <label className="edit-profile-form-label">
-                    New Password
-                  </label>
+                  <label className="edit-profile-form-label">New Password</label>
                   <br />
                   <input
                     type="password"
@@ -353,7 +380,6 @@ const Portal = () => {
                   onClick={async () => {
                     if (!password) {
                       setError("Password cant be left blank...");
-
                       return;
                     }
 
@@ -523,3 +549,5 @@ const Portal = () => {
 };
 
 export default Portal;
+
+

@@ -53,6 +53,18 @@
   margin: auto;
 }
 
+.savepfp-btn {
+  margin-top: 30px;
+  border: none;
+  color: white;
+  background-color: #363131;
+  width: 40%;
+  padding: 10px;
+  border-radius: 3px;
+  font-family: HindLight;
+  cursor: pointer;
+}
+
 .portal-logout-btn-wrapper {
   height: 20px;
   width: 100%;

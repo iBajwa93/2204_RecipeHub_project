@@ -1,6 +1,6 @@
 
-import { useState, useEffect } from 'react';
-import { useLocation } from "react-router-dom";
+import { useState, useEffect} from 'react';
+import { useLocation, useNavigate } from "react-router-dom";
 import React from 'react';
 import './Header.css';
 import search from '../../assets/icons/search.png'
@@ -13,8 +13,17 @@ const Header = () => {
   const [isNavOpen, setIsNavOpen] = useState();
   const [loggedInUser, setLoggedInUser] = useState('');
   const toggleNav = () => setIsNavOpen(prev => !prev);
-  const [headerSection, setHeaderSection] = useState("home"); // "home", "about", or "careers"
+  const [headerSection, setHeaderSection] = useState("home");
 
+  const [query, setQuery] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+      e.preventDefault();
+      if (query.trim()) {
+        navigate(`/recipes?search=${encodeURIComponent(query.trim())}`);
+      }
+    };
 
 
   useEffect(() => {
@@ -69,32 +78,32 @@ const Header = () => {
               </div>
               <div className="homepage-header-input-container">
                 <div className="homepage-header-input-wrapper">
-                  <input type="text" placeholder="search recipes..." className="homepage-header-input" />
-                  <IoSearchOutline className="search-icon" size={40} />
+                  <input value={query} onChange={(e) => setQuery(e.target.value)} type="text" placeholder="search recipes..." className="homepage-header-input" />
+                  <IoSearchOutline className="search-icon"  onClick={handleSearch} size={40} />
                 </div>
               </div>
             </>
           ) : headerSection === "about" ? (
             <div className="about-box">
               <h1 className="about-box-title">About us</h1>
-              <p className="about-box-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin neque velit, tempus et justo id, 
-elementum venenatis elit. Phasellus vulputate, sapien eu consequat ullamcorper, turpis massa 
-hendrerit nunc, ac dictum
-<br/>
-<br/>
- ipsum velit ut nisi. Nunc cursus mi ut euismod cursus. Maecenas ut tellus 
-ultricies, interdum dui tincidunt,</p>
+              <p className="about-box-desc">
+                  At RecipeHub, we're all about real food, real people, and real passion. Whether you're a home cook with a secret family recipe or a pro chef sharing 
+                  your creative edge, this is your space to shine. We built RecipeHub to bring food lovers and creators together—from every kitchen, culture, and corner of the world.
+                <br/>
+                <br/>
+                  It's not just about posting recipes—it's about storytelling, connecting through flavor, and growing a community where anyone can inspire or be inspired. Our mission?
+                  To make 
+                  cooking more fun, more accessible, and way more personal. So whether you're here to learn, share, or just explore, welcome to the hub.
+                </p>
             </div>
           ) : headerSection === "careers" ? (
             <div className="careers-box">
               <h1 className="careers-box-title">Careers @ RecipeHub</h1>
-              <p className="careers-box-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin neque velit, tempus et justo id, 
-              elementum venenatis elit. Phasellus vulputate, sapien eu consequat ullamcorper, turpis massa 
-              hendrerit nunc, ac dictum
-              <br/>
-              <br/>
-              ipsum velit ut nisi. Nunc cursus mi ut euismod cursus. Maecenas ut tellus 
-              ultricies, interdum dui tincidunt,</p>
+              <p className="careers-box-desc">
+                Love cooking? Passionate about sharing your creations with the world? Join RecipeHub and take the next step. Whether you're just starting or already mastering your craft, becoming a Pro Chef is your chance to grow, inspire, and stand out.
+
+                Apply today to share your passion, gain followers, and boost your culinary career.
+                </p>
               <div className="careers-apply-btn-wrapper">
                 <button className="careers-apply-btn">
                     Apply

@@ -6,6 +6,7 @@ import search from "../../assets/icons/search.png";
 import SuccessModal from "../../components/success/SuccessModal";
 import { MdError } from "react-icons/md";
 import chefIcon from "../../assets/icons/minichef.png";
+import Footer from "../HomePage/Footer";
 import { jwtDecode } from "jwt-decode";
 import AdminPortal from "../../components/admin/AdminPortal";
 
@@ -440,6 +441,7 @@ const Portal = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

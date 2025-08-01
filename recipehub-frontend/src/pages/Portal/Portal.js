@@ -11,6 +11,7 @@ import { jwtDecode } from "jwt-decode";
 import AdminPortal from "../../components/admin/AdminPortal";
 
 const Portal = () => {
+  const [followersCount, setFollowersCount] = useState(0);
   const [dailyVisits, setDailyVisits] = useState(0);
   const [userAvgRating, setUserAvgRating] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
@@ -96,6 +97,29 @@ const Portal = () => {
     }
   };
   
+
+  useEffect(() => {
+    const fetchFollowersCount = async () => {
+      if (!user || !user.id) return;
+
+      try {
+        const res = await fetch(`http://localhost:5000/api/users/${user.id}`);
+        const data = await res.json();
+
+        if (res.ok) {
+          setFollowersCount(data.followers ? data.followers.length : 0);
+        } else {
+          setFollowersCount(0);
+        }
+      } catch (err) {
+        console.error("Failed to fetch followers count:", err);
+        setFollowersCount(0);
+      }
+    };
+
+    fetchFollowersCount();
+  }, [user]);
+
 
   useEffect(() => {
     const fetchDailyVisits = async () => {
@@ -402,7 +426,7 @@ const Portal = () => {
               <h2 className="analytic-grid-item-statType">Daily Visits</h2>
             </div>
             <div className="portal-body-analytic-grid-item2">
-              <h1 className="analytic-grid-item-stat">0</h1>
+              <h1 className="analytic-grid-item-stat">{followersCount}</h1>
               <h2 className="analytic-grid-item-statType">Followers</h2>
             </div>
             <div className="portal-body-analytic-grid-item3">

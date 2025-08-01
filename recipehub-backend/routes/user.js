@@ -40,6 +40,61 @@ router.get("/me", authenticateToken, async (req, res) => {
   }
 });
 
+// Follow a user
+router.post("/:id/follow", authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.id;  // logged-in user
+    const targetId = req.params.id; // user to follow/unfollow
+
+    if (userId === targetId) {
+      return res.status(400).json({ message: "Cannot follow yourself" });
+    }
+
+    const user = await User.findById(userId);
+    const targetUser = await User.findById(targetId);
+
+    if (!user || !targetUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if already following
+    const isFollowing = user.following.includes(targetId);
+
+    if (isFollowing) {
+      // Unfollow
+      user.following = user.following.filter((id) => id.toString() !== targetId);
+      targetUser.followers = targetUser.followers.filter((id) => id.toString() !== userId);
+    } else {
+      // Follow
+      user.following.push(targetId);
+      targetUser.followers.push(userId);
+    }
+
+    await user.save();
+    await targetUser.save();
+
+    res.json({
+      following: !isFollowing,
+      followersCount: targetUser.followers.length,
+      followingCount: user.following.length,
+    });
+  } catch (err) {
+    console.error("Follow/unfollow error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Get the current user's following list
+router.get("/me/following", authenticateToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("following");
+    res.json({ following: user.following });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
 // GET /api/users/:id → get user info by id (no auth needed or add auth if you want)
 router.get("/:id", async (req, res) => {
   try {

@@ -5,9 +5,27 @@
     height: auto;
 }
 
+.follow-btn-wrapper {
+    width: 100%;
+    text-align: left;
+    padding-bottom: 20px;
+}
+
+.follow-btn {
+    border: none;
+    padding: 10px;
+    width: 5%;
+    min-width: 150px;
+    border-radius: 2px;
+    font-family: HindLight;
+    background-color: #363131;
+    color: white;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
 .chefs-top-performers-container {
     width: 85%;
-    
     height: auto;
     margin: auto;
 }

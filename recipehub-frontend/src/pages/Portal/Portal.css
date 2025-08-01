@@ -140,8 +140,8 @@
 .portal-body-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-auto-rows: min-content; /* shrink rows to fit content */
-  gap: 120px 0px; /* optional small gap between rows */
+  grid-auto-rows: min-content; 
+  gap: 120px 0px;
 }
 
 .portal-body-grid-item stats {
@@ -489,7 +489,7 @@
 }
 
 .active-filter {
-  background-color: black; /* Match your theme */
+  background-color: black; 
   color: white;
   border: none;
   transition: background-color 0.3s;

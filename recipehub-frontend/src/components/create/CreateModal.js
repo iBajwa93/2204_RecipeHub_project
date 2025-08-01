@@ -41,7 +41,7 @@ const CreateModal = ({ isOpen, onClose }) => {
     const userId = userInfo?.id;
     const username = userInfo?.username;
     if (!title || !prepTime || !description || !ingredients || !selectedCategory || !videoFile) {
-    console.error('❌ Please fill out all fields and upload a video before submitting.');
+    console.error('Please fill out all fields and upload a video before submitting.');
     setError(true);
     return;
   }

@@ -13,7 +13,7 @@ import "./App.css";
 function App() {
   const [isBanned, setIsBanned] = useState(false);
   useEffect(() => {
-    // Fetch user info or check ban status from API or token
+    
     const checkBanStatus = async () => {
       const token = localStorage.getItem("token");
       if (!token) return;
@@ -37,7 +37,6 @@ function App() {
   }, []);
 
    if (isBanned) {
-    // Render modal only, block everything else
     return <BannedModal />;
   }
   return (

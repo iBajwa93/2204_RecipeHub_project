@@ -36,11 +36,11 @@ const Navigation = ({ isOpen, onClose, onSectionChange, currentSection }) => {
     }
   };
 
-  // Run on mount
+ 
   useEffect(() => {
     loadUserInfo();
 
-    // 🔹 Update if localStorage changes (like after login)
+    
     window.addEventListener('storage', loadUserInfo);
     return () => window.removeEventListener('storage', loadUserInfo);
   }, []);
@@ -59,7 +59,7 @@ const Navigation = ({ isOpen, onClose, onSectionChange, currentSection }) => {
       return profileImage;
     }
 
-    // Otherwise, assume it's a relative path from the backend
+    
     return `${process.env.REACT_APP_BACKEND_URL}${profileImage.startsWith("/") ? "" : "/"}${profileImage}`;
   };
 

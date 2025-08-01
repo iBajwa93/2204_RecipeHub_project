@@ -15,7 +15,7 @@ const Recipes = () => {
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/recipe`); // adjust endpoint
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/recipe`); 
         const allRecipes = res.data;
 
         const filtered = allRecipes.filter((recipe) =>
@@ -23,7 +23,7 @@ const Recipes = () => {
         );
 
         if (filtered.length === 1) {
-          // Redirect directly if exactly one match
+          
           navigate(`/recipe/${filtered[0]._id}`);
         } else {
           setRecipes(filtered);
@@ -45,7 +45,7 @@ const Recipes = () => {
     return <p>No recipes found for "{searchQuery}".</p>;
   }
 
-  // Show list if multiple or zero matches (zero handled above)
+  
   return (
     <div className="recipes-container">
       {recipes.map((recipe) => (

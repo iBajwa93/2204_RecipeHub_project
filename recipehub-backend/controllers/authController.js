@@ -10,26 +10,24 @@ const registerUser = async (req, res) => {
     const { fullName, username, email, password, confirmPassword } = req.body;
     console.log(req.body);
 
-    // Check all fields
     if (!fullName || !username || !email || !password || !confirmPassword)
       return res.status(400).json({ message: "All fields are required." });
 
-    // Password match
+   
     if (password !== confirmPassword)
       return res.status(400).json({ message: "Passwords do not match" });
 
-    // Check for existing email/username
+  
     const existingUser = await User.findOne({ $or: [{ email }, { username }] });
     if (existingUser)
       return res
         .status(400)
         .json({ message: "Email or username already exists" });
 
-    // Hash password (still used for newly registered users)
+  
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create user
     const newUser = new User({
       fullName,
       username,

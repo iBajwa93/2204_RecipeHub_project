@@ -1,11 +1,11 @@
 const asyncHandler = require('express-async-handler');
-const ProChefApp = require('../models/ProChefApplication'); // your ProChefApp model
-const Revenue = require('../models/Revenue'); // Your Revenue model
+const ProChefApp = require('../models/ProChefApplication'); 
+const Revenue = require('../models/Revenue'); 
 const User = require('../models/User');
 
 const getAllApplications = asyncHandler(async (req, res) => {
   const applications = await ProChefApp.find()
-    .populate("user", "fullName email isProChef") // populate user with some fields
+    .populate("user", "fullName email isProChef")
     .sort({ submittedAt: -1 });
 
   res.json(applications);

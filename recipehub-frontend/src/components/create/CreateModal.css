@@ -50,9 +50,9 @@
 
 .create-form-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 columns */
-  grid-template-rows: repeat(3, auto);   /* 3 rows */
-  gap: 50px; /* optional space between items */
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, auto);  
+  gap: 50px; 
   padding: 10px;
 }
 
@@ -278,8 +278,6 @@
   }
 }
 
-
-/* Responsive modal width */
 @media (max-width: 1068px) {
   .create-modal {
     width: 90%;   

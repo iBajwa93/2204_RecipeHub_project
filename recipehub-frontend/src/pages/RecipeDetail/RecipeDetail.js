@@ -13,7 +13,7 @@ const RecipeDetail = () => {
 
   const navigate = useNavigate();
 
-  // ✅ Helper to add revenue
+
   const addRevenue = async (userId, amount) => {
     try {
       await fetch(
@@ -40,7 +40,7 @@ const RecipeDetail = () => {
         setReviews(data.reviews || []);
         console.log("✅ Loaded reviews from backend:", data.reviews);
 
-        // ✅ Add $0.05 revenue for Pro Chef view
+        //  Add $0.05 revenue for Pro Chef view
         if (data.creator?.isProChef) {
           addRevenue(data.creator._id, 0.05);
         }
@@ -69,20 +69,20 @@ const RecipeDetail = () => {
       if (!response.ok) throw new Error("Failed to post comment");
 
       const data = await response.json();
-      console.log("✅ Review response:", data); // ✅ Debug log
+      console.log(" Review response:", data); 
 
       setReviews(data.reviews || []);
       setComment("");
       setRating(5);
 
-      // ✅ Add $0.10 for comment + bonus $0.05 if rating > 3
+      //  Add $0.10 for comment + bonus $0.05 if rating > 3
       if (recipe?.creator?.isProChef) {
         let amount = 0.10;
         if (rating > 3) amount += 0.05;
         addRevenue(recipe.creator._id, amount);
       }
     } catch (error) {
-      console.error("❌ Failed to submit comment:", error);
+      console.error(" Failed to submit comment:", error);
     }
   };
 

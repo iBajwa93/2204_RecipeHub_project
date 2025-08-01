@@ -5,7 +5,7 @@ import pfp from '../../assets/images/pfp.png';
 import star from '../../assets/icons/star.png';
 import Footer from '../HomePage/Footer';
 import { IoClose } from "react-icons/io5"; // X icon
-import { jwtDecode } from "jwt-decode"; // ✅ Needed to decode logged-in user ID
+import { jwtDecode } from "jwt-decode"; 
 
 const Chefs = () => {
     const [allChefs, setAllChefs] = useState([]);
@@ -17,7 +17,7 @@ const Chefs = () => {
 
     const token = localStorage.getItem("token");
 
-    // ✅ Decode logged-in user ID
+    
     useEffect(() => {
         if (token) {
             try {
@@ -197,7 +197,7 @@ const Chefs = () => {
                                         : "No recipes yet"}
                                 </h2>
                                 <div className="follow-btn-wrapper">
-                                    {/* ✅ Hide follow if viewing own profile */}
+                                   
                                     {selectedChef._id !== loggedInUserId && (
                                         <button
                                             className="follow-btn"

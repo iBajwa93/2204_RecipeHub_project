@@ -23,8 +23,8 @@
   padding: 40px;
   border-radius: 5px;
   width: 100%;
-  max-width: 600px; /* Prevents it from getting too wide */
-  max-height: 100vh; /* Prevents it from escaping vertically */
+  max-width: 600px; 
+  max-height: 100vh;
   overflow-y: auto; 
   position: relative;
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
@@ -102,7 +102,7 @@
 }
 
 input:focus {
-  border-bottom: .5px solid #00A884; /* green underline on focus */
+  border-bottom: .5px solid #00A884; 
   outline: none;
 }
 
@@ -150,7 +150,7 @@ input:focus {
 .register-checkbox input[type="checkbox"] {
   width: 15px;
   height: 15px;
-  accent-color: #D7C1C1; /* checkbox color (modern browsers only) */
+  accent-color: #D7C1C1; 
   margin: 0;
 }
 

@@ -13,11 +13,11 @@ const reviewSchema = new mongoose.Schema(
 const recipeSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
-    prepTime: { type: String }, // you can use Number if you want minutes as a number
+    prepTime: { type: String }, 
     description: { type: String },
-    ingredients: { type: String }, // or [String] if you want an array
+    ingredients: { type: String }, 
     category: { type: String },
-    videoUrl: { type: String }, // store video file URL or path after upload
+    videoUrl: { type: String }, 
     thumbnailUrl: {type: String},
     averageRating: { type: Number, default: 0 },
     views: { type: Number },
@@ -26,7 +26,7 @@ const recipeSchema = new mongoose.Schema(
     creatorUsername: { type: String },
     creator: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // This enables .populate() later
+      ref: "User", 
       required: true,
     },
     reviews: [reviewSchema],

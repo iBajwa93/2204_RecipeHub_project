@@ -27,22 +27,22 @@ const Body = () => {
     Asian: asian,
     Italian: italian,
     Mexican: mexican,
-    Caribbean: caribbean, // since you don’t have an import for Caribbean, use a dummy or add import
+    Caribbean: caribbean, 
     American: american,
     African: african,
     European: european,
   };
   const categories = [
-    "Indian", //
-    "Middle Eastern", //
-    "Mediterranean", //
-    "Asian", //
-    "Italian", //
-    "Mexican", //
-    "Caribbean", //
-    "American", //
-    "African", //
-    "European", //
+    "Indian", 
+    "Middle Eastern", 
+    "Mediterranean", 
+    "Asian", 
+    "Italian", 
+    "Mexican", 
+    "Caribbean", 
+    "American", 
+    "African", 
+    "European", 
   ];
 
   const handleRecipeClick = async (recipeId) => {

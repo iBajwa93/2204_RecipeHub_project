@@ -246,14 +246,7 @@ const handleReject = async (appId) => {
 
   const handleDelete = async (id) => {
     try {
-      // const res = await fetch(`http://localhost:5000/api/recipe/${id}`, {
-      //   method: "DELETE",
-      // });
-      // if (res.ok) {
-      //   setRecipes((prev) => prev.filter((r) => r._id !== id));
-      // } else {
-      //   alert("Delete failed");
-      // }
+     
     } catch (err) {
       console.error("Delete error:", err);
       alert("Error deleting recipe");
@@ -266,11 +259,11 @@ const handleReject = async (appId) => {
 
   return (
     <div className="admin-portal-wrapper">
-      {/* LEFT COLUMN */}
+   
       <div className="left-column">
-        {/* Admin Profile */}
+       
         <div className="admin-profile">
-          {/* <img src={dummyAvatar} alt="Admin" className="admin-avatar-large" /> */}
+        
           <input
             type="file"
             accept="image/*"
@@ -342,7 +335,7 @@ const handleReject = async (appId) => {
           </div>
         </div>
 
-        {/* User Search */}
+      
         <section className="admin-box">
           <h3>User Search</h3>
           <div className="filter-btns">
@@ -430,9 +423,8 @@ const handleReject = async (appId) => {
         </section>
       </div>
 
-      {/* RIGHT COLUMN */}
       <div className="right-column">
-        {/* Suspended Users */}
+       
         <section className="admin-box">
           <h3>Suspended Users</h3>
           {allUsers
@@ -482,7 +474,7 @@ const handleReject = async (appId) => {
           <input className="admin-input" placeholder="Search suspended user" />
         </section>
 
-        {/* Site Analytics */}
+        
         <section className="admin-box">
           <h3>Site Analytics</h3>
           <div className="analytics-grid">

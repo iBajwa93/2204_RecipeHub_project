@@ -83,6 +83,8 @@ const Portal = () => {
         setPreviewImage(null);
         setSelectedImage(null);
         setShowSaveBtn(false); // hide save button after upload
+
+        setShowSuccessModal(true);
       } else {
         alert("Image upload failed.");
       }
@@ -279,6 +281,13 @@ const Portal = () => {
 
   return (
     <div className="portal-container">
+      {showSuccessModal && (
+        <SuccessModal
+          message="Profile photo updated successfully!"
+          isOpen={showSuccessModal}
+          onClose={() => setShowSuccessModal(false)}
+        />
+      )}
       <div className="portal-profile-container">
         <div className="portal-profile-sec1-wrapper">
           <img

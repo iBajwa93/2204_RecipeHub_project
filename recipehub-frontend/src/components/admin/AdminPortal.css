@@ -240,6 +240,12 @@ h3 {
   color: white;
 }
 
+.user-avg-rating {
+  font-size: 14px;
+  font-family: HindLight;
+  text-align: center;
+}
+
 .reject-btn {
   background-color: #e63946;
   border: none;

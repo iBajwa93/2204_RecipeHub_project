@@ -80,7 +80,7 @@ const AdminPortal = () => {
       alert("Something went wrong.");
     }
   };
-  
+
   const handleApprove = async (appId) => {
   try {
     const res = await fetch(
@@ -378,6 +378,18 @@ const handleReject = async (appId) => {
                   <strong>{user.fullName}</strong> — Member since{" "}
                   {new Date(user.createdAt).toLocaleDateString()}
                 </p>
+                <p
+                  style={{
+                    color: user.isProChef ? "#D7352D" : "#3DBA58",
+                    fontFamily: "HindRegular",
+                    marginTop: "4px",
+                    marginBottom: "8px",
+                  }}
+                >
+                  {user.isProChef ? "Pro Chef" : "Amateur Chef"}
+                </p>
+                <h3 className="user-avg-rating">Average Rating: {user.avgRating}</h3>
+                
                 <button
                   className="ban-btn"
                   onClick={async () => {

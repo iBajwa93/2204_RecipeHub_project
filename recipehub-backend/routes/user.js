@@ -20,6 +20,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+router.patch("/:id/increment-visit", userController.incrementDailyVisits);
+
+// PATCH update avg rating
 router.patch("/:id/avgRating", updateAvgRating);
 
 // PATCH /api/users/:id → update password
@@ -37,6 +40,17 @@ router.get("/me", authenticateToken, async (req, res) => {
   }
 });
 
+// GET /api/users/:id → get user info by id (no auth needed or add auth if you want)
+router.get("/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select("-password");
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.json(user);
+  } catch (err) {
+    console.error("Fetch user by ID failed:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
 
 
 // Update own profile

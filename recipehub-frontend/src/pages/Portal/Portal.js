@@ -157,7 +157,7 @@ const Portal = () => {
       </div>
     );
   }
-  // 🔐 If admin, show admin dashboard instead
+
   if (isAdmin) {
     return <AdminPortal />;
   }

@@ -8,6 +8,7 @@ const recipeRoutes = require("./routes/recipe");
 const userRoutes = require("./routes/user");
 const proChefRoutes = require("./routes/prochefapps");
 const path = require("path");
+const adminRoutes = require("./routes/admin");
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -22,7 +23,7 @@ app.use(express.json()); // Parses JSON bodies
 app.use("/api/auth", authRoutes);
 app.use("/api/recipe", recipeRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/prochefapps", proChefRoutes);
+app.use("/api/admin", adminRoutes); // ✅ ADD THIS LINE
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/uploads", express.static("uploads"));
 
@@ -37,5 +38,5 @@ app.get("/test-server", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log("🚀 Server running on port", { PORT });
 });

@@ -58,12 +58,19 @@ const loginUser = async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
+    // 🔒 Check if the user is banned
+    if (user.isBanned) {
+      return res
+        .status(403)
+        .json({ message: "Your account has been suspended." });
+    }
+
     const hashedInDB = user.password;
 
     // Intelligent password check
-    const isMatch = hashedInDB.startsWith("$2b$") // bcrypt hash starts like this
-      ? await bcrypt.compare(password, hashedInDB) // use bcrypt
-      : password === hashedInDB; // plain text fallback
+    const isMatch = hashedInDB.startsWith("$2b$")
+      ? await bcrypt.compare(password, hashedInDB)
+      : password === hashedInDB;
 
     if (!isMatch)
       return res.status(400).json({ message: "Invalid credentials" });
@@ -83,6 +90,8 @@ const loginUser = async (req, res) => {
         username: user.username,
         email: user.email,
         isProChef: user.isProChef,
+        isBanned: user.isBanned,
+        isAdmin: user.isAdmin,
       },
     });
   } catch (err) {

@@ -4,59 +4,60 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const { authenticateToken } = require("../middleware/auth");
-const { authorizeAdmin } = require("../middleware/authorizeAdmin"); // You can create this if needed
 
 // ✅ Ban user
-router.put(
-  "/user/:id/ban",
-  authenticateToken,
-  authorizeAdmin,
-  async (req, res) => {
-    try {
-      await User.findByIdAndUpdate(req.params.id, { isBanned: true });
-      res.json({ message: "User banned successfully" });
-    } catch (err) {
-      res.status(500).json({ error: "Ban failed" });
+// PUT /api/user/:id/ban
+router.put("/user/:id/ban", authenticateToken, async (req, res) => {
+  try {
+    const adminUser = await User.findById(req.user.id);
+    if (!adminUser.isAdmin) {
+      return res.status(403).json({ message: "Access denied." });
     }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      { isBanned: true },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    res.json(updatedUser);
+  } catch (error) {
+    console.error("Ban user error:", error);
+    res.status(500).json({ message: "Server error." });
   }
-);
+});
 
 // ✅ Unban user
-router.put(
-  "/user/:id/unban",
-  authenticateToken,
-  authorizeAdmin,
-  async (req, res) => {
-    try {
-      await User.findByIdAndUpdate(req.params.id, { isBanned: false });
-      res.json({ message: "User unbanned successfully" });
-    } catch (err) {
-      res.status(500).json({ error: "Unban failed" });
+router.put("/user/:id/unban", authenticateToken, async (req, res) => {
+  try {
+    const adminUser = await User.findById(req.user.id); // ✅ SAFE here
+    if (!adminUser.isAdmin) {
+      return res.status(403).json({ message: "Access denied." });
     }
+
+    await User.findByIdAndUpdate(req.params.id, { isBanned: false });
+    res.json({ message: "User unbanned successfully" });
+  } catch (err) {
+    console.error("Unban error:", err);
+    res.status(500).json({ error: "Unban failed" });
   }
-);
+});
 
 // ✅ Admin site statistics
-router.get("/stats", authenticateToken, authorizeAdmin, async (req, res) => {
+router.get("/stats", authenticateToken, async (req, res) => {
   try {
-    const totalUsers = await User.countDocuments();
-    const proChefs = await User.countDocuments({ isProChef: true });
-    const amateurChefs = await User.countDocuments({ isProChef: false });
+    const adminUser = await User.findById(req.user.id);
+    if (!adminUser.isAdmin) {
+      return res.status(403).json({ message: "Access denied." });
+    }
 
-    // Optional: Replace with real metrics later
-    const dailyVisits = 324;
-    const monthlyVisits = 5343;
-
-    res.json({
-      totalUsers,
-      proChefs,
-      amateurChefs,
-      dailyVisits,
-      monthlyVisits,
-    });
+    // continue stats logic
   } catch (err) {
-    console.error("Error fetching admin stats:", err);
-    res.status(500).json({ error: "Failed to fetch stats" });
+    res.status(500).json({ error: "Stats fetch failed" });
   }
 });
 

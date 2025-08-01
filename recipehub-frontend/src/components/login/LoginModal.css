@@ -11,6 +11,13 @@
   z-index: 999;
 }
 
+.error-text {
+  color: #ff4d4f;
+  font-size: 0.95rem;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
 .login-modal {
   background-color: white;
   padding: 40px;
@@ -20,14 +27,14 @@
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   animation: popUp 0.3s ease;
   box-sizing: border-box;
   text-align: left;
 }
 
 .remember-text {
-    font-family: HindLight;
+  font-family: HindLight;
 }
 
 .login-form-wrapper {
@@ -50,8 +57,8 @@
 }
 
 .input-group {
-    padding-top: 20px;
-    width: 100%;
+  padding-top: 20px;
+  width: 100%;
 }
 
 .input-label {
@@ -64,7 +71,7 @@
 .input-field {
   width: 100%;
   border: none;
-  border-bottom: .5px solid #ccc;
+  border-bottom: 0.5px solid #ccc;
   padding: 6px 0;
   font-size: 16px;
   background-color: transparent;
@@ -73,7 +80,7 @@
 }
 
 .input-field:focus {
-  border-bottom: 2px solid #00A884;
+  border-bottom: 2px solid #00a884;
 }
 
 .login-checkbox {
@@ -87,18 +94,18 @@
 }
 
 .login-button-wrapper {
-    display: flex;
-    justify-content: left;
-    align-items: center;
+  display: flex;
+  justify-content: left;
+  align-items: center;
   margin-top: 30px;
 }
 
 .input-label {
-    font-size: 19px;
-    font-family: HindLight;
-    background-color: transparent;
-    color: black;
-    letter-spacing: 3px;
+  font-size: 19px;
+  font-family: HindLight;
+  background-color: transparent;
+  color: black;
+  letter-spacing: 3px;
 }
 
 .login-button {
@@ -116,7 +123,7 @@
 }
 
 .login-button:hover {
-  background-color: #2A2525;
+  background-color: #2a2525;
 }
 
 .error-icon-container {
@@ -127,7 +134,6 @@
   animation: fadeIn 0.4s ease forwards;
   opacity: 0;
   margin: 0;
-
 }
 
 @keyframes fadeIn {
@@ -142,24 +148,22 @@
 }
 
 @font-face {
-  font-family: 'HindMedium';
-  src: url('../../assets/fonts/hind/Hind-Medium.ttf') format('truetype');
-  font-weight: 600;
-  font-style: normal;
-}
-
-
-@font-face {
-  font-family: 'HindLight';
-  src: url('../../assets/fonts/hind/Hind-Light.ttf') format('truetype');
+  font-family: "HindMedium";
+  src: url("../../assets/fonts/hind/Hind-Medium.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'HindBold';
-  src: url('../../assets/fonts/hind/Hind-Bold.ttf') format('truetype');
+  font-family: "HindLight";
+  src: url("../../assets/fonts/hind/Hind-Light.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
 }
 
+@font-face {
+  font-family: "HindBold";
+  src: url("../../assets/fonts/hind/Hind-Bold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}

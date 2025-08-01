@@ -4,22 +4,17 @@ const userController = require("../controllers/userController");
 const { updateAvgRating } = require("../controllers/userController");
 const bcrypt = require("bcrypt");
 const multer = require("multer");
+const User = require("../models/User"); // ✅ Add this missing line
 const path = require("path");
-const fs = require("fs");
 const { authenticateToken } = require("../middleware/auth");
-const User = require("../models/User");
 
-// ✅ Storage engine for profile pictures
+// Storage engine
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadPath = path.join(__dirname, "../uploads/pfps");
-    console.log("Saving file to:", uploadPath);
-    if (!fs.existsSync(uploadPath)) fs.mkdirSync(uploadPath, { recursive: true });
-    cb(null, uploadPath);
+    cb(null, "uploads/"); // Make sure this folder exists!
   },
   filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`);
+    cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
 
@@ -66,7 +61,9 @@ router.post("/:id/follow", authenticateToken, async (req, res) => {
 
     if (isFollowing) {
       // Unfollow
-      user.following = user.following.filter((id) => id.toString() !== targetId);
+      user.following = user.following.filter(
+        (id) => id.toString() !== targetId
+      );
       targetUser.followers = targetUser.followers.filter(
         (id) => id.toString() !== userId
       );
@@ -132,45 +129,21 @@ router.put("/me", authenticateToken, async (req, res) => {
   }
 });
 
-// ✅ POST /api/users/upload-avatar
+// POST /api/user/upload-avatar
 router.post(
   "/upload-avatar",
   authenticateToken,
   upload.single("avatar"),
   async (req, res) => {
     try {
-      if (!req.file) {
-        return res.status(400).json({ error: "No file uploaded" });
-      }
-
-      const filePath = `/uploads/pfps/${req.file.filename}`;
-
-      // Find user first to get old profileImage
-      const user = await User.findById(req.user.id);
-
-      if (user.profileImage) {
-        // Get absolute path to old file
-        const oldImagePath = path.join(__dirname, "..", user.profileImage);
-       
-        // Delete old file if exists
-        if (fs.existsSync(oldImagePath)) {
-          fs.unlink(oldImagePath, (err) => {
-            if (err) console.error("Failed to delete old profile image:", err);
-          });
-        }
-      }
-
-      // Update profileImage in DB with new file path
-      user.profileImage = filePath;
-      await user.save();
-
-      res.json({ imageUrl: filePath, user });
+      const filePath = `/uploads/${req.file.filename}`;
+      await User.findByIdAndUpdate(req.user.id, { profileImage: filePath });
+      res.json({ imageUrl: filePath });
     } catch (err) {
       console.error("Upload failed", err);
       res.status(500).json({ error: "Image upload failed" });
     }
   }
 );
-
 
 module.exports = router;

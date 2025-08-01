@@ -4,6 +4,7 @@ import dummyThumbnail from "../../assets/images/dummy2.png";
 import dummyAvatar from "../../assets/images/pfp.png";
 import chefIcon from "../../assets/icons/minichef.png";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AdminPortal = () => {
   const [recipes, setRecipes] = useState([]);
@@ -25,6 +26,8 @@ const AdminPortal = () => {
     profileImage: "",
   });
 
+  const navigate = useNavigate();
+
   const handleAdminUpdate = async () => {
     try {
       const body = {
@@ -36,7 +39,7 @@ const AdminPortal = () => {
         body.password = adminInfo.password;
       }
 
-      const res = await fetch("http://localhost:5000/api/user/me", {
+      const res = await fetch("http://localhost:5000/api/users/me", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -144,7 +147,7 @@ const AdminPortal = () => {
 
     const fetchAdminInfo = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/user/me", {
+        const res = await fetch("http://localhost:5000/api/users/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -201,6 +204,9 @@ const AdminPortal = () => {
             id="avatar-upload"
             onChange={handleAvatarUpload}
           />
+          <button className="back-btn" onClick={() => navigate("/")}>
+            Home
+          </button>
 
           <img
             src={adminInfo.profileImage || dummyAvatar}
@@ -211,13 +217,12 @@ const AdminPortal = () => {
 
           <div className="admin-meta">
             <div className="admin-header">
-              <h2 className="admin-name">Harman Tiwana</h2>
+              <h2 className="admin-name">{adminInfo.username || "Admin"}</h2>{" "}
               <p className="admin-role">
                 {" "}
                 <img src={chefIcon} />
                 Admin
               </p>
-
               <button className="logout-btn" onClick={handleLogout}>
                 Logout
               </button>
@@ -267,7 +272,7 @@ const AdminPortal = () => {
         <section className="admin-box">
           <h3>User Search</h3>
           <div className="filter-btns">
-            {["Newer", "Older", "Top"].map((filter) => (
+            {["Newer", "Older"].map((filter) => (
               <button
                 key={filter}
                 className={`filter-btn ${
@@ -280,25 +285,31 @@ const AdminPortal = () => {
             ))}
           </div>
 
-          {allUsers
+          {[...allUsers]
             .filter((user) => !user.isBanned)
+            .filter((user) => !user.isAdmin)
             .filter((user) =>
               (user.fullName || "")
                 .toLowerCase()
                 .includes(userSearchQuery.toLowerCase())
             )
+            .sort((a, b) =>
+              activeFilter === "Newer"
+                ? new Date(b.createdAt) - new Date(a.createdAt)
+                : new Date(a.createdAt) - new Date(b.createdAt)
+            )
             .map((user) => (
               <div className="user-row" key={user._id}>
-                <span>
+                <p>
                   <strong>{user.fullName}</strong> — Member since{" "}
                   {new Date(user.createdAt).toLocaleDateString()}
-                </span>
+                </p>
                 <button
                   className="ban-btn"
                   onClick={async () => {
                     try {
-                      await fetch(
-                        `http://localhost:5000/api/user/${user._id}/ban`,
+                      const response = await fetch(
+                        `http://localhost:5000/api/admin/user/${user._id}/ban`,
                         {
                           method: "PUT",
                           headers: {
@@ -306,6 +317,9 @@ const AdminPortal = () => {
                           },
                         }
                       );
+                      const data = await response.json();
+                      console.log("Ban response:", data);
+
                       setAllUsers((prev) =>
                         prev.map((u) =>
                           u._id === user._id ? { ...u, isBanned: true } : u
@@ -352,8 +366,8 @@ const AdminPortal = () => {
                   className="unban-btn"
                   onClick={async () => {
                     try {
-                      await fetch(
-                        `http://localhost:5000/api/user/${user._id}/unban`,
+                      const response = await fetch(
+                        `http://localhost:5000/api/admin/user/${user._id}/unban`,
                         {
                           method: "PUT",
                           headers: {
@@ -361,6 +375,9 @@ const AdminPortal = () => {
                           },
                         }
                       );
+
+                      const data = await response.json();
+                      console.log("Unban response:", data);
                       setAllUsers((prev) =>
                         prev.map((u) =>
                           u._id === user._id ? { ...u, isBanned: false } : u

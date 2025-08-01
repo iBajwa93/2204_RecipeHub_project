@@ -89,7 +89,7 @@ const RecipeDetail = () => {
     <div className="recipeDetail-container">
       <div className="recipeDetail-body-recipes-title-backbtn-container">
         <h1 className="recipeDetail-body-recipes-title">{recipe.title}</h1>
-        <button onClick={() => navigate(-1)}
+        <button onClick={() => navigate('/')}
         className="back-btn">Back</button>
       </div>
       <video

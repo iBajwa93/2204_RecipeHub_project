@@ -9,20 +9,20 @@ const fs = require("fs");
 exports.deleteRecipe = async (req, res) => {
   try {
     const recipeId = req.params.id;
-    const userId = req.user?._id; // From JWT middleware
+    const userId = req.user?._id; 
 
-    // 1. Find the recipe
+   
     const recipe = await Recipe.findById(recipeId);
     if (!recipe) {
       return res.status(404).json({ message: "Recipe not found" });
     }
 
-    // 2. Optional: Only allow owner or admin to delete
+   
     if (userId && recipe.creatorID.toString() !== userId.toString() && !req.user.isAdmin) {
       return res.status(403).json({ message: "You are not allowed to delete this recipe" });
     }
 
-    // 3. Remove files (video + thumbnail) if they exist
+  
     if (recipe.videoUrl) {
       const videoPath = path.join(__dirname, "..", recipe.videoUrl);
       if (fs.existsSync(videoPath)) fs.unlinkSync(videoPath);
@@ -33,7 +33,7 @@ exports.deleteRecipe = async (req, res) => {
       if (fs.existsSync(thumbPath)) fs.unlinkSync(thumbPath);
     }
 
-    // 4. Delete the recipe from DB
+  
     await Recipe.findByIdAndDelete(recipeId);
 
     res.json({ message: "Recipe deleted successfully" });
@@ -115,7 +115,7 @@ exports.createRecipe = async (req, res) => {
           count: 1,
           folder: thumbnailFolder,
           filename: thumbnailFilename,
-          size: "464x232", // match your Body.js display size
+          size: "464x232",
         });
     });
 
@@ -155,11 +155,11 @@ exports.getRecipesByUser = async (req, res) => {
   }
 };
 
-// Get all recipes (optionally populate creator)
+// Get all recipes 
 exports.getRecipes = async (req, res) => {
   try {
     const recipes = await Recipe.find()
-      .populate("creator", "fullName username") // populate creator with name and username only
+      .populate("creator", "fullName username") 
       .sort({ createdAt: -1 });
     res.json(recipes);
   } catch (error) {

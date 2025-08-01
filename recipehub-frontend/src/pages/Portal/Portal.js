@@ -92,7 +92,6 @@ const Portal = () => {
         ).toFixed(1)
       : 0;
 
-  // UPDATED: handleImageUpload no longer auto-called on selection
   const handleImageUpload = async () => {
     if (!selectedImage) return;
 
@@ -118,7 +117,7 @@ const Portal = () => {
         setUser(updatedUser);
         setPreviewImage(null);
         setSelectedImage(null);
-        setShowSaveBtn(false); // hide save button after upload
+        setShowSaveBtn(false);
 
         setShowSuccessModal(true);
       } else {
@@ -135,7 +134,7 @@ const Portal = () => {
     if (file) {
       setSelectedImage(file);
       setPreviewImage(URL.createObjectURL(file));
-      setShowSaveBtn(true); // show save button when image selected
+      setShowSaveBtn(true);
     }
   };
 
@@ -200,7 +199,7 @@ const Portal = () => {
           setTopRecipe(sorted[0] || null);
           setUserRecipes(data);
 
-          // ✅ Calculate average rating for this user
+          // Calculate average rating for this user
           const ratedRecipes = data.filter(
             (r) => r.averageRating && r.averageRating > 0
           );
@@ -212,10 +211,10 @@ const Portal = () => {
                 ).toFixed(1)
               : 0;
 
-          // ✅ Save to state for Analytics panel
+          // Save to state for Analytics panel
           setUserAvgRating(avg);
 
-          // ✅ Update in DB
+          // Update in DB
           await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/${user.id}/avgRating`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
@@ -243,7 +242,7 @@ const Portal = () => {
     if (token) {
       try {
         const decoded = jwtDecode(token);
-        setIsAdmin(decoded.isAdmin || false); // ✅ Sets admin flag
+        setIsAdmin(decoded.isAdmin || false); // Sets admin flag
       } catch (err) {
         console.error("JWT decode failed", err);
       }
@@ -343,7 +342,7 @@ const Portal = () => {
             accept="image/*"
             onChange={handleImageSelect}
           />
-          {/* Show Save button only if an image is selected */}
+          
           {showSaveBtn && (
             <button
               className="savepfp-btn"
@@ -357,7 +356,7 @@ const Portal = () => {
         <div className="portal-profile-sec2-wrapper">
           <h1 className="portal-profile-sec2-fullName">{user.username}</h1>
           <h2 className="portal-profile-sec2-icon" style={{
-    color: user.isProChef ? "#D7352D" : "#3DBA58", // ✅ Conditional color
+    color: user.isProChef ? "#D7352D" : "#3DBA58", 
   }}>
             {user.isProChef ? "Pro Chef" : "Amateur Chef"}
           </h2>

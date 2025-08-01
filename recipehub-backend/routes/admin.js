@@ -7,7 +7,6 @@ const { authenticateToken, protect } = require("../middleware/auth");
 
 const { approveApplication, rejectApplication } = require('../controllers/proChefController');
 
-
 router.put('/prochef-applications/:id/approve', protect, approveApplication);
 router.put('/prochef-applications/:id/reject', protect, rejectApplication);
 

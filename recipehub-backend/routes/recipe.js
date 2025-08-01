@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
+const User = require("../models/User");
+const Revenue = require("../models/Revenue");
 const path = require("path");
 const Recipe = require("../models/Recipe");
 const { authenticateToken } = require("../middleware/auth");
 
-// Import controller functions directly
 const {
   createRecipe,
   getRecipes,
@@ -33,10 +34,10 @@ router.post("/:id/review", authenticateToken, addOrUpdateReview);
 // DELETE a review
 router.delete("/:id/review", authenticateToken, deleteReview);
 
-// Create a recipe (protected)
+// Create a recipe 
 router.post("/", upload.single("video"), authenticateToken, createRecipe);
 
-// Get all recipes (public)
+// Get all recipes 
 router.get("/", getRecipes);
 
 // Delete a recipe

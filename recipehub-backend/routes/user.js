@@ -9,7 +9,7 @@ const fs = require("fs");
 const { authenticateToken } = require("../middleware/auth");
 const User = require("../models/User");
 
-// ✅ Storage engine for profile pictures
+// Storage for profile pictures
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadPath = path.join(__dirname, "../uploads/pfps");
@@ -132,7 +132,7 @@ router.put("/me", authenticateToken, async (req, res) => {
   }
 });
 
-// ✅ POST /api/users/upload-avatar
+//  POST /api/users/upload-avatar
 router.post(
   "/upload-avatar",
   authenticateToken,

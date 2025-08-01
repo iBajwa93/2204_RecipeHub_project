@@ -199,6 +199,7 @@ exports.addOrUpdateReview = async (req, res) => {
     const recipe = await Recipe.findById(new mongoose.Types.ObjectId(id));
     if (!recipe) return res.status(404).json({ message: "Recipe not found" });
 
+    // 1. Apply review changes
     const existingReview = recipe.reviews.find(
       (review) => review.user.toString() === userId.toString()
     );
@@ -210,18 +211,37 @@ exports.addOrUpdateReview = async (req, res) => {
       recipe.reviews.push({ user: userId, rating, comment });
     }
 
+    // 2. Update average rating
     recipe.averageRating =
-      recipe.reviews.reduce((acc, r) => acc + r.rating, 0) /
-      recipe.reviews.length;
+      recipe.reviews.reduce((acc, r) => acc + r.rating, 0) / recipe.reviews.length;
 
     await recipe.save();
     await recipe.populate("reviews.user", "username fullName");
 
-    console.log("✅ Updated reviews list:", recipe.reviews);
+    // 3. Handle Pro Chef revenue
+    const creator = await require("../models/User").findById(recipe.creator);
+    if (creator?.isProChef) {
+      let commentRevenue = 0.10; // base for comment
+      if ((rating || 0) > 3) {
+        commentRevenue += 0.05; // bonus for rating > 3
+      }
 
-    res
-      .status(200)
-      .json({ message: "Review submitted", reviews: recipe.reviews });
+      const Revenue = require("../models/Revenue"); // import model here
+      const now = new Date();
+      const monthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+
+      let revenueDoc = await Revenue.findOne({ user: creator._id, month: monthKey });
+      if (!revenueDoc) {
+        revenueDoc = new Revenue({ user: creator._id, month: monthKey });
+      }
+
+      revenueDoc.monthlyIncome += commentRevenue;
+      revenueDoc.totalIncome += commentRevenue;
+      await revenueDoc.save();
+    }
+
+    res.status(200).json({ message: "Review submitted", reviews: recipe.reviews });
+
   } catch (err) {
     console.error("🔥 Error in addOrUpdateReview:", err);
     res.status(500).json({ message: "Server error" });

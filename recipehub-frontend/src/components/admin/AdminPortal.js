@@ -4,8 +4,10 @@ import dummyThumbnail from "../../assets/images/dummy2.png";
 import dummyAvatar from "../../assets/images/pfp.png";
 import chefIcon from "../../assets/icons/minichef.png";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AdminPortal = () => {
+  const [proChefApps, setProChefApps] = useState([]);
   const [recipes, setRecipes] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("Newer");
@@ -25,6 +27,28 @@ const AdminPortal = () => {
     profileImage: "",
   });
 
+  useEffect(() => {
+    const fetchProChefApps = async () => {
+      try {
+        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/prochefapps`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        if (res.ok) {
+          setProChefApps(data);
+        } else {
+          console.error("Failed to fetch pro chef applications");
+        }
+      } catch (err) {
+        console.error("Error fetching pro chef applications:", err);
+      }
+    };
+
+    fetchProChefApps();
+  }, []);
+
+  const navigate = useNavigate();
+
   const handleAdminUpdate = async () => {
     try {
       const body = {
@@ -36,7 +60,7 @@ const AdminPortal = () => {
         body.password = adminInfo.password;
       }
 
-      const res = await fetch("http://localhost:5000/api/user/me", {
+      const res = await fetch("http://localhost:5000/api/users/me", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -56,6 +80,59 @@ const AdminPortal = () => {
       alert("Something went wrong.");
     }
   };
+  
+  const handleApprove = async (appId) => {
+  try {
+    const res = await fetch(
+      `${process.env.REACT_APP_BACKEND_URL}/api/prochefapps/${appId}/approve`,
+      {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    const data = await res.json();
+    if (res.ok) {
+      alert("Application approved!");
+      setProChefApps((prev) =>
+        prev.map((app) =>
+          app._id === appId ? { ...app, status: "approved" } : app
+        )
+      );
+    } else {
+      alert(data.message || "Approval failed");
+    }
+  } catch (err) {
+    console.error("Approval error:", err);
+    alert("Something went wrong");
+  }
+};
+
+const handleReject = async (appId) => {
+  try {
+    const res = await fetch(
+      `${process.env.REACT_APP_BACKEND_URL}/api/prochefapps/${appId}/reject`,
+      {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    const data = await res.json();
+    if (res.ok) {
+      alert("Application rejected!");
+      setProChefApps((prev) =>
+        prev.map((app) =>
+          app._id === appId ? { ...app, status: "rejected" } : app
+        )
+      );
+    } else {
+      alert(data.message || "Rejection failed");
+    }
+  } catch (err) {
+    console.error("Rejection error:", err);
+    alert("Something went wrong");
+  }
+};
+
 
   const handleAvatarUpload = async (e) => {
     const file = e.target.files[0];
@@ -144,7 +221,7 @@ const AdminPortal = () => {
 
     const fetchAdminInfo = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/user/me", {
+        const res = await fetch("http://localhost:5000/api/users/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -201,6 +278,9 @@ const AdminPortal = () => {
             id="avatar-upload"
             onChange={handleAvatarUpload}
           />
+          <button className="back-btn" onClick={() => navigate("/")}>
+            Home
+          </button>
 
           <img
             src={adminInfo.profileImage || dummyAvatar}
@@ -211,13 +291,12 @@ const AdminPortal = () => {
 
           <div className="admin-meta">
             <div className="admin-header">
-              <h2 className="admin-name">Harman Tiwana</h2>
+              <h2 className="admin-name">{adminInfo.username || "Admin"}</h2>{" "}
               <p className="admin-role">
                 {" "}
                 <img src={chefIcon} />
                 Admin
               </p>
-
               <button className="logout-btn" onClick={handleLogout}>
                 Logout
               </button>
@@ -267,7 +346,7 @@ const AdminPortal = () => {
         <section className="admin-box">
           <h3>User Search</h3>
           <div className="filter-btns">
-            {["Newer", "Older", "Top"].map((filter) => (
+            {["Newer", "Older"].map((filter) => (
               <button
                 key={filter}
                 className={`filter-btn ${
@@ -280,25 +359,31 @@ const AdminPortal = () => {
             ))}
           </div>
 
-          {allUsers
+          {[...allUsers]
             .filter((user) => !user.isBanned)
+            .filter((user) => !user.isAdmin)
             .filter((user) =>
               (user.fullName || "")
                 .toLowerCase()
                 .includes(userSearchQuery.toLowerCase())
             )
+            .sort((a, b) =>
+              activeFilter === "Newer"
+                ? new Date(b.createdAt) - new Date(a.createdAt)
+                : new Date(a.createdAt) - new Date(b.createdAt)
+            )
             .map((user) => (
               <div className="user-row" key={user._id}>
-                <span>
+                <p>
                   <strong>{user.fullName}</strong> — Member since{" "}
                   {new Date(user.createdAt).toLocaleDateString()}
-                </span>
+                </p>
                 <button
                   className="ban-btn"
                   onClick={async () => {
                     try {
-                      await fetch(
-                        `http://localhost:5000/api/user/${user._id}/ban`,
+                      const response = await fetch(
+                        `http://localhost:5000/api/admin/user/${user._id}/ban`,
                         {
                           method: "PUT",
                           headers: {
@@ -306,6 +391,9 @@ const AdminPortal = () => {
                           },
                         }
                       );
+                      const data = await response.json();
+                      console.log("Ban response:", data);
+
                       setAllUsers((prev) =>
                         prev.map((u) =>
                           u._id === user._id ? { ...u, isBanned: true } : u
@@ -352,8 +440,8 @@ const AdminPortal = () => {
                   className="unban-btn"
                   onClick={async () => {
                     try {
-                      await fetch(
-                        `http://localhost:5000/api/user/${user._id}/unban`,
+                      const response = await fetch(
+                        `http://localhost:5000/api/admin/user/${user._id}/unban`,
                         {
                           method: "PUT",
                           headers: {
@@ -361,6 +449,9 @@ const AdminPortal = () => {
                           },
                         }
                       );
+
+                      const data = await response.json();
+                      console.log("Unban response:", data);
                       setAllUsers((prev) =>
                         prev.map((u) =>
                           u._id === user._id ? { ...u, isBanned: false } : u
@@ -405,35 +496,41 @@ const AdminPortal = () => {
             </div>
           </div>
         </section>
-
-        {/* All Recipes */}
-        {/* <section className="admin-box">
-          <h3>All Recipes</h3>
-          <input
-            className="admin-input"
-            placeholder="Search recipe titles..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <div className="admin-recipe-list">
-            {filteredRecipes.map((recipe) => (
-              <div key={recipe._id} className="admin-recipe-card">
-                <img
-                  src={recipe.thumbnail || dummyThumbnail}
-                  alt={recipe.title}
-                  className="admin-recipe-thumb"
-                />
-                <div className="admin-recipe-info">
-                  <h4>{recipe.title}</h4>
-                  <p>{recipe.description}</p>
+        <section className="admin-box">
+          <h3>Pro Chef Applications</h3>
+          <div className="applications-grid">
+            {proChefApps.length === 0 ? (
+              <p>No Pro Chef applications found.</p>
+            ) : (
+              proChefApps.map((app) => (
+                <div key={app._id} className="application-card">
                   <p>
-                    <strong>By:</strong> {recipe.owner?.username || "Unknown"}
+                    <strong>{app.user.fullName || app.user.username || "User"}</strong>
                   </p>
+                  <p>Status: {app.status}</p>
+                  <p>Submitted: {new Date(app.submittedAt).toLocaleDateString()}</p>
+
+                  {app.status === "pending" && (
+                    <>
+                      <button
+                        onClick={() => handleApprove(app._id)}
+                        className="approve-btn"
+                      >
+                        Approve
+                      </button>
+                      <button
+                        onClick={() => handleReject(app._id)}
+                        className="reject-btn"
+                      >
+                        Reject
+                      </button>
+                    </>
+                  )}
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
-        </section> */}
+        </section>
       </div>
     </div>
   );

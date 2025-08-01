@@ -80,7 +80,9 @@ const Navigation = ({ isOpen, onClose, onSectionChange, currentSection }) => {
                 <>
                   Welcome, {loggedInUser}
                   <br />
-                  <span className="chef-label">
+                  <span style={{
+                    color: isProChef ? "#D7352D" : "#3DBA58", // ✅ Conditional color
+                  }} className="chef-label">
                     {isProChef ? 'Pro Chef' : 'Amateur Chef'}
                   </span>
                 </>

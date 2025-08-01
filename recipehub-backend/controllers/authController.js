@@ -83,6 +83,8 @@ const loginUser = async (req, res) => {
         username: user.username,
         email: user.email,
         isProChef: user.isProChef,
+        isBanned: user.isBanned,
+        isAdmin: user.isAdmin,
         profileImage: user.profileImage
       },
     });

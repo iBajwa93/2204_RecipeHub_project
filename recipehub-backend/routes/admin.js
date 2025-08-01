@@ -3,8 +3,13 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
-const { authenticateToken } = require("../middleware/auth");
+const { authenticateToken, protect } = require("../middleware/auth");
 const { authorizeAdmin } = require("../middleware/authorizeAdmin"); // You can create this if needed
+const { approveApplication, rejectApplication } = require('../controllers/proChefController');
+
+
+router.put('/prochef-applications/:id/approve', protect, isAdmin, approveApplication);
+router.put('/prochef-applications/:id/reject', protect, isAdmin, rejectApplication);
 
 // ✅ Ban user
 router.put(

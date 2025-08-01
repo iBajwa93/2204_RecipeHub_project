@@ -50,18 +50,44 @@ router.get("/user/:userId", getRecipesByUser);
 router.get("/:id", getRecipeById);
 
 router.patch("/:id/view", async (req, res) => {
-  console.log("Increment view request for ID:", req.params.id);
   try {
     const recipe = await Recipe.findByIdAndUpdate(
       req.params.id,
-      { $inc: { views: 1 } }, // increment views by 1
+      { $inc: { views: 1 } },
       { new: true }
     );
+
+    if (!recipe) return res.status(404).json({ message: "Recipe not found" });
+
+    // Check if creator is a pro chef
+    const creator = await User.findById(recipe.creator);
+    if (creator?.isProChef) {
+      let revenueToAdd = 0.05; // base for every view
+      if ((recipe.averageRating || 0) > 3) {
+        revenueToAdd += 0.05; // bonus for high rating
+      }
+
+      const now = new Date();
+      const monthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+
+      let revenueDoc = await Revenue.findOne({ user: creator._id, month: monthKey });
+      if (!revenueDoc) {
+        revenueDoc = new Revenue({ user: creator._id, month: monthKey });
+      }
+
+      revenueDoc.monthlyIncome += revenueToAdd;
+      revenueDoc.totalIncome += revenueToAdd;
+      await revenueDoc.save();
+    }
+
     res.json(recipe);
   } catch (err) {
-    console.error("Failed to increment views:", err);
+    console.error("Failed to increment views and revenue:", err);
     res.status(500).json({ message: "Server error" });
   }
 });
+
+
+
 
 module.exports = router;

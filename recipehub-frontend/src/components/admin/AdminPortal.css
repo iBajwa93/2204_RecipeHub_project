@@ -4,6 +4,45 @@ body {
   background-color: #f8f8f8;
 }
 
+.back-btn {
+  margin: 1rem;
+  padding: 8px 16px;
+  background-color: #f2f2f2;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #333;
+  transition: background-color 0.2s;
+}
+
+.back-btn:hover {
+  background-color: #e2e2e2;
+}
+
+.user-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.user-name {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.ban-btn {
+  background-color: #e63946;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
 /* Global Titles */
 h2,
 h3 {
@@ -158,6 +197,17 @@ h3 {
   color: white;
 }
 
+.save-btn {
+  width: 50%;
+  margin-top: 10px;
+  font-family: HindLight;
+  border: none;
+  background-color: #363131;
+  color: white;
+  padding: 15px;
+  letter-spacing: 1px;
+}
+
 /* === User Rows === */
 .user-row,
 .suspended-user {
@@ -178,6 +228,34 @@ h3 {
   padding: 6px 14px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.approve-btn {
+  background-color: #34ed4a;
+  border: none;
+  padding: 10px;
+  font-family: HindLight;
+  width: 10%;
+  border-radius: 5px;
+  color: white;
+}
+
+.reject-btn {
+  background-color: #e63946;
+  border: none;
+  padding: 10px;
+  font-family: HindLight;
+  width: 10%;
+  border-radius: 5px;
+  color: white;
+}
+
+.applications-grid {
+  height: auto;
+  width: 100%;
+  font-family: HindRegular;
+  letter-spacing: 1px;
+  overflow-y: auto;
 }
 
 .unban-btn {

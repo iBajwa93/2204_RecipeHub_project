@@ -48,7 +48,7 @@ const Body = () => {
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/recipe");
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/recipe`);
         const data = await response.json();
         setRecipes(data);
       } catch (error) {
@@ -98,7 +98,7 @@ const Body = () => {
               <div className="featured-videos-item" key={recipe._id}>
                 <img
                   className="featured-videos-item-img"
-                  src={`http://localhost:5000${
+                  src={`${process.env.REACT_APP_BACKEND_URL}${
                     recipe.thumbnailUrl || "/fallback.jpg"
                   }`}
                   alt={recipe.title}
@@ -194,7 +194,7 @@ const Body = () => {
                       <img
                         onClick={() => navigate(`/recipe/${recipe._id}`)}
                         className="explore-item-video-tn"
-                        src={`http://localhost:5000${
+                        src={`${process.env.REACT_APP_BACKEND_URL}${
                           recipe.thumbnailUrl || "/fallback.jpg"
                         }`}
                       />

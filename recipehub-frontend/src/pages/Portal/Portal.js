@@ -11,6 +11,9 @@ import { jwtDecode } from "jwt-decode";
 import AdminPortal from "../../components/admin/AdminPortal";
 
 const Portal = () => {
+  const [followersCount, setFollowersCount] = useState(0);
+  const [dailyVisits, setDailyVisits] = useState(0);
+  const [userAvgRating, setUserAvgRating] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -25,6 +28,7 @@ const Portal = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
+  const [showSaveBtn, setShowSaveBtn] = useState(false); // NEW: Save button visibility
   const fileInputRef = React.useRef();
 
   const filteredRecipes = userRecipes.filter((recipe) =>
@@ -52,6 +56,7 @@ const Portal = () => {
         ).toFixed(1)
       : 0;
 
+  // UPDATED: handleImageUpload no longer auto-called on selection
   const handleImageUpload = async () => {
     if (!selectedImage) return;
 
@@ -61,7 +66,7 @@ const Portal = () => {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://localhost:5000/api/user/upload-avatar", {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/upload-avatar`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -75,7 +80,11 @@ const Portal = () => {
         const updatedUser = { ...user, profileImage: data.imageUrl };
         localStorage.setItem("info", JSON.stringify(updatedUser));
         setUser(updatedUser);
-        alert("Profile picture updated!");
+        setPreviewImage(null);
+        setSelectedImage(null);
+        setShowSaveBtn(false); // hide save button after upload
+
+        setShowSuccessModal(true);
       } else {
         alert("Image upload failed.");
       }
@@ -90,9 +99,52 @@ const Portal = () => {
     if (file) {
       setSelectedImage(file);
       setPreviewImage(URL.createObjectURL(file));
-      handleImageUpload(); // auto-upload
+      setShowSaveBtn(true); // show save button when image selected
     }
   };
+
+  useEffect(() => {
+    const fetchFollowersCount = async () => {
+      if (!user || !user.id) return;
+
+      try {
+        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/${user.id}`);
+        const data = await res.json();
+
+        if (res.ok) {
+          setFollowersCount(data.followers ? data.followers.length : 0);
+        } else {
+          setFollowersCount(0);
+        }
+      } catch (err) {
+        console.error("Failed to fetch followers count:", err);
+        setFollowersCount(0);
+      }
+    };
+
+    fetchFollowersCount();
+  }, [user]);
+
+  useEffect(() => {
+    const fetchDailyVisits = async () => {
+      if (!user || !user.id) return;
+
+      try {
+        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/${user.id}`);
+        const data = await res.json();
+        if (res.ok || res.status === 200) {
+          setDailyVisits(data.dailyVisits || 0);
+        } else {
+          setDailyVisits(0);
+        }
+      } catch (error) {
+        console.error("Failed to fetch daily visits:", error);
+        setDailyVisits(0);
+      }
+    };
+
+    fetchDailyVisits();
+  }, [user]);
 
   useEffect(() => {
     const fetchTopRecipeAndRecipes = async () => {
@@ -100,14 +152,39 @@ const Portal = () => {
 
       try {
         const res = await fetch(
-          `http://localhost:5000/api/recipe/user/${user.id}`
+          `${process.env.REACT_APP_BACKEND_URL}/api/recipe/user/${user.id}`
         );
         const data = await res.json();
 
         if (res.ok) {
-          const sorted = [...data].sort((a, b) => b.avgRating - a.avgRating);
+          // sort by highest rating to get top recipe
+          const sorted = [...data].sort(
+            (a, b) => b.averageRating - a.averageRating
+          );
           setTopRecipe(sorted[0] || null);
           setUserRecipes(data);
+
+          // ✅ Calculate average rating for this user
+          const ratedRecipes = data.filter(
+            (r) => r.averageRating && r.averageRating > 0
+          );
+          const avg =
+            ratedRecipes.length > 0
+              ? (
+                  ratedRecipes.reduce((sum, r) => sum + r.averageRating, 0) /
+                  ratedRecipes.length
+                ).toFixed(1)
+              : 0;
+
+          // ✅ Save to state for Analytics panel
+          setUserAvgRating(avg);
+
+          // ✅ Update in DB
+          await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/${user.id}/avgRating`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ avgRating: avg }),
+          });
         } else {
           setTopRecipe(null);
           setUserRecipes([]);
@@ -157,17 +234,23 @@ const Portal = () => {
       </div>
     );
   }
-  // 🔐 If admin, show admin dashboard instead
+
   if (isAdmin) {
     return <AdminPortal />;
   }
 
   const handleDeleteRecipe = async (recipeId) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/recipe/${recipeId}`, {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/recipe/${recipeId}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
+      console.log("problems");
+      console.log(res);
       if (res.ok) {
         setUserRecipes((prev) => prev.filter((r) => r._id !== recipeId));
       } else {
@@ -179,19 +262,44 @@ const Portal = () => {
     }
   };
 
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+  const getProfileImageSrc = () => {
+    if (previewImage) {
+    
+      if (previewImage.startsWith("blob:")) {
+        return previewImage; 
+      } else {
+      
+        return `${BACKEND_URL}${previewImage.startsWith("/") ? "" : "/"}${previewImage}`;
+      }
+    } else if (user.profileImage) {
+      return `${BACKEND_URL}${user.profileImage.startsWith("/") ? "" : "/"}${user.profileImage}`;
+    } else {
+      return pfp;
+    }
+  };
+
   return (
     <div className="portal-container">
+      {showSuccessModal && (
+        <SuccessModal
+          message="Profile photo updated successfully!"
+          isOpen={showSuccessModal}
+          onClose={() => setShowSuccessModal(false)}
+        />
+      )}
       <div className="portal-profile-container">
         <div className="portal-profile-sec1-wrapper">
           <img
-            src={previewImage || user.profileImage || pfp}
+            src={getProfileImageSrc()}
             width="200px"
             height="200px"
             className="portal-pfp-image"
             onClick={() => fileInputRef.current.click()}
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", borderRadius: "100px" }}
             alt="Profile"
           />
+              
           <input
             type="file"
             ref={fileInputRef}
@@ -199,9 +307,19 @@ const Portal = () => {
             accept="image/*"
             onChange={handleImageSelect}
           />
+          {/* Show Save button only if an image is selected */}
+          {showSaveBtn && (
+            <button
+              className="savepfp-btn"
+              onClick={handleImageUpload}
+              type="button"
+            >
+              Save
+            </button>
+          )}
         </div>
         <div className="portal-profile-sec2-wrapper">
-          <h1 className="portal-profile-sec2-fullName">{user.fullName}</h1>
+          <h1 className="portal-profile-sec2-fullName">{user.username}</h1>
           <h2 className="portal-profile-sec2-icon">
             {user.isProChef ? "Pro Chef" : "Amateur Chef"}
           </h2>
@@ -242,11 +360,7 @@ const Portal = () => {
                 <div className="edit-profile-form-input-wrapper">
                   <label className="edit-profile-form-label">Email</label>
                   <br />
-                  <input
-                    value={email}
-                    disabled
-                    className="edit-form-item-input"
-                  />
+                  <input value={email} disabled className="edit-form-item-input" />
                 </div>
 
                 <div className="edit-profile-form-input-wrapper">
@@ -260,9 +374,7 @@ const Portal = () => {
                 </div>
 
                 <div className="edit-profile-form-input-wrapper">
-                  <label className="edit-profile-form-label">
-                    New Password
-                  </label>
+                  <label className="edit-profile-form-label">New Password</label>
                   <br />
                   <input
                     type="password"
@@ -277,13 +389,12 @@ const Portal = () => {
                   onClick={async () => {
                     if (!password) {
                       setError("Password cant be left blank...");
-
                       return;
                     }
 
                     try {
                       const response = await fetch(
-                        `http://localhost:5000/api/users/${user.id}`,
+                        `${process.env.REACT_APP_BACKEND_URL}/api/users/${user.id}`,
                         {
                           method: "PATCH",
                           headers: {
@@ -346,11 +457,11 @@ const Portal = () => {
           <h1 className="portal-body-analytic-title">Analytics</h1>
           <div className="portal-body-analytic-grid">
             <div className="portal-body-analytic-grid-item1">
-              <h1 className="analytic-grid-item-stat">0</h1>
+              <h1 className="analytic-grid-item-stat">{dailyVisits}</h1>
               <h2 className="analytic-grid-item-statType">Daily Visits</h2>
             </div>
             <div className="portal-body-analytic-grid-item2">
-              <h1 className="analytic-grid-item-stat">0</h1>
+              <h1 className="analytic-grid-item-stat">{followersCount}</h1>
               <h2 className="analytic-grid-item-statType">Followers</h2>
             </div>
             <div className="portal-body-analytic-grid-item3">
@@ -358,7 +469,7 @@ const Portal = () => {
               <h2 className="analytic-grid-item-statType">Recipes</h2>
             </div>
             <div className="portal-body-analytic-grid-item4">
-              <h1 className="analytic-grid-item-stat">{avgRating}</h1>
+              <h1 className="analytic-grid-item-stat">{userAvgRating}</h1>
               <h2 className="analytic-grid-item-statType">Avg Rating</h2>
             </div>
           </div>
@@ -447,3 +558,5 @@ const Portal = () => {
 };
 
 export default Portal;
+
+

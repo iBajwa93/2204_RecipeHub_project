@@ -26,34 +26,27 @@ const authenticateToken = (req, res, next) => {
   }
 };
 
-module.exports = { authenticateToken };
-/*
-const jwt = require("jsonwebtoken");
+const protect = (req, res, next) => {
+  let token;
 
-const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1]; // Bearer <token>
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    try {
+      token = req.headers.authorization.split(' ')[1];
 
-  if (!token) {
-    return res
-      .status(401)
-      .json({ message: "Access denied. No token provided." });
-  }
+      // Verify token
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      // Attach user info to request object
+      req.user = decoded; // decoded should have user id and other info
 
-    // ✅ Optional Debug Logs (Remove before production)
-    console.log("🛡️ Raw token received:", token);
-    console.log("🔓 Decoded token payload:", decoded);
-
-    req.user = decoded; // Add user ID to request
-    next();
-  } catch (err) {
-    console.error("❌ Token verification failed:", err.message);
-    return res.status(403).json({ message: "Invalid token" });
+      next();
+    } catch (error) {
+      res.status(401).json({ message: 'Not authorized, token failed' });
+    }
+  } else {
+    res.status(401).json({ message: 'No token, authorization denied' });
   }
 };
 
-module.exports = { authenticateToken };
-*/
+
+module.exports = { authenticateToken, protect };

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import "./RecipeDetail.css";
 
@@ -10,10 +11,13 @@ const RecipeDetail = () => {
   const [reviews, setReviews] = useState([]);
   const currentUser = localStorage.getItem("username") || "guest";
 
+  const navigate = useNavigate();
+
   useEffect(() => {
+    
     const fetchRecipe = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/recipe/${id}`);
+        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/recipe/${id}`);
         const data = await res.json();
         setRecipe(data);
         setReviews(data.reviews || []);
@@ -29,7 +33,7 @@ const RecipeDetail = () => {
   const handleSubmit = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/recipe/${id}/review`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/recipe/${id}/review`,
         {
           method: "POST",
           headers: {
@@ -46,7 +50,7 @@ const RecipeDetail = () => {
       console.log("✅ Review response:", data); // ✅ Debug log
 
       
-      setReviews((prev) => [...prev, data.newReview || { comment, rating, user: { username: currentUser } }]);
+      setReviews(data.reviews || []);
       setComment("");
       setRating(5); 
     } catch (error) {
@@ -59,7 +63,7 @@ const RecipeDetail = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/api/recipe/${id}/review/${commentId}`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/recipe/${id}/review/${commentId}`,
         {
           method: "DELETE",
           headers: {
@@ -83,12 +87,18 @@ const RecipeDetail = () => {
 
   return (
     <div className="recipeDetail-container">
-      <h1 className="recipeDetail-body-recipes-title">{recipe.title}</h1>
+      <div className="recipeDetail-body-recipes-title-backbtn-container">
+        <h1 className="recipeDetail-body-recipes-title">{recipe.title}</h1>
+        <button onClick={() => navigate('/')}
+        className="back-btn">Back</button>
+      </div>
       <video
         controls
-        src={`http://localhost:5000/uploads/${recipe.videoUrl}`}
         style={{ width: "100%", borderRadius: "8px", marginBottom: "20px" }}
-      />
+      >
+        <source src={`${process.env.REACT_APP_BACKEND_URL}${recipe.videoUrl}`} type="video/mp4" />
+      
+      </video>
 
       <p className="recipeDetail-body-recipes-item-desc">{recipe.description}</p>
       <p className="recipeDetail-body-recipes-item-desc-details">

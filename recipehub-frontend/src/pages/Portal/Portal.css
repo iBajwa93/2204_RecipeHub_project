@@ -1,6 +1,8 @@
 .portal-container {
   padding: 40px;
   margin: auto;
+  width: 100%;
+  height: auto;
 }
 
 .comment-card {
@@ -49,6 +51,18 @@
   display: flex;
   width: 100%;
   margin: auto;
+}
+
+.savepfp-btn {
+  margin-top: 30px;
+  border: none;
+  color: white;
+  background-color: #363131;
+  width: 40%;
+  padding: 10px;
+  border-radius: 3px;
+  font-family: HindLight;
+  cursor: pointer;
 }
 
 .portal-logout-btn-wrapper {
@@ -125,16 +139,18 @@
 
 .portal-body-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 0px 0px;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: min-content; /* shrink rows to fit content */
+  gap: 120px 0px; /* optional small gap between rows */
+}
+
+.portal-body-grid-item stats {
+  height: 300px;
 }
 
 .portal-body-grid-item {
-  background-color: white;
   margin-bottom: 0;
-  height: 500px;
-  min-height: 500px;
+  height: auto;
 }
 
 .top-recipe-title {
@@ -453,6 +469,7 @@
   letter-spacing: 1px;
   background-color: #df0b0b;
   cursor: pointer;
+  min-width: 86px;
 }
 
 .portal-body-recipes-item-delete-btn-wrapper {

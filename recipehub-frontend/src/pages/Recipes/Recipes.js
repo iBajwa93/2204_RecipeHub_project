@@ -15,7 +15,7 @@ const Recipes = () => {
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/recipe"); // adjust endpoint
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/recipe`); // adjust endpoint
         const allRecipes = res.data;
 
         const filtered = allRecipes.filter((recipe) =>

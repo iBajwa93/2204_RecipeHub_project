@@ -38,6 +38,10 @@ router.post("/", upload.single("video"), authenticateToken, createRecipe);
 // Get all recipes (public)
 router.get("/", getRecipes);
 
+// Delete a recipe
+router.delete("/:id", authenticateToken, require("../controllers/recipeController").deleteRecipe);
+
+
 // Get recipes by user
 router.get("/user/:userId", getRecipesByUser);
 

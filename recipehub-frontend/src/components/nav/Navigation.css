@@ -15,11 +15,9 @@
   display: flex;
 }
 
-
 .nav.open {
   left: 0;
 }
-
 
 .nav-overlay {
   position: fixed;

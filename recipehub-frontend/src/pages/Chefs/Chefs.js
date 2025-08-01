@@ -191,10 +191,17 @@ const Chefs = () => {
                             <h2 className="chefs-detail-name">{selectedChef.fullName}</h2>
                             <div className="chefs-detail-stats-container">
                                 <h2 className="chefs-detail-stats">
-                                    {selectedChef.avgRating?.toFixed(1) || "N/A"} Rating |{" "}
-                                    {selectedChef.recipes?.length > 0
-                                        ? `${selectedChef.recipes[selectedChef.recipes.length - 1].title} recipe${selectedChef.recipes.length > 1 ? "s" : ""}`
-                                        : "No recipes yet"}
+                                    {selectedChef.avgRating?.toFixed(1) || "N/A"} Rating {" "}
+                                    <p className="chefs-detail-member-since">
+                                        Member Since:{" "}
+                                        {selectedChef.createdAt
+                                            ? new Date(selectedChef.createdAt).toLocaleDateString(undefined, {
+                                                year: "numeric",
+                                                month: "long",
+                                                day: "numeric",
+                                            })
+                                            : "Unknown"}
+                                    </p>
                                 </h2>
                                 <div className="follow-btn-wrapper">
                                    

@@ -45,10 +45,10 @@ const RecipeDetail = () => {
       const data = await response.json();
       console.log("✅ Review response:", data); // ✅ Debug log
 
-      // 🔄 Update reviews in frontend
-      setReviews(data.reviews);
-      setComment(""); // clear input
-      setRating(5); // reset rating to default
+      
+      setReviews((prev) => [...prev, data.newReview || { comment, rating, user: { username: currentUser } }]);
+      setComment("");
+      setRating(5); 
     } catch (error) {
       console.error("❌ Failed to submit comment:", error);
     }
@@ -195,13 +195,16 @@ const RecipeDetail = () => {
                 {rev.comment || "No comment found"}
               </p>
               {rev.user?.username === currentUser && (
-                <button
-                  onClick={() => handleDelete(rev._id)}
-                  className="recipeDetail-logout-btn"
-                  style={{ marginTop: "10px", width: "auto" }}
-                >
-                  Delete
-                </button>
+                <div className="delete-review-btn-wrapper">
+                  <button
+                    onClick={() => handleDelete(rev._id)}
+                    className="recipeDetail-logout-btn"
+                    style={{ marginTop: "10px", width: '30%', fontFamily: 'HindLight' }}
+                    >
+                    Delete Comment
+                  </button>
+                </div>
+                
               )}
             </div>
           ))

@@ -88,15 +88,17 @@ const RecipeDetail = () => {
   return (
     <div className="recipeDetail-container">
       <div className="recipeDetail-body-recipes-title-backbtn-container">
-        <h1 className="recipeDetail-body-recipes-title">{recipe.title}</h1>
+        <h1 className="recipeDetail-body-recipes-title">{recipe.videoUrl}</h1>
         <button onClick={() => navigate(-1)}
         className="back-btn">Back</button>
       </div>
       <video
         controls
-        src={`http://localhost:5000/${recipe.videoUrl}`}
         style={{ width: "100%", borderRadius: "8px", marginBottom: "20px" }}
-      />
+      >
+        <source src={`http://localhost:5000${recipe.videoUrl}`} type="video/mp4" />
+      
+      </video>
 
       <p className="recipeDetail-body-recipes-item-desc">{recipe.description}</p>
       <p className="recipeDetail-body-recipes-item-desc-details">

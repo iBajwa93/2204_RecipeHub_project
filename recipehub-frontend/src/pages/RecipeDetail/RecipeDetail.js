@@ -50,7 +50,7 @@ const RecipeDetail = () => {
       console.log("✅ Review response:", data); // ✅ Debug log
 
       
-      setReviews((prev) => [...prev, data.newReview || { comment, rating, user: { username: currentUser } }]);
+      setReviews(data.reviews || []);
       setComment("");
       setRating(5); 
     } catch (error) {

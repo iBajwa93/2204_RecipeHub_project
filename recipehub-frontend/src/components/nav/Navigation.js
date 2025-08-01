@@ -26,8 +26,6 @@ const Navigation = ({ isOpen, onClose, onSectionChange, currentSection }) => {
         setLoggedInUser(user.fullName || '');
         setIsProChef(!!user.isProChef);
         setProfileImage(user.profileImage || null);
-        console.log(profileImage);
-        console.log("TIHSSSS");
       } catch (err) {
         console.error('Failed to parse user info from localStorage', err);
       }

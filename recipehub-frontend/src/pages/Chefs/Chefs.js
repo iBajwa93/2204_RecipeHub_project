@@ -124,6 +124,7 @@ const Chefs = () => {
     return (
         <div className="chefs-container">
             <div className="chefs-top-performers-container">
+                
                 <h1 className="chefs-top-performers-title">Top 3 Performers</h1>
                 <div className="chefs-top-performers-wrapper">
                     {topPerformers.map((chef, index) => (

@@ -56,6 +56,7 @@ const CreateModal = ({ isOpen, onClose }) => {
     formData.append('creatorID', userId);
     formData.append('creatorUsername', username);
     formData.append('creator', userId);
+    formData.append('views', 0);
     if (videoFile) formData.append('video', videoFile);
 
     try {

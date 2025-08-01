@@ -45,6 +45,21 @@ const Body = () => {
     "European", //
   ];
 
+  const handleRecipeClick = async (recipeId) => {
+  try {
+    // Increment views in the backend
+    await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/recipe/${recipeId}/view`, {
+      method: "PATCH",
+    });
+
+    // Navigate to recipe detail
+    navigate(`/recipe/${recipeId}`);
+  } catch (err) {
+    console.error("Failed to increment views:", err);
+    navigate(`/recipe/${recipeId}`); // fallback navigation
+  }
+};
+
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
@@ -112,7 +127,7 @@ const Body = () => {
                 <div className="featured-videos-item-btnstar-container">
                   <button
                     className="featured-videos-item-btn"
-                    onClick={() => navigate(`/recipe/${recipe._id}`)}
+                    onClick={() => handleRecipeClick(recipe._id)}
                   >
                     View
                   </button>
@@ -192,7 +207,7 @@ const Body = () => {
                   .map((recipe) => (
                     <div className="explore-item-video-wrapper" key={recipe._id}>
                       <img
-                        onClick={() => navigate(`/recipe/${recipe._id}`)}
+                        onClick={() => handleRecipeClick(recipe._id)}
                         className="explore-item-video-tn"
                         src={`${process.env.REACT_APP_BACKEND_URL}${
                           recipe.thumbnailUrl || "/fallback.jpg"

@@ -187,10 +187,16 @@ const Portal = () => {
 
   const handleDeleteRecipe = async (recipeId) => {
     try {
+      const token = localStorage.getItem("token");
       const res = await fetch(`http://localhost:5000/api/recipe/${recipeId}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
+      console.log("problems");
+      console.log(res);
       if (res.ok) {
         setUserRecipes((prev) => prev.filter((r) => r._id !== recipeId));
       } else {

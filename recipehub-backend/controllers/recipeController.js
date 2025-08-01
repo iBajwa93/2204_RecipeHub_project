@@ -5,6 +5,45 @@ const ffmpeg = require("fluent-ffmpeg");
 const path = require("path");
 const fs = require("fs");
 
+// DELETE /api/recipes/:id
+exports.deleteRecipe = async (req, res) => {
+  try {
+    const recipeId = req.params.id;
+    const userId = req.user?._id; // From JWT middleware
+
+    // 1. Find the recipe
+    const recipe = await Recipe.findById(recipeId);
+    if (!recipe) {
+      return res.status(404).json({ message: "Recipe not found" });
+    }
+
+    // 2. Optional: Only allow owner or admin to delete
+    if (userId && recipe.creatorID.toString() !== userId.toString() && !req.user.isAdmin) {
+      return res.status(403).json({ message: "You are not allowed to delete this recipe" });
+    }
+
+    // 3. Remove files (video + thumbnail) if they exist
+    if (recipe.videoUrl) {
+      const videoPath = path.join(__dirname, "..", recipe.videoUrl);
+      if (fs.existsSync(videoPath)) fs.unlinkSync(videoPath);
+    }
+
+    if (recipe.thumbnailUrl) {
+      const thumbPath = path.join(__dirname, "..", recipe.thumbnailUrl);
+      if (fs.existsSync(thumbPath)) fs.unlinkSync(thumbPath);
+    }
+
+    // 4. Delete the recipe from DB
+    await Recipe.findByIdAndDelete(recipeId);
+
+    res.json({ message: "Recipe deleted successfully" });
+  } catch (err) {
+    console.error("🔥 Error deleting recipe:", err);
+    res.status(500).json({ message: "Server error deleting recipe" });
+  }
+};
+
+
 exports.deleteReview = asyncHandler(async (req, res) => {
   const recipe = await Recipe.findById(req.params.id).populate(
     "reviews.user",

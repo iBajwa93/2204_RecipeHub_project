@@ -132,7 +132,11 @@ const Chefs = () => {
                                 onClick={() => handleChefClick(chef)}
                                 className="chefs-pfp"
                                 width="95px"
-                                src={chef.profilePicture || pfp}
+                                src={
+                                chef.profileImage
+                                    ? `${process.env.REACT_APP_BACKEND_URL}${chef.profileImage.startsWith("/") ? "" : "/"}${chef.profileImage}`
+                                    : pfp
+                                }
                                 style={{ cursor: "pointer" }}
                                 alt={`${chef.fullName}'s profile`}
                             />
@@ -164,7 +168,11 @@ const Chefs = () => {
                                 <img
                                     className="chefs-pfp"
                                     width="75px"
-                                    src={chef.profilePicture || pfp}
+                                    src={
+                                    chef.profileImage
+                                        ? `${process.env.REACT_APP_BACKEND_URL}${chef.profileImage.startsWith("/") ? "" : "/"}${chef.profileImage}`
+                                        : pfp
+                                    }
                                     onClick={() => handleChefClick(chef)}
                                     style={{ cursor: "pointer" }}
                                     alt={`${chef.fullName}'s profile`}

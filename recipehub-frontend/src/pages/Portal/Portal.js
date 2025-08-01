@@ -11,6 +11,8 @@ import { jwtDecode } from "jwt-decode";
 import AdminPortal from "../../components/admin/AdminPortal";
 
 const Portal = () => {
+  const [monthlyRevenue, setMonthlyRevenue] = useState(0);
+  const [totalRevenue, setTotalRevenue] = useState(0);
   const [followersCount, setFollowersCount] = useState(0);
   const [dailyVisits, setDailyVisits] = useState(0);
   const [userAvgRating, setUserAvgRating] = useState(0);
@@ -30,6 +32,40 @@ const Portal = () => {
   const [previewImage, setPreviewImage] = useState(null);
   const [showSaveBtn, setShowSaveBtn] = useState(false); // NEW: Save button visibility
   const fileInputRef = React.useRef();
+
+  useEffect(() => {
+  const fetchRevenue = async () => {
+    if (!user || !user.id) return;
+
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/api/revenue/${user.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      const data = await res.json();
+
+      if (res.ok && data) {
+        setMonthlyRevenue(data.currentMonthRevenue || 0);
+        setTotalRevenue(data.totalRevenue || 0);
+      } else {
+        setMonthlyRevenue(0);
+        setTotalRevenue(0);
+      }
+    } catch (err) {
+      console.error("Failed to fetch revenue:", err);
+      setMonthlyRevenue(0);
+      setTotalRevenue(0);
+    }
+  };
+
+  fetchRevenue();
+}, [user]);
+
 
   const filteredRecipes = userRecipes.filter((recipe) =>
     recipe.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -542,12 +578,12 @@ const Portal = () => {
           <h1 className="portal-body-revenue-title">Revenue</h1>
           <div className="portal-body-revenue-stats-container">
             <h1 className="portal-body-current-month-revenue">
-              $0.00
+              ${monthlyRevenue.toFixed(2)}
               <br />
               <span className="currentMonth">Current month</span>
             </h1>
             <h1 className="portal-body-total-revenue">
-              $0.00
+              ${totalRevenue.toFixed(2)}
               <br />
               <span className="totalRevenue">Total revenue</span>
             </h1>

@@ -13,15 +13,37 @@ const RecipeDetail = () => {
 
   const navigate = useNavigate();
 
+  // ✅ Helper to add revenue
+  const addRevenue = async (userId, amount) => {
+    try {
+      await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/api/revenue/add/${userId}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ amount }),
+        }
+      );
+    } catch (err) {
+      console.error("Revenue update error:", err);
+    }
+  };
+
   useEffect(() => {
-    
     const fetchRecipe = async () => {
       try {
-        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/recipe/${id}`);
+        const res = await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/api/recipe/${id}`
+        );
         const data = await res.json();
         setRecipe(data);
         setReviews(data.reviews || []);
         console.log("✅ Loaded reviews from backend:", data.reviews);
+
+        // ✅ Add $0.05 revenue for Pro Chef view
+        if (data.creator?.isProChef) {
+          addRevenue(data.creator._id, 0.05);
+        }
       } catch (error) {
         console.error("Failed to fetch recipe:", error);
       }
@@ -49,10 +71,16 @@ const RecipeDetail = () => {
       const data = await response.json();
       console.log("✅ Review response:", data); // ✅ Debug log
 
-      
       setReviews(data.reviews || []);
       setComment("");
-      setRating(5); 
+      setRating(5);
+
+      // ✅ Add $0.10 for comment + bonus $0.05 if rating > 3
+      if (recipe?.creator?.isProChef) {
+        let amount = 0.10;
+        if (rating > 3) amount += 0.05;
+        addRevenue(recipe.creator._id, amount);
+      }
     } catch (error) {
       console.error("❌ Failed to submit comment:", error);
     }
@@ -89,26 +117,33 @@ const RecipeDetail = () => {
     <div className="recipeDetail-container">
       <div className="recipeDetail-body-recipes-title-backbtn-container">
         <h1 className="recipeDetail-body-recipes-title">{recipe.title}</h1>
-        <button onClick={() => navigate('/')}
-        className="back-btn">Back</button>
+        <button onClick={() => navigate("/")} className="back-btn">
+          Back
+        </button>
       </div>
       <video
         controls
         style={{ width: "100%", borderRadius: "8px", marginBottom: "20px" }}
       >
-        <source src={`${process.env.REACT_APP_BACKEND_URL}${recipe.videoUrl}`} type="video/mp4" />
-      
+        <source
+          src={`${process.env.REACT_APP_BACKEND_URL}${recipe.videoUrl}`}
+          type="video/mp4"
+        />
       </video>
 
       <p className="recipeDetail-body-recipes-item-desc">{recipe.description}</p>
       <p className="recipeDetail-body-recipes-item-desc-details">
-        <strong  className="boldStrong">Prep Time:</strong> {recipe.prepTime}
+        <strong className="boldStrong">Prep Time:</strong> {recipe.prepTime}
       </p>
       <p className="recipeDetail-body-recipes-item-desc-details">
-        <strong className="boldStrong">Ingredients:</strong> {recipe.ingredients}
+        <strong className="boldStrong">Ingredients:</strong>{" "}
+        {recipe.ingredients}
       </p>
 
-      <div className="recipeDetail-body-recipes-item" style={{ marginTop: "30px" }}>
+      <div
+        className="recipeDetail-body-recipes-item"
+        style={{ marginTop: "30px" }}
+      >
         <textarea
           className="comment-input"
           value={comment}
@@ -135,8 +170,8 @@ const RecipeDetail = () => {
               marginLeft: "10px",
               padding: "5px",
               borderRadius: "2px",
-              border: 'none',
-              fontFamily: 'hindlight'
+              border: "none",
+              fontFamily: "hindlight",
             }}
           >
             {[5, 4, 3, 2, 1].map((r) => (
@@ -152,11 +187,15 @@ const RecipeDetail = () => {
             onClick={handleSubmit}
             disabled={!localStorage.getItem("token")}
             style={{
-              backgroundColor: localStorage.getItem("token") ? "#363131" : "#ccc",
+              backgroundColor: localStorage.getItem("token")
+                ? "#363131"
+                : "#ccc",
               color: "#fff",
               padding: "10px 20px",
               border: "none",
-              cursor: localStorage.getItem("token") ? "pointer" : "not-allowed",
+              cursor: localStorage.getItem("token")
+                ? "pointer"
+                : "not-allowed",
               borderRadius: "4px",
             }}
             title={
@@ -171,7 +210,6 @@ const RecipeDetail = () => {
       </div>
 
       <div style={{ marginTop: "40px" }}>
-        
         {reviews.length === 0 ? (
           <p className="recipeDetail-body-recipes-item-desc">No comments yet.</p>
         ) : (
@@ -205,22 +243,35 @@ const RecipeDetail = () => {
                 {rev.comment || "No comment found"}
               </p>
               <div className="date-wrapper">
-                        <p style={{ fontSize: "12px", color: "#777", fontFamiy: 'HindLight', marginTop: "5px" }}>
-                          Posted on: {new Date(rev.createdAt).toLocaleDateString()}{" "}
-                          {new Date(rev.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                        </p>
+                <p
+                  style={{
+                    fontSize: "12px",
+                    color: "#777",
+                    fontFamiy: "HindLight",
+                    marginTop: "5px",
+                  }}
+                >
+                  Posted on: {new Date(rev.createdAt).toLocaleDateString()}{" "}
+                  {new Date(rev.createdAt).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </p>
               </div>
               {rev.user?.username === currentUser && (
                 <div className="delete-review-btn-wrapper">
                   <button
                     onClick={() => handleDelete(rev._id)}
                     className="recipeDetail-logout-btn"
-                    style={{ marginTop: "10px", width: '30%', fontFamily: 'HindLight' }}
-                    >
+                    style={{
+                      marginTop: "10px",
+                      width: "30%",
+                      fontFamily: "HindLight",
+                    }}
+                  >
                     Delete Comment
                   </button>
                 </div>
-                
               )}
             </div>
           ))

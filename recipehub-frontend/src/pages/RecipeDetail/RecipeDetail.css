@@ -1,6 +1,7 @@
 .recipeDetail-container {
   padding: 40px;
   margin: auto;
+  background-color: white;
 }
 
 .comment-card {
@@ -393,7 +394,7 @@
 .recipeDetail-body-recipes-item {
   width: 50%;
   height: auto;
-  
+
 }
 
 .back-btn {

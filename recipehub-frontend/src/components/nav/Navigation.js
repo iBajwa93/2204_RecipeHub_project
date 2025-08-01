@@ -159,18 +159,20 @@ const Navigation = ({ isOpen, onClose, onSectionChange, currentSection }) => {
           </div>
 
           <ul className="nav-links secondary-links">
-            <li className={`nav-item ${currentSection === "careers" ? "active" : ""}`}>
-              <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onClose();
-                  onSectionChange("careers");
-                }}
-              >
-                Careers
-              </a>
-            </li>
+            {!isProChef && (
+                <li className={`nav-item ${currentSection === "careers" ? "active" : ""}`}>
+                  <a
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onClose();
+                      onSectionChange("careers");
+                    }}
+                  >
+                    Careers
+                  </a>
+                </li>
+              )}
             <li className={`nav-item ${currentSection === "chefs" ? "active" : ""}`}>
               <a
                 href="#"

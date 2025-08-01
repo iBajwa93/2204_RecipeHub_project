@@ -9,6 +9,7 @@ import miniChef from '../../assets/icons/minichef.png'
 import { useNavigate } from 'react-router-dom';
 
 const Navigation = ({ isOpen, onClose, onSectionChange, currentSection }) => {
+  const [profileImage, setProfileImage] = useState(null);
   const [showRegister, setShowRegister] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
@@ -24,11 +25,20 @@ const Navigation = ({ isOpen, onClose, onSectionChange, currentSection }) => {
         const user = JSON.parse(userInfo);
         setLoggedInUser(user.fullName || '');
         setIsProChef(user.isProChef || '');
+        setProfileImage(user.profileImage || pfp);
       } catch (err) {
         console.error('Failed to parse user info from localStorage or user isnt logged in yet');
       }
     }
   }, []);
+
+  const getProfileImageSrc = () => {
+    if (!profileImage) return pfp;
+    return `${process.env.REACT_APP_BACKEND_URL}${
+      profileImage.startsWith("/") ? "" : "/"
+    }${profileImage}`;
+  };
+
 
   return (
     <>
@@ -39,7 +49,9 @@ const Navigation = ({ isOpen, onClose, onSectionChange, currentSection }) => {
           <div className="nav-header">
             {!loggedInUser && (<img src={chefIcon} alt="Chef Icon" className="nav-logo" />)}
             <span className="nav-title">
-              {loggedInUser && <img src={pfp} alt="PFP" className="userpfp" />}
+              {loggedInUser && (
+                <img src={getProfileImageSrc()} alt="PFP" width="100px" className="userpfp" />
+              )}
               <br />
               {loggedInUser ? (
                 <>

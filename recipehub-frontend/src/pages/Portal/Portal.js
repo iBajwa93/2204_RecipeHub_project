@@ -477,7 +477,7 @@ const Portal = () => {
                       className="top-recipe-image"
                       width="332px"
                       height="166px"
-                      src={topRecipe.thumbnail || dummy2}
+                      src={topRecipe.thumbnailUrl || dummy2}
                       alt={topRecipe.title}
                     />
                   </div>

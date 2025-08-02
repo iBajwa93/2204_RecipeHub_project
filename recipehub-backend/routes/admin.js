@@ -10,7 +10,7 @@ const { approveApplication, rejectApplication } = require('../controllers/proChe
 router.put('/prochef-applications/:id/approve', protect, approveApplication);
 router.put('/prochef-applications/:id/reject', protect, rejectApplication);
 
-// ✅ Ban user
+//  Ban user
 router.put(
   "/user/:id/ban",
   authenticateToken,
@@ -25,7 +25,7 @@ router.put(
   }
 );
 
-// ✅ Unban user
+//  Unban user
 router.put(
   "/user/:id/unban",
   authenticateToken,
@@ -40,14 +40,14 @@ router.put(
   }
 );
 
-// ✅ Admin site statistics
+//  Admin site statistics
 router.get("/stats", authenticateToken,async (req, res) => {
   try {
     const totalUsers = await User.countDocuments();
     const proChefs = await User.countDocuments({ isProChef: true });
     const amateurChefs = await User.countDocuments({ isProChef: false });
 
-    // Optional: Replace with real metrics later
+   
     const dailyVisits = 324;
     const monthlyVisits = 5343;
 

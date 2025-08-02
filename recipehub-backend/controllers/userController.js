@@ -57,7 +57,7 @@ exports.updateAvgRating = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find().select('-password'); // Exclude password
+    const users = await User.find().select('-password');
     res.status(200).json(users);
   } catch (error) {
     console.error('Error fetching users:', error);

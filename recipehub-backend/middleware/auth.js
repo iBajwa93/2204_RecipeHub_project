@@ -14,7 +14,7 @@ const authenticateToken = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // ✅ Optional Debug Logs (Remove before production)
+   
     console.log("🛡️ Raw token received:", token);
     console.log("🔓 Decoded token payload:", decoded);
 
@@ -37,7 +37,7 @@ const protect = (req, res, next) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       // Attach user info to request object
-      req.user = decoded; // decoded should have user id and other info
+      req.user = decoded; 
 
       next();
     } catch (error) {
